@@ -1,0 +1,10 @@
+metric,value
+mode,gui
+physics_step_hz,500
+rtf_samples,116
+rtf_average,0.990778
+rtf_minimum,0.006026
+rtf_maximum,1.028189
+gpu_memory_peak_mib,819
+gpu_utilization_peak_pct,42
+camera_frequency_hz,9.99661

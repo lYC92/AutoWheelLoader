@@ -1,0 +1,31 @@
+schema_version: 1
+scenario: smoke
+profile: control_realtime
+random_seed: 1001
+
+world:
+  sdf: simulation/worlds/loader_kinematics.sdf
+  gravity_mps2: [0.0, 0.0, -9.80665]
+
+vehicle:
+  description: ros_ws/src/loader_description/urdf/loader.urdf.xacro
+  model_fidelity: nominal
+  initial_pose:
+    xyz_m: [0.0, 0.0, 0.20]
+    rpy_rad: [0.0, 0.0, 0.0]
+
+terrain:
+  material: none
+
+acceptance:
+  settle_duration_s: 6.0
+  require_finite_pose: true
+  required_joints:
+    - articulation_joint
+    - rear_axle_oscillation_joint
+    - front_left_wheel_joint
+    - front_right_wheel_joint
+    - rear_left_wheel_joint
+    - rear_right_wheel_joint
+    - lift_joint
+    - bucket_tilt_joint

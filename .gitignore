@@ -1,0 +1,17 @@
+# ROS / colcon outputs
+build/
+install/
+log/
+
+# Simulation outputs and caches
+results/
+cache/
+*.db3
+*.mcap
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+

@@ -1,0 +1,62 @@
+schema_version: 1
+model_fidelity: nominal
+validation_status: not_validated
+
+# Null values are deliberate: they are required inputs, not estimates to hide.
+vehicle_identity:
+  manufacturer: null
+  model: null
+  serial_or_configuration: null
+
+mass_properties:
+  operating_mass_kg: null
+  rear_frame_mass_kg: null
+  front_frame_mass_kg: null
+  lift_group_mass_kg: null
+  bucket_mass_kg: null
+  centers_of_mass_m: null
+  inertia_tensors_kg_m2: null
+
+geometry:
+  wheelbase_m: null
+  track_width_m: null
+  articulation_axis_xyz_m: null
+  axle_centers_xyz_m: null
+  rear_axle_oscillation_limit_rad: null
+  bucket_cutting_edge_points_m: null
+  linkage_pivot_points_m: null
+  cylinder_mount_points_m: null
+
+tires:
+  loaded_radius_m: null
+  width_m: null
+  vertical_stiffness_npm: null
+  longitudinal_slip_curve: null
+  lateral_slip_curve: null
+  rolling_resistance_coefficient: null
+
+hydraulics:
+  lift_cylinder_bore_m: null
+  lift_cylinder_rod_m: null
+  lift_cylinder_stroke_m: null
+  tilt_cylinder_bore_m: null
+  tilt_cylinder_rod_m: null
+  tilt_cylinder_stroke_m: null
+  relief_pressure_pa: null
+  pump_flow_map: null
+  valve_deadband: null
+  leakage_and_friction: null
+
+driveline:
+  gear_ratios: null
+  final_drive_ratio: null
+  rotating_inertias_kg_m2: null
+  torque_limits_nm: null
+  brake_limits_nm: null
+
+required_validation:
+  - compare_linkage_forward_kinematics_to_cad
+  - compare_cylinder_lengths_to_measured_end_stops
+  - static_axle_load_check
+  - articulation_and_axle_oscillation_limit_check
+  - bucket_tip_workspace_check

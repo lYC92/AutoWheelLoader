@@ -1,0 +1,26 @@
+schema_version: 1
+profile: dem_offline
+description: Offline Chrono::Dem trajectory replay and soil-force calibration.
+
+clock:
+  deterministic_replay: true
+  random_seed: 3001
+
+inputs:
+  bucket_trajectory: required
+  bucket_collision_mesh_obj: required
+  material_parameter_set: dry_sand
+
+outputs:
+  - bucket_wrench_timeseries
+  - captured_material_mass
+  - particle_flow_statistics
+  - conservation_report
+
+gpu_policy:
+  gazebo_rendering: false
+  bev_inference: false
+  chrono_dem: true
+  exclusive_gpu_access_required: true
+
+validation_status: not_installed

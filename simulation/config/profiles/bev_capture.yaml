@@ -1,0 +1,36 @@
+schema_version: 1
+profile: bev_capture
+description: Deterministic four-camera fisheye dataset capture.
+
+clock:
+  use_sim_time: true
+  lockstep: true
+  random_seed: 2001
+
+physics:
+  engine: dart
+  step_size_s: 0.002
+  target_rate_hz: 500
+  realtime_required: false
+
+sensors:
+  fisheye_cameras:
+    enabled_count: 4
+    width_px: 640
+    height_px: 480
+    update_rate_hz: 10
+    synchronized_timestamp_required: true
+    truth_outputs: [rgb, depth, semantic, boxes, drivable_area]
+
+recording:
+  format: mcap
+  include_clock: true
+  include_tf: true
+
+gpu_policy:
+  gazebo_rendering: true
+  bev_inference: false
+  chrono_dem: false
+  mutually_exclusive: [bev_inference, chrono_dem]
+
+validation_status: nominal

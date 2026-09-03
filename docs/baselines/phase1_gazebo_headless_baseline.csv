@@ -1,0 +1,10 @@
+metric,value
+mode,headless
+physics_step_hz,500
+rtf_samples,117
+rtf_average,0.985740
+rtf_minimum,0.005914
+rtf_maximum,1.155598
+gpu_memory_peak_mib,645
+gpu_utilization_peak_pct,22
+camera_frequency_hz,10.0976
