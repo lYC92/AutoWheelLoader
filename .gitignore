@@ -9,9 +9,12 @@ cache/
 *.db3
 *.mcap
 
+# Python caches
+__pycache__/
+*.py[cod]
+
 # Editors and operating systems
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
-

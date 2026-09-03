@@ -23,4 +23,4 @@ gpu_policy:
   chrono_dem: true
   exclusive_gpu_access_required: true
 
-validation_status: not_installed
+validation_status: runtime_smoke_validated

@@ -89,4 +89,14 @@ wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ proj
 `/home/lyc/loader_sim_runtime`，详细记录见
 [docs/chrono_dem.md](docs/chrono_dem.md)。
 
+生成并验证 nominal 举升/翻斗降阶运动学查表：
+
+```powershell
+wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ project/scripts/wsl/validate_linkage_kinematics.sh
+```
+
+查表文件写入 WSL 的
+`/home/lyc/loader_sim_runtime/results/linkage/nominal_linkage_table.csv`。模型定义和厂家数据
+替换要求见 [docs/linkage_kinematics.md](docs/linkage_kinematics.md)。
+
 部署状态见 [docs/deployment_status.md](docs/deployment_status.md)。

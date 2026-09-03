@@ -1,0 +1,54 @@
+schema_version: 1
+model_fidelity: nominal
+validation_status: not_validated
+description: >-
+  Analytic two-coordinate loader linkage used only for software integration
+  until CAD pivot points and measured cylinder end stops are supplied.
+
+coordinate_convention:
+  reference_frame: front_frame
+  plane: x_z
+  x_direction: forward
+  z_direction: up
+  joint_axis_xyz: [0.0, -1.0, 0.0]
+  positive_lift: bucket_joint_moves_up
+  positive_tilt: bucket_curls_back
+
+joint_limits_rad:
+  lift: [-0.2, 1.1]
+  tilt: [-1.2, 0.8]
+
+geometry_m:
+  lift_pivot_front_frame_xz: [0.75, 0.65]
+  bucket_pivot_from_lift_pivot_xz: [2.8, 0.0]
+  bucket_tip_from_bucket_pivot_xz: [1.05, -0.45]
+  lift_cylinder:
+    base_front_frame_xz: [1.2, 0.0]
+    rod_mount_lift_arm_xz: [1.1, -0.15]
+    cylinder_count: 2
+  tilt_cylinder:
+    base_lift_arm_xz: [2.0, 0.25]
+    rod_mount_bucket_xz: [0.25, 0.5]
+    cylinder_count: 1
+
+table_sampling_rad:
+  lift_step: 0.05
+  tilt_step: 0.05
+
+self_consistency_checks:
+  finite_difference_step_rad: 0.00001
+  jacobian_tolerance: 0.00002
+  minimum_absolute_moment_arm_m: 0.05
+  zero_pose_reference:
+    bucket_joint_xz_m: [3.55, 0.65]
+    bucket_tip_xz_m: [4.6, 0.2]
+    lift_cylinder_length_m: 0.8200609733
+    tilt_cylinder_length_m: 1.0793516572
+
+required_before_validated:
+  - replace_all_nominal_pivot_points_from_cad
+  - compare_forward_kinematics_to_cad_across_full_workspace
+  - compare_cylinder_lengths_to_measured_end_stops
+  - identify_joint_clearance_and_compliance
+  - review_singularities_and_mechanical_interference
+

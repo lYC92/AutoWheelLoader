@@ -1,6 +1,7 @@
 schema_version: 1
 model_fidelity: nominal
 validation_status: not_validated
+nominal_linkage_reference: nominal_linkage.yaml
 
 # Null values are deliberate: they are required inputs, not estimates to hide.
 vehicle_identity:
