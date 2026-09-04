@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>loader_control</name>
+  <version>0.1.0</version>
+  <description>ros2_control command and safety controller for the loader simulation.</description>
+  <maintainer email="loader-sim@example.invalid">Loader Simulation Team</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>controller_interface</depend>
+  <depend>hardware_interface</depend>
+  <depend>loader_sim_msgs</depend>
+  <depend>pluginlib</depend>
+  <depend>rclcpp</depend>
+  <depend>rclcpp_lifecycle</depend>
+  <depend>realtime_tools</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

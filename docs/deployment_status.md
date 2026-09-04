@@ -36,6 +36,20 @@
 - `loader_sim_msgs` 已生成 C/C++/Python/Rust 接口并通过接口与 Python 导入验证。
 - `loader_description` 已构建，Xacro/URDF 零警告解析，8 个关键关节齐全；模型已在 Gazebo
   中完成生成、6 秒落地稳定和有限位姿/关节状态检查。
+- `loader_dynamics` 已完成构建并安装；WSL 构建脚本已隔离 Windows Anaconda 路径，避免
+  Windows Protobuf 头文件污染 ROS/Gazebo C++ 构建。
+- 500 Hz Gazebo 力级闭环冒烟测试已通过：收到 212 帧状态，铰接/举升/翻斗均由力或扭矩
+  产生运动，举升/翻斗压力峰值为 16.25/12.50 MPa；命令饱和、显式急停和 0.5 s 看门狗
+  超时均已验证。
+- 3D GPU 雷达和 IMU 已挂接到独立 `lidar_link`/`imu_link`，通过 `ros_gz_bridge` 输出标准
+  `PointCloud2`、`Imu` 和仿真 `/clock`；点云尺寸 1024×32，坐标系、有限值和时间单调性
+  已自动验证。
+- 完整 `control_realtime` 名义组合已通过门槛：500 Hz 物理、车辆动力学、10 Hz 32 线雷达
+  和 100 Hz IMU同时运行时，正式 `ros2_control` 链路的平均 RTF 0.990584、雷达
+  9.98277 Hz、显存峰值 723 MiB。
+- `loader_command_controller` 和 `joint_state_broadcaster` 已由 `controller_manager` 激活；
+  `/loader/command` 经 `GazeboSimSystem` 的 effort 接口驱动车辆，`/joint_states` 和
+  `/loader/state` 均已端到端验证。
 
 ## 当前阶段
 
@@ -54,12 +68,19 @@
 - [x] 安装 CUDA Toolkit 13.2 并运行 RTX 2070 CUDA 内核验证
 - [x] 构建并验证 Project Chrono DEM
 - [x] 建立 nominal 举升/翻斗降阶运动学表和解析自洽测试
+- [x] 建立 nominal 轮端/铰接/液压动力学插件并通过 ROS 2 闭环冒烟测试
+- [x] 接入 3D GPU 雷达、IMU、ROS 2 桥和 `/clock` 并通过坐标系/频率测试
+- [x] 完整 nominal `control_realtime` 配置通过 RTF 0.9 性能门槛
 - [ ] 用厂家 CAD/实测铰点替换 nominal 参数并完成全工作区对照
+- [x] 接入 `loader_command_controller`/`ros2_control` 正式控制链
+- [ ] 将旧直连动力学插件降为仅限显式 A-B 测试的内部开发入口
 
 第 1 阶段 ROS/Gazebo 基础链路已完成，第 2 阶段的消息契约、运行配置和装载机模型骨架
 已经落地，Project Chrono DEM 的构建、官方场景和外部链接链路也已通过。nominal 举升/
-翻斗降阶运动学表已生成并通过解析自洽测试；厂家 CAD 对照仍等待实车几何输入。下一项是
-开始铰接转向、工作装置动力学和土料耦合接口。
+翻斗降阶运动学表已生成并通过解析自洽测试；轮端、铰接和液压名义动力学也已经由力级闭环
+跑通。3D 雷达、IMU 和仿真时钟也已进入 ROS 2，并通过完整控制配置性能测试。厂家 CAD
+对照仍等待实车几何输入。正式 `ros2_control` 力级控制链也已贯通。下一项是轮胎/液压细化
+和“单铲斗 + 二维土堆切片”耦合原型；传感器侧继续补运动畸变和标定扰动。
 当前性能结论只适用于最小场景；完整车辆与传感器接入后必须复测。
 
 ## 已知风险
@@ -67,6 +88,7 @@
 - Windows 10 22H2 已结束常规支持；接入办公网、互联网或实车HIL前，需要升级、ESU或隔离网络。
 - RTX 2070 只有8GB显存，Gazebo多相机、BEV和Chrono DEM必须分时运行。
 - WSL目前只分到约7.7GB内存，首次构建大型C++依赖时需要监测OOM和swap抖动。
+- 当前动力学参数均为 `nominal`，闭环冒烟结果不能解释为实车精度或性能指标。
 - Chrono 官方文档提示 WSL 的统一内存和锁页内存能力有限；当前 400 颗粒测试已通过，但在
   宣称大规模 DEM 可用前，仍需按目标粒子数做显存、锁页内存和长时间稳定性测试。
 - Vulkan 当前只枚举到 `llvmpipe`。Gazebo Harmonic 的 OGRE2 已通过硬件 OpenGL 验证，

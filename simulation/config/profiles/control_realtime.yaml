@@ -32,3 +32,13 @@ gpu_policy:
   mutually_exclusive: [bev_inference, chrono_dem]
 
 validation_status: nominal
+
+runtime_validation:
+  date: 2026-09-04
+  result: passed
+  physics_step_hz: 500
+  control_path: ros2_control
+  average_realtime_factor: 0.990584
+  lidar_average_rate_hz: 9.98277
+  gpu_memory_peak_mib: 723
+  evidence: /home/lyc/loader_sim_runtime/results/loader_control_profile_baseline.csv

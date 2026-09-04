@@ -1,0 +1,14 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 500
+    use_sim_time: true
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    loader_command_controller:
+      type: loader_control/LoaderCommandController
+
+loader_command_controller:
+  ros__parameters:
+    use_sim_time: true

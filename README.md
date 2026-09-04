@@ -1,6 +1,7 @@
 # Loader Simulation Platform
 
-Windows 10 + WSL2 上的无人装载机仿真平台。当前工作集中在第一阶段：部署并验证 Ubuntu 24.04、ROS 2 Jazzy、Gazebo Harmonic 和 WSL GPU 图形链路。
+Windows 10 + WSL2 上的无人装载机仿真平台。基础环境、GPU 图形、CUDA/Chrono DEM、
+名义车辆模型和第一版力级动力学闭环已经部署并通过自动化冒烟测试。
 
 完整路线见 [windows_loader_simulation_plan.md](windows_loader_simulation_plan.md)。
 
@@ -98,5 +99,40 @@ wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ proj
 查表文件写入 WSL 的
 `/home/lyc/loader_sim_runtime/results/linkage/nominal_linkage_table.csv`。模型定义和厂家数据
 替换要求见 [docs/linkage_kinematics.md](docs/linkage_kinematics.md)。
+
+构建并验证 Gazebo 名义动力学插件：
+
+```powershell
+wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ project/scripts/wsl/build_workspace.sh
+wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ project/scripts/wsl/smoke_test_loader_dynamics.sh
+```
+
+当前插件涵盖轮端扭矩/制动、铰接转向、油缸压力、连杆雅可比力映射、状态反馈、命令超时
+和急停；它仍是 `nominal` 开发模型，边界和验证证据见
+[docs/loader_dynamics.md](docs/loader_dynamics.md)。
+
+验证公共 `VehicleCommand` 经 `controller_manager` 和 `GazeboSimSystem` 到 effort 接口的正式
+控制链：
+
+```powershell
+wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ project/scripts/wsl/smoke_test_loader_ros2_control.sh
+```
+
+链路、控制器生命周期和当前边界见 [docs/ros2_control.md](docs/ros2_control.md)。
+
+验证 3D 激光雷达、IMU、ROS 2 桥和仿真时钟：
+
+```powershell
+wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ project/scripts/wsl/smoke_test_loader_sensors.sh
+```
+
+对动力学、32 线雷达和 IMU 的完整实时控制配置做性能验收：
+
+```powershell
+wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ project/scripts/wsl/benchmark_loader_control_profile.sh
+```
+
+当前平均实时系数为 0.990584，雷达为 9.98277 Hz，显存峰值为 723 MiB。接口、坐标系和
+未完成项见 [docs/lidar_imu.md](docs/lidar_imu.md)。
 
 部署状态见 [docs/deployment_status.md](docs/deployment_status.md)。

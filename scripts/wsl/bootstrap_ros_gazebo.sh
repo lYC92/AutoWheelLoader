@@ -65,6 +65,7 @@ apt-get install -y \
   ros-jazzy-ros2-control \
   ros-jazzy-ros2-controllers \
   ros-jazzy-gz-ros2-control \
+  ros-jazzy-gz-ros2-control-demos \
   ros-jazzy-xacro \
   ros-jazzy-joint-state-publisher-gui \
   ros-dev-tools

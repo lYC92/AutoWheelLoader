@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<sdf version="1.10">
+  <world name="loader_sensors">
+    <physics name="loader_500hz" type="dart">
+      <max_step_size>0.002</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"/>
+
+    <gravity>0 0 -9.80665</gravity>
+
+    <light name="sun" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.2 -1</direction>
+    </light>
+
+    <model name="ground">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry><plane><normal>0 0 1</normal><size>120 120</size></plane></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><plane><normal>0 0 1</normal><size>120 120</size></plane></geometry>
+          <material><diffuse>0.35 0.30 0.22 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="lidar_target_front">
+      <static>true</static>
+      <pose>12 0 2 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>1 4 4</size></box></geometry></collision>
+        <visual name="visual">
+          <geometry><box><size>1 4 4</size></box></geometry>
+          <material><diffuse>0.75 0.15 0.10 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="lidar_target_left">
+      <static>true</static>
+      <pose>0 10 1.5 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>4 1 3</size></box></geometry></collision>
+        <visual name="visual">
+          <geometry><box><size>4 1 3</size></box></geometry>
+          <material><diffuse>0.10 0.25 0.80 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+  </world>
+</sdf>

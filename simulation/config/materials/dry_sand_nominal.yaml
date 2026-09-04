@@ -1,0 +1,37 @@
+schema_version: 1
+material: dry_sand
+validation_status: nominal
+
+bulk_density_kg_m3: 1600.0
+internal_friction_angle_deg: 34.0
+cohesion_pa: 0.0
+soil_tool_friction_angle_deg: 20.0
+gravity_m_s2: 9.80665
+
+cutting_model:
+  type: rankine_passive_wedge_2d
+  dynamic_coefficient: 0.15
+  reference_speed_m_s: 1.0
+  rake_angle_deg: 35.0
+
+terrain:
+  domain_min_m: 0.0
+  domain_max_m: 14.0
+  grid_resolution_m: 0.05
+  slice_width_m: 2.7
+  subgrid_step_m: 0.01
+  initial_pile_center_m: 5.0
+  initial_pile_height_m: 1.8
+  angle_of_repose_deg: 34.0
+
+bucket:
+  capacity_m3: 3.0
+
+collision_masks:
+  rigid_ground: 0x01
+  loose_material_proxy: 0x02
+  bucket: 0x01
+
+notes:
+  - Parameters are engineering placeholders and are not calibrated against the target material.
+  - The 2D model is a software and conservation prototype, not a validated earthmoving model.

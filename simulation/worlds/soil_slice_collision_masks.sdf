@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<sdf version="1.10">
+  <world name="soil_slice_collision_masks">
+    <physics name="1ms" type="dart">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <gravity>0 0 -9.80665</gravity>
+
+    <model name="rigid_ground">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry><plane><normal>0 0 1</normal><size>20 20</size></plane></geometry>
+          <surface><contact><collide_bitmask>0x01</collide_bitmask></contact></surface>
+        </collision>
+      </link>
+    </model>
+
+    <model name="loose_material_proxy">
+      <static>true</static>
+      <pose>0 0 1.25 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><box><size>4 4 2.5</size></box></geometry>
+          <surface><contact><collide_bitmask>0x02</collide_bitmask></contact></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>4 4 2.5</size></box></geometry>
+          <material><diffuse>0.65 0.48 0.25 0.5</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="soil_slice_test_bucket">
+      <pose>0 0 4 0 0 0</pose>
+      <link name="bucket">
+        <inertial>
+          <mass>100</mass>
+          <inertia><ixx>4.1667</ixx><iyy>4.1667</iyy><izz>4.1667</izz></inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry><box><size>0.5 0.5 0.5</size></box></geometry>
+          <surface><contact><collide_bitmask>0x01</collide_bitmask></contact></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.5 0.5 0.5</size></box></geometry>
+          <material><diffuse>0.25 0.28 0.32 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+  </world>
+</sdf>

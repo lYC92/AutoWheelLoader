@@ -6,6 +6,9 @@
     linkage measurements before dynamics results may be used quantitatively.
   -->
   <xacro:arg name="model_fidelity" default="nominal"/>
+  <xacro:arg name="enable_dynamics" default="false"/>
+  <xacro:arg name="enable_lidar_imu" default="false"/>
+  <xacro:arg name="enable_ros2_control" default="false"/>
 
   <xacro:property name="nominal_track" value="2.5"/>
   <xacro:property name="nominal_wheel_radius" value="0.75"/>
@@ -146,15 +149,134 @@
     <dynamics damping="25000" friction="4000"/>
   </joint>
 
-  <link name="lidar_link"/>
+  <link name="lidar_link">
+    <inertial>
+      <mass value="2.0"/>
+      <inertia ixx="0.008" ixy="0" ixz="0" iyy="0.008" iyz="0" izz="0.008"/>
+    </inertial>
+  </link>
   <joint name="lidar_mount_joint" type="fixed">
     <parent link="rear_frame"/><child link="lidar_link"/>
     <origin xyz="-0.85 0 2.25" rpy="0 0 0"/>
   </joint>
+  <gazebo reference="lidar_mount_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
 
-  <link name="imu_link"/>
+  <link name="imu_link">
+    <inertial>
+      <mass value="0.2"/>
+      <inertia ixx="0.0002" ixy="0" ixz="0" iyy="0.0002" iyz="0" izz="0.0002"/>
+    </inertial>
+  </link>
   <joint name="imu_mount_joint" type="fixed">
     <parent link="rear_frame"/><child link="imu_link"/>
     <origin xyz="-0.2 0 0.65" rpy="0 0 0"/>
   </joint>
+  <gazebo reference="imu_mount_joint">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+
+  <xacro:if value="$(arg enable_ros2_control)">
+    <ros2_control name="LoaderGazeboSystem" type="system">
+      <hardware>
+        <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+      </hardware>
+
+      <joint name="front_left_wheel_joint">
+        <command_interface name="effort"><param name="min">-20000</param><param name="max">20000</param></command_interface>
+        <state_interface name="position"/><state_interface name="velocity"/>
+      </joint>
+      <joint name="front_right_wheel_joint">
+        <command_interface name="effort"><param name="min">-20000</param><param name="max">20000</param></command_interface>
+        <state_interface name="position"/><state_interface name="velocity"/>
+      </joint>
+      <joint name="rear_left_wheel_joint">
+        <command_interface name="effort"><param name="min">-20000</param><param name="max">20000</param></command_interface>
+        <state_interface name="position"/><state_interface name="velocity"/>
+      </joint>
+      <joint name="rear_right_wheel_joint">
+        <command_interface name="effort"><param name="min">-20000</param><param name="max">20000</param></command_interface>
+        <state_interface name="position"/><state_interface name="velocity"/>
+      </joint>
+      <joint name="articulation_joint">
+        <command_interface name="effort"><param name="min">-250000</param><param name="max">250000</param></command_interface>
+        <state_interface name="position"/><state_interface name="velocity"/>
+      </joint>
+      <joint name="rear_axle_oscillation_joint">
+        <state_interface name="position"/><state_interface name="velocity"/>
+      </joint>
+      <joint name="lift_joint">
+        <command_interface name="effort"><param name="min">-600000</param><param name="max">600000</param></command_interface>
+        <state_interface name="position"/><state_interface name="velocity"/>
+      </joint>
+      <joint name="bucket_tilt_joint">
+        <command_interface name="effort"><param name="min">-500000</param><param name="max">500000</param></command_interface>
+        <state_interface name="position"/><state_interface name="velocity"/>
+      </joint>
+    </ros2_control>
+
+    <gazebo>
+      <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+        <parameters>$(find loader_control)/config/loader_controllers.yaml</parameters>
+      </plugin>
+    </gazebo>
+  </xacro:if>
+
+  <xacro:if value="$(arg enable_lidar_imu)">
+    <gazebo reference="lidar_link">
+      <sensor name="loader_gpu_lidar" type="gpu_lidar">
+        <always_on>true</always_on>
+        <update_rate>10</update_rate>
+        <visualize>false</visualize>
+        <topic>/loader/sensors/lidar/scan</topic>
+        <lidar>
+          <scan>
+            <horizontal>
+              <samples>1024</samples>
+              <resolution>1</resolution>
+              <min_angle>${-pi}</min_angle>
+              <max_angle>${pi}</max_angle>
+            </horizontal>
+            <vertical>
+              <samples>32</samples>
+              <resolution>1</resolution>
+              <min_angle>-0.436332</min_angle>
+              <max_angle>0.261799</max_angle>
+            </vertical>
+          </scan>
+          <range>
+            <min>0.5</min>
+            <max>120.0</max>
+            <resolution>0.02</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.02</stddev>
+          </noise>
+        </lidar>
+      </sensor>
+    </gazebo>
+
+    <gazebo reference="imu_link">
+      <sensor name="loader_imu" type="imu">
+        <always_on>true</always_on>
+        <update_rate>100</update_rate>
+        <visualize>false</visualize>
+        <topic>/loader/sensors/imu</topic>
+      </sensor>
+    </gazebo>
+  </xacro:if>
+
+  <xacro:if value="$(arg enable_dynamics)">
+    <gazebo>
+      <plugin filename="libloader_dynamics_system.so" name="loader_sim::LoaderDynamicsSystem">
+        <command_topic>/loader/command</command_topic>
+        <state_topic>/loader/state</state_topic>
+        <command_timeout_s>0.5</command_timeout_s>
+        <state_rate_hz>50</state_rate_hz>
+      </plugin>
+    </gazebo>
+  </xacro:if>
 </robot>
