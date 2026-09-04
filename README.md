@@ -5,6 +5,38 @@ Windows 10 + WSL2 上的无人装载机仿真平台。基础环境、GPU 图形�
 
 完整路线见 [windows_loader_simulation_plan.md](windows_loader_simulation_plan.md)。
 
+## 一键运行可视化演示
+
+在普通 PowerShell 中进入项目目录，运行：
+
+```powershell
+cd "C:\Users\Liyangchuan\Documents\ChatGPT\New project"
+powershell -ExecutionPolicy Bypass -File .\scripts\windows\run_loader_soil_demo.ps1
+```
+
+启动器会打开 Gazebo，生成 `soil_loader`，等待 10 秒后自动执行“低速铲取 → 举升 →
+倒车转运 → 制动 → 翻斗卸料”。动作结束后 Gazebo 保持打开，直到关闭窗口或在 PowerShell
+中按 `Ctrl+C`。如果默认镜头没有对准车辆，在左侧 Entity tree 选择 `soil_loader` 后按 `F`。
+可视演示按仿真时间控制每个动作阶段，首次着色器编译导致实时系数降低时不会提前结束。
+仿真服务器继续使用 NVIDIA D3D12；交互界面单独使用 llvmpipe 软件 OpenGL，以规避当前
+Windows 10 / WSLg 中 Qt 与服务器共享 D3D12 上下文时的窗口崩溃。
+
+带固定观察激光雷达的感知演示使用：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\windows\run_loader_soil_demo.ps1 -Mode perception
+```
+
+如果 Gazebo 进程一直存在、任务栏出现 `[WARN:COPY MODE]`，但桌面没有窗口，运行一次：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\windows\repair_wslg_gui.ps1
+```
+
+该命令会挂载 WSLg 所需的 `/mnt/shared_memory`、执行 `wsl --shutdown`，并立即启动整车演示，
+因此会停止其他正在运行的 WSL 进程。当前 WSL 2.7.12 的上游缺陷可能在 WSLg 完全退出后
+再次出现；遇到同一提示时重新运行该命令，等待包含 DeviceHost 1.2.62 的 WSL 正式版更新。
+
 ## 当前部署方式
 
 所有 ROS 2、Gazebo 和后续算法进程均运行在 `Ubuntu-24.04` WSL2 中。Windows 只承载开发工具、资产工具和未来的 CAN 网关。

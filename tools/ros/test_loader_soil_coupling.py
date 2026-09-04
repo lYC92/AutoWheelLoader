@@ -13,12 +13,19 @@ import time
 import rclpy
 from loader_sim_msgs.msg import BucketInteraction, TerrainState, VehicleCommand, VehicleState
 from rclpy.node import Node
+from rclpy.parameter import Parameter
 from sensor_msgs.msg import PointCloud2
 
 
 class SoilCouplingHarness(Node):
-    def __init__(self, observer_topic: str | None) -> None:
-        super().__init__("loader_soil_coupling_smoke_test")
+    def __init__(self, observer_topic: str | None, use_sim_time_for_phases: bool) -> None:
+        super().__init__(
+            "loader_soil_coupling_smoke_test",
+            parameter_overrides=[
+                Parameter("use_sim_time", value=use_sim_time_for_phases),
+            ],
+        )
+        self.use_sim_time_for_phases = use_sim_time_for_phases
         self.command_publisher = self.create_publisher(VehicleCommand, "/loader/command", 10)
         self.interactions: list[BucketInteraction] = []
         self.terrain_states: list[TerrainState] = []
@@ -34,6 +41,11 @@ class SoilCouplingHarness(Node):
         self.create_subscription(VehicleState, "/loader/state", self.vehicle_states.append, 50)
         if observer_topic is not None:
             self.create_subscription(PointCloud2, observer_topic, self.observer_clouds.append, 10)
+
+    def phase_time_s(self) -> float:
+        if self.use_sim_time_for_phases:
+            return self.get_clock().now().nanoseconds * 1.0e-9
+        return time.monotonic()
 
     def publish_command(
         self,
@@ -98,8 +110,13 @@ def run_phase(
     tilt_valve: float = 0.0,
     emergency_stop: bool = False,
 ) -> None:
-    deadline = time.monotonic() + duration_s
-    while time.monotonic() < deadline:
+    deadline = node.phase_time_s() + duration_s
+    wall_deadline = time.monotonic() + max(60.0, 20.0 * duration_s)
+    while node.phase_time_s() < deadline:
+        if time.monotonic() >= wall_deadline:
+            raise RuntimeError(
+                f"simulation clock did not advance through a {duration_s:.1f}s phase"
+            )
         node.publish_command(
             gear=gear,
             traction_torque_nm=torque,
@@ -115,9 +132,14 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--proxy-expectation", type=Path)
     parser.add_argument("--observer-topic")
+    parser.add_argument(
+        "--use-sim-time-for-phases",
+        action="store_true",
+        help="measure command phases in simulation time for an interactive GUI run",
+    )
     args = parser.parse_args()
     rclpy.init()
-    node = SoilCouplingHarness(args.observer_topic)
+    node = SoilCouplingHarness(args.observer_topic, args.use_sim_time_for_phases)
     try:
         deadline = time.monotonic() + 8.0
         while time.monotonic() < deadline:
