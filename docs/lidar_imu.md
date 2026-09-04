@@ -41,6 +41,21 @@ wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ proj
 0.990584、雷达 9.98277 Hz、显存峰值 723 MiB，通过 `RTF >= 0.9` 门槛。结果位于
 `/home/lyc/loader_sim_runtime/results/loader_control_profile_baseline.csv`。
 
+动态土料射线验收：
+
+```powershell
+wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ project/scripts/wsl/smoke_test_loader_soil_perception.sh
+```
+
+固定 512×32 GPU 观察雷达会在完整铲取、转运和卸料前后比较有组织点云，并用雷达外参把
+变化射线约束到变化最大料柱附近。当前结果为 2,948 条全局变化射线、其中 265 条位于目标
+地形列附近，证明 10 Hz 动态料柱已经进入 Gazebo 的渲染/射线场景。这个测试验证的是地形
+可观测性，不替代车载雷达的定位精度测试。
+
+当前动态土料联合性能测试由 `benchmark_loader_soil_profile.sh` 执行：500 Hz 车辆、正式
+控制链、280 格动态土料、车载 1024×32 雷达和 IMU 同时运行时，平均 RTF 0.978491、雷达
+9.93322 Hz、显存峰值 663 MiB，已通过实时门槛。加入鱼眼相机和 BEV 推理后仍需重新测量。
+
 ## 尚未完成
 
 - IMU 零偏、随机游走、温漂和轴不正交模型；

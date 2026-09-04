@@ -135,4 +135,50 @@ wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ proj
 当前平均实时系数为 0.990584，雷达为 9.98277 Hz，显存峰值为 723 MiB。接口、坐标系和
 未完成项见 [docs/lidar_imu.md](docs/lidar_imu.md)。
 
+验证二维干砂切削、体积守恒、作用/反作用与 Gazebo 碰撞掩码：
+
+```powershell
+wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ project/scripts/wsl/smoke_test_soil_slice.sh
+```
+
+验证整车、正式 `ros2_control` 与二维名义土料模型的闭环耦合：
+
+```powershell
+wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ project/scripts/wsl/smoke_test_loader_soil_coupling.sh
+```
+
+当前整车验收已覆盖“低速铲取 → 举升 → 倒车转运 → 制动 → 翻斗卸料”：最大侵入
+0.672 m、峰值名义阻力 33.83 kN、铲取阶段装入 0.559095 m³（894.55 kg），完整过程
+体积守恒误差为 0。载荷质量已反馈到统一 `VehicleState`，280 个 5 cm 料柱以 10 Hz
+同步高度场；抽检料柱与 `TerrainState` 的高度误差为 0。公式、实测证据和现阶段限制见
+[docs/soil_slice.md](docs/soil_slice.md)。
+
+验证 GPU 激光雷达能观察到同一轮挖除/卸料后的动态几何：
+
+```powershell
+wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ project/scripts/wsl/smoke_test_loader_soil_perception.sh
+```
+
+当前固定观察雷达在变化最大料柱附近检测到 265 条变化射线，排除了只看内部高度数组而未
+更新渲染场景的情况。
+
+对 500 Hz 车辆、正式控制链、动态土料、车载 32 线雷达和 IMU 做联合性能验收：
+
+```powershell
+wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ project/scripts/wsl/benchmark_loader_soil_profile.sh
+```
+
+当前完整动态工况平均实时系数为 0.978491，车载雷达为 9.93322 Hz，显存峰值 663 MiB，
+通过 `RTF >= 0.9` 和雷达 `>= 9 Hz` 门槛。
+
+验证三维干砂高度场的横向挖痕、体积守恒、六维方向记账和休止角卸料：
+
+```powershell
+wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ project/scripts/wsl/smoke_test_soil_heightfield_3d.sh
+```
+
+当前 150×100 网格原型完成 3.0 m³ 铲取和异地卸料，体积误差为
+`-2.132e-14 m³`，并输出连续三角网格 OBJ。详细边界见
+[docs/soil_heightfield_3d.md](docs/soil_heightfield_3d.md)。
+
 部署状态见 [docs/deployment_status.md](docs/deployment_status.md)。

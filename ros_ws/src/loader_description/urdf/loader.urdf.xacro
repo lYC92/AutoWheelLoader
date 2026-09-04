@@ -9,6 +9,7 @@
   <xacro:arg name="enable_dynamics" default="false"/>
   <xacro:arg name="enable_lidar_imu" default="false"/>
   <xacro:arg name="enable_ros2_control" default="false"/>
+  <xacro:arg name="enable_soil_slice" default="false"/>
 
   <xacro:property name="nominal_track" value="2.5"/>
   <xacro:property name="nominal_wheel_radius" value="0.75"/>
@@ -276,6 +277,33 @@
         <state_topic>/loader/state</state_topic>
         <command_timeout_s>0.5</command_timeout_s>
         <state_rate_hz>50</state_rate_hz>
+      </plugin>
+    </gazebo>
+  </xacro:if>
+
+  <xacro:if value="$(arg enable_soil_slice)">
+    <gazebo reference="bucket">
+      <collision name="bucket_collision">
+        <surface>
+          <contact><collide_bitmask>0x01</collide_bitmask></contact>
+        </surface>
+      </collision>
+    </gazebo>
+    <gazebo>
+      <plugin filename="libloader_soil_slice_system.so" name="loader_soil::LoaderSoilSliceSystem">
+        <domain_min_m>0.0</domain_min_m>
+        <domain_max_m>14.0</domain_max_m>
+        <cell_size_m>0.05</cell_size_m>
+        <slice_width_m>2.7</slice_width_m>
+        <pile_center_m>7.0</pile_center_m>
+        <pile_height_m>1.8</pile_height_m>
+        <angle_of_repose_deg>34.0</angle_of_repose_deg>
+        <bucket_capacity_m3>3.0</bucket_capacity_m3>
+        <bulk_density_kg_m3>1600.0</bulk_density_kg_m3>
+        <visualization_update_hz>10.0</visualization_update_hz>
+        <visualization_column_height_m>1.8</visualization_column_height_m>
+        <unload_tilt_threshold_rad>-0.35</unload_tilt_threshold_rad>
+        <maximum_unload_rate_m3ps>3.0</maximum_unload_rate_m3ps>
       </plugin>
     </gazebo>
   </xacro:if>

@@ -16,6 +16,7 @@
 - 举升/翻斗名义油压动态和连杆雅可比力映射；
 - 0.5 s 命令看门狗与急停；
 - `/loader/state` 50 Hz 状态和标准 `/joint_states`；
+- 订阅 `/loader/bucket_interaction`，把斗内载荷质量和名义质心写入统一 `VehicleState`；
 - 控制器和 `robot_state_publisher` 统一使用 Gazebo `/clock`。
 
 Xacro 参数 `enable_ros2_control:=true` 启用这条链路。不得同时启用旧的

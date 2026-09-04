@@ -1,0 +1,35 @@
+status: nominal
+material_type: dry_sand_3d_nominal
+bulk_density_kg_m3: 1600.0
+internal_friction_angle_deg: 34.0
+cohesion_pa: 0.0
+soil_tool_friction_angle_deg: 20.0
+gravity_m_s2: 9.80665
+cutting_model:
+  rake_angle_deg: 35.0
+  dynamic_coefficient: 0.15
+  reference_speed_m_s: 1.0
+terrain:
+  domain_min_x_m: 0.0
+  domain_max_x_m: 15.0
+  domain_min_y_m: -5.0
+  domain_max_y_m: 5.0
+  grid_resolution_m: 0.10
+  subgrid_step_m: 0.01
+  initial_pile_center_x_m: 7.0
+  initial_pile_center_y_m: 0.0
+  initial_pile_height_m: 2.2
+  angle_of_repose_deg: 34.0
+bucket:
+  width_m: 2.7
+  capacity_m3: 3.0
+smoke_trajectory:
+  start_x_m: 2.5
+  start_y_m: 0.0
+  start_z_m: 0.35
+  end_x_m: 7.0
+  end_y_m: 0.0
+  end_z_m: 0.35
+  duration_s: 5.0
+  dump_x_m: 12.0
+  dump_y_m: 2.0

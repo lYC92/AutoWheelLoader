@@ -18,6 +18,7 @@
 
 #include <loader_sim_msgs/msg/vehicle_command.hpp>
 #include <loader_sim_msgs/msg/vehicle_state.hpp>
+#include <loader_sim_msgs/msg/bucket_interaction.hpp>
 
 namespace loader_control
 {
@@ -189,6 +190,16 @@ public:
 
     statePublisher_ = node->create_publisher<loader_sim_msgs::msg::VehicleState>(
         "/loader/state", rclcpp::QoS(10).reliable());
+    payloadSubscription_ = node->create_subscription<loader_sim_msgs::msg::BucketInteraction>(
+        "/loader/bucket_interaction", rclcpp::QoS(10).reliable(),
+        [this](const loader_sim_msgs::msg::BucketInteraction::SharedPtr message)
+        {
+          if (std::isfinite(message->bucket_material_mass_kg) &&
+              message->bucket_material_mass_kg >= 0.0)
+          {
+            payloadMassKg_.store(message->bucket_material_mass_kg, std::memory_order_relaxed);
+          }
+        });
     return controller_interface::CallbackReturn::SUCCESS;
   }
 
@@ -345,7 +356,10 @@ public:
           TiltCylinderKinematics(positions[kTilt]).first - tiltRetractedLengthM;
       state.lift_cylinder_pressure_pa = liftPressurePa_;
       state.tilt_cylinder_pressure_pa = tiltPressurePa_;
-      state.bucket_payload_mass_kg = 0.0;
+      state.bucket_payload_mass_kg = payloadMassKg_.load(std::memory_order_relaxed);
+      state.bucket_payload_center_of_mass_m.x = state.bucket_payload_mass_kg > 0.0 ? 0.35 : 0.0;
+      state.bucket_payload_center_of_mass_m.y = 0.0;
+      state.bucket_payload_center_of_mass_m.z = state.bucket_payload_mass_kg > 0.0 ? -0.05 : 0.0;
       state.fault_flags = activeFaultFlags;
       state.emergency_stop_active = emergencyStop;
       statePublisher_->publish(state);
@@ -363,7 +377,9 @@ private:
   bool receivedCommand_{false};
 
   rclcpp::Subscription<loader_sim_msgs::msg::VehicleCommand>::SharedPtr commandSubscription_;
+  rclcpp::Subscription<loader_sim_msgs::msg::BucketInteraction>::SharedPtr payloadSubscription_;
   rclcpp_lifecycle::LifecyclePublisher<loader_sim_msgs::msg::VehicleState>::SharedPtr statePublisher_;
+  std::atomic<double> payloadMassKg_{0.0};
 
   std::array<double, 8> efforts_{};
   rclcpp::Time lastCommandTime_{0, 0, RCL_ROS_TIME};

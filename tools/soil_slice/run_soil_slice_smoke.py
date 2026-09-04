@@ -53,6 +53,7 @@ def main() -> int:
         slope_angle_rad=math.radians(terrain["angle_of_repose_deg"]),
     )
     initial_volume = model.terrain_volume_m3
+    initial_heights = list(model.heights_m)
     interactions = model.excavate_segment(
         time_s=0.0,
         start_x_m=1.0,
@@ -82,6 +83,7 @@ def main() -> int:
     require(action_reaction_residual <= 1.0e-9, "action/reaction ledger does not close")
     excavation_balance = abs(model.mass_balance_error_m3)
     require(excavation_balance <= max(initial_volume * 1.0e-9, 1.0e-12), "excavation lost material")
+    excavated_heights = list(model.heights_m)
 
     payload_before_unload = model.payload_volume_m3
     model.unload_all(center_m=11.0)
@@ -106,6 +108,22 @@ def main() -> int:
         for interaction in interactions:
             writer.writerow(interaction.__dict__)
 
+    terrain_output = args.output.parent / "terrain_profile.csv"
+    with terrain_output.open("w", encoding="utf-8", newline="") as stream:
+        writer = csv.writer(stream)
+        writer.writerow(
+            ["x_m", "initial_height_m", "after_excavation_height_m", "after_unload_height_m"]
+        )
+        for index, final_height in enumerate(model.heights_m):
+            writer.writerow(
+                [
+                    model.cell_center_m(index),
+                    initial_heights[index],
+                    excavated_heights[index],
+                    final_height,
+                ]
+            )
+
     peak_force = max(
         math.hypot(item.bucket_force_x_n, item.bucket_force_z_n) for item in interactions
     )
@@ -120,6 +138,7 @@ def main() -> int:
         f"max_substep={model.max_observed_substep_m:.4f}m"
     )
     print(f"Trace: {args.output}")
+    print(f"Terrain profile: {terrain_output}")
     return 0
 
 

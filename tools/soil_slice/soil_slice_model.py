@@ -203,8 +203,8 @@ class SoilSlice:
                 for index, height in enumerate(original)
             ) * self.cell_size_m
 
-        lower = max(original)
-        upper = lower + 1.0
+        lower = 0.0
+        upper = max(original) + 1.0
         while added_area(upper) < target_area:
             upper *= 2.0
         for _ in range(80):
@@ -218,12 +218,11 @@ class SoilSlice:
             repose_surface = apex - slope * abs(self.cell_center_m(index) - center_m)
             self.heights_m[index] = max(height, repose_surface)
 
-        deposited = self.terrain_volume_m3 + volume - self.total_material_volume_m3
         # The bisection residual is near machine precision.  Move the exact
         # payload volume into terrain accounting and retain the geometric result.
         self.payload_volume_m3 = 0.0
         self.unloaded_volume_m3 += volume
-        return volume + deposited * 0.0
+        return volume
 
     def maximum_slope(self, *, minimum_x_m: float = -math.inf) -> float:
         maximum = 0.0

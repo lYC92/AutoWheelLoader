@@ -7,6 +7,7 @@ runtime_root="${HOME}/loader_sim_runtime"
 result_dir="${runtime_root}/results/soil_slice"
 server_log="${runtime_root}/log/soil_slice_collision_masks.log"
 pose_log="${result_dir}/collision_mask_bucket_pose.txt"
+summary_log="${result_dir}/soil_slice_smoke.txt"
 
 set +u
 source /opt/ros/jazzy/setup.bash
@@ -15,7 +16,7 @@ set -u
 mkdir -p "${result_dir}" "${runtime_root}/log"
 python3 "${project_root}/tools/soil_slice/run_soil_slice_smoke.py" \
   --config "${project_root}/simulation/config/materials/dry_sand_nominal.yaml" \
-  --output "${result_dir}/interaction_trace.csv"
+  --output "${result_dir}/interaction_trace.csv" | tee "${summary_log}"
 
 server_pid=''
 cleanup() {
