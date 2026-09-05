@@ -182,6 +182,13 @@ wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ proj
 wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ project/scripts/wsl/smoke_test_loader_sensors.sh
 ```
 
+验证名义传感器效应通道（随机丢点、旋转扫描运动畸变）、IMU 噪声模型和传感器安装
+标定扰动：
+
+```powershell
+wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ project/scripts/wsl/smoke_test_sensor_effects.sh
+```
+
 对动力学、32 线雷达和 IMU 的完整实时控制配置做性能验收：
 
 ```powershell

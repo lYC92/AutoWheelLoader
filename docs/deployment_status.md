@@ -75,6 +75,13 @@
   路径与在线消息类型逐一核对通过；手动控制网关完成 Teleop → `/loader/command` 闭环、
   0.35 s 超时回中制动和急停锁存/释放自动化验证
   （`smoke_test_foxglove_bridge.sh`，证据见 `results/foxglove_bridge_smoke.txt`）。
+- 第四阶段 M1 已落地：IMU 切换为 Gazebo 内建名义 MEMS 噪声模型（陀螺 σ=0.0017 rad/s、
+  加速度计 σ=0.017 m/s²，含零偏项，xacro 参数可调可关）；新增 `loader_sensor_effects`
+  效应通道，发布 `/loader/sensors/lidar/scan/points_effect`（随机丢点写 NaN 保持有组织
+  布局、按 IMU 角速度做旋转扫描畸变、固定种子可复现）；雷达/IMU 安装位姿支持 xacro
+  标定扰动参数。冒烟测试实测丢点率 0.101（目标 0.10）、静止畸变 ≤0.0141 m、IMU 噪声
+  标准差与配置一致；原传感器桥接冒烟回归通过
+  （`smoke_test_sensor_effects.sh`，证据见 `results/sensor_effects_smoke.txt`）。
 
 ## 当前阶段
 
@@ -107,6 +114,8 @@
 - [x] 建立三维干砂高度场独立原型并通过横向扫掠、守恒、反力和休止角门槛
 - [x] 将旧直连动力学插件降为仅限显式 A-B 测试的内部开发入口
 - [x] 接入 Foxglove 可观测工作台（四页预制布局、手动控制网关）并通过监控链路冒烟测试
+- [x] 第四阶段 M1：IMU 名义噪声模型、雷达效应通道（丢点/旋转畸变）与传感器安装标定扰动，冒烟测试通过
+- [ ] 第四阶段 M2：激光定位算法接入与定位误差自动评测（开源 LIO 选型 spike 进行中）
 
 第 1 阶段 ROS/Gazebo 基础链路已完成，第 2 阶段的消息契约、运行配置和装载机模型骨架
 已经落地，Project Chrono DEM 的构建、官方场景和外部链接链路也已通过。nominal 举升/

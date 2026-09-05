@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>loader_sensor_effects</name>
+  <version>0.1.0</version>
+  <description>Nominal sensor effect channel (dropout, scan motion distortion) for the loader simulation. Consumes ideal Gazebo sensor output and publishes the perturbed stream that algorithms must use.</description>
+  <maintainer email="loader-sim@example.invalid">Loader Simulation Team</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake_python</buildtool_depend>
+
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>python3-numpy</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

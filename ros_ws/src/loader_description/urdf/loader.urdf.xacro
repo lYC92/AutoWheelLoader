@@ -11,6 +11,22 @@
   <xacro:arg name="enable_ros2_control" default="false"/>
   <xacro:arg name="enable_soil_slice" default="false"/>
 
+  <!-- Nominal mid-grade MEMS IMU errors; replace with the target unit's datasheet. -->
+  <xacro:arg name="imu_gyro_noise_stddev" default="0.0017"/>
+  <xacro:arg name="imu_gyro_bias_stddev" default="0.00017"/>
+  <xacro:arg name="imu_accel_noise_stddev" default="0.017"/>
+  <xacro:arg name="imu_accel_bias_stddev" default="0.0017"/>
+  <!-- Calibration perturbations added to the nominal sensor mounts. -->
+  <xacro:arg name="lidar_mount_offset_xyz" default="0 0 0"/>
+  <xacro:arg name="lidar_mount_offset_rpy" default="0 0 0"/>
+  <xacro:arg name="imu_mount_offset_xyz" default="0 0 0"/>
+  <xacro:arg name="imu_mount_offset_rpy" default="0 0 0"/>
+
+  <xacro:property name="lidar_off_xyz" value="${[float(v) for v in '$(arg lidar_mount_offset_xyz)'.split()]}"/>
+  <xacro:property name="lidar_off_rpy" value="${[float(v) for v in '$(arg lidar_mount_offset_rpy)'.split()]}"/>
+  <xacro:property name="imu_off_xyz" value="${[float(v) for v in '$(arg imu_mount_offset_xyz)'.split()]}"/>
+  <xacro:property name="imu_off_rpy" value="${[float(v) for v in '$(arg imu_mount_offset_rpy)'.split()]}"/>
+
   <xacro:property name="nominal_track" value="2.5"/>
   <xacro:property name="nominal_wheel_radius" value="0.75"/>
   <xacro:property name="nominal_wheel_width" value="0.55"/>
@@ -158,7 +174,8 @@
   </link>
   <joint name="lidar_mount_joint" type="fixed">
     <parent link="rear_frame"/><child link="lidar_link"/>
-    <origin xyz="-0.85 0 2.25" rpy="0 0 0"/>
+    <origin xyz="${-0.85 + lidar_off_xyz[0]} ${lidar_off_xyz[1]} ${2.25 + lidar_off_xyz[2]}"
+      rpy="${lidar_off_rpy[0]} ${lidar_off_rpy[1]} ${lidar_off_rpy[2]}"/>
   </joint>
   <gazebo reference="lidar_mount_joint">
     <preserveFixedJoint>true</preserveFixedJoint>
@@ -172,7 +189,8 @@
   </link>
   <joint name="imu_mount_joint" type="fixed">
     <parent link="rear_frame"/><child link="imu_link"/>
-    <origin xyz="-0.2 0 0.65" rpy="0 0 0"/>
+    <origin xyz="${-0.2 + imu_off_xyz[0]} ${imu_off_xyz[1]} ${0.65 + imu_off_xyz[2]}"
+      rpy="${imu_off_rpy[0]} ${imu_off_rpy[1]} ${imu_off_rpy[2]}"/>
   </joint>
   <gazebo reference="imu_mount_joint">
     <preserveFixedJoint>true</preserveFixedJoint>
@@ -266,6 +284,18 @@
         <update_rate>100</update_rate>
         <visualize>false</visualize>
         <topic>/loader/sensors/imu</topic>
+        <imu>
+          <angular_velocity>
+            <x><noise type="gaussian"><mean>0</mean><stddev>$(arg imu_gyro_noise_stddev)</stddev><bias_mean>0</bias_mean><bias_stddev>$(arg imu_gyro_bias_stddev)</bias_stddev></noise></x>
+            <y><noise type="gaussian"><mean>0</mean><stddev>$(arg imu_gyro_noise_stddev)</stddev><bias_mean>0</bias_mean><bias_stddev>$(arg imu_gyro_bias_stddev)</bias_stddev></noise></y>
+            <z><noise type="gaussian"><mean>0</mean><stddev>$(arg imu_gyro_noise_stddev)</stddev><bias_mean>0</bias_mean><bias_stddev>$(arg imu_gyro_bias_stddev)</bias_stddev></noise></z>
+          </angular_velocity>
+          <linear_acceleration>
+            <x><noise type="gaussian"><mean>0</mean><stddev>$(arg imu_accel_noise_stddev)</stddev><bias_mean>0</bias_mean><bias_stddev>$(arg imu_accel_bias_stddev)</bias_stddev></noise></x>
+            <y><noise type="gaussian"><mean>0</mean><stddev>$(arg imu_accel_noise_stddev)</stddev><bias_mean>0</bias_mean><bias_stddev>$(arg imu_accel_bias_stddev)</bias_stddev></noise></y>
+            <z><noise type="gaussian"><mean>0</mean><stddev>$(arg imu_accel_noise_stddev)</stddev><bias_mean>0</bias_mean><bias_stddev>$(arg imu_accel_bias_stddev)</bias_stddev></noise></z>
+          </linear_acceleration>
+        </imu>
       </sensor>
     </gazebo>
   </xacro:if>

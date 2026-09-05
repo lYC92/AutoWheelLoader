@@ -8,12 +8,39 @@
 | 传感器 | Gazebo 输出 | ROS 2 类型 | 名义配置 |
 |---|---|---|---|
 | 3D GPU 激光雷达 | `/loader/sensors/lidar/scan/points` | `sensor_msgs/PointCloud2` | 1024×32，10 Hz，360°，-25°～15°，0.5～120 m，距离噪声 σ=0.02 m |
-| IMU | `/loader/sensors/imu` | `sensor_msgs/Imu` | 100 Hz，当前为理想测量 |
+| IMU | `/loader/sensors/imu` | `sensor_msgs/Imu` | 100 Hz，名义中档 MEMS 噪声：陀螺 σ=0.0017 rad/s、零偏 σ=0.00017 rad/s，加速度计 σ=0.017 m/s²、零偏 σ=0.0017 m/s²（Gazebo 内建噪声模型，可经 xacro 参数替换） |
 | 仿真时钟 | `/clock` | `rosgraph_msgs/Clock` | Gazebo 仿真时间 |
 
 传感器通过 Xacro 参数 `enable_lidar_imu:=true` 启用。雷达和 IMU 的固定安装关节被显式
 保留，防止 URDF 转 SDF 时合并到 `base_link`；自动测试会检查消息 `frame_id` 分别包含
 `lidar_link` 和 `imu_link`。
+
+## 名义效应通道与标定扰动（M1）
+
+算法不得直接消费理想传感器流。`loader_sensor_effects` 包提供
+`lidar_effects_node`：订阅理想点云 `/loader/sensors/lidar/scan/points`，发布扰动后的
+`/loader/sensors/lidar/scan/points_effect`。理想流保留用于真值对比。当前实现的效应：
+
+- 随机丢点：`dropout_probability` 参数，丢点写为 NaN 以保持 1024×32 有组织布局，
+  `random_seed` 固定时逐帧可复现；
+- 旋转扫描运动畸变：按列采集时刻与最新 IMU 角速度做 Rodrigues 旋转，把所有点统一到
+  扫描起始帧（名义近似：陀螺轴与雷达轴对齐，平移畸变暂未建模）；
+- IMU 噪声由 Gazebo 内建模型直接产生（见上表），xacro 参数
+  `imu_gyro_noise_stddev`/`imu_gyro_bias_stddev`/`imu_accel_noise_stddev`/`imu_accel_bias_stddev`
+  控制，置 0 即恢复理想测量；
+- 传感器安装标定扰动：xacro 参数 `lidar_mount_offset_xyz/rpy`、`imu_mount_offset_xyz/rpy`
+  叠加在名义安装位姿上。
+
+验收（2026-09-05 本机通过）：
+
+```powershell
+wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ project/scripts/wsl/smoke_test_sensor_effects.sh
+```
+
+结果：丢点率 0.101（目标 0.10），静止畸变最大 0.0141 m（陀螺噪声在 120 m 量程端的
+物理一致表现），IMU 噪声实测标准差与配置一致（加速度计 0.01621 m/s²，陀螺
+0.001664 rad/s），安装扰动正确写入 URDF；单元检查覆盖丢点确定性和 Rodrigues 旋转。
+证据：`/home/lyc/loader_sim_runtime/results/sensor_effects_smoke.txt`。
 
 ## 验证
 
@@ -58,9 +85,9 @@ wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ proj
 
 ## 尚未完成
 
-- IMU 零偏、随机游走、温漂和轴不正交模型；
-- 雷达随机丢点、强度/反射率、雨尘衰减和旋转扫描运动畸变；
-- 传感器内外参扰动与标定真值接口；
+- IMU 温漂、轴不正交和动态零偏（当前为零均值固定零偏）；
+- 雷达平移运动畸变（需接入轮速/车速真值）、强度/反射率、雨尘衰减；
+- 传感器标定真值的独立发布通道（当前扰动直接写进 URDF/TF）；
 - 点云定位算法接入、地图和自动定位误差评测；
 - 使用目标实车雷达/IMU 的扫描模式、噪声和安装参数替换当前名义值。
 
