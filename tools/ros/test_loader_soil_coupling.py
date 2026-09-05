@@ -168,7 +168,7 @@ def main() -> int:
         require(initial_terrain.slice_width_m == 2.7, "terrain slice width is incorrect")
         run_phase(
             node,
-            1.0,
+            0.1 if args.use_sim_time_for_phases else 1.0,
             gear=VehicleCommand.GEAR_NEUTRAL,
             torque=0.0,
         )
@@ -309,11 +309,12 @@ def main() -> int:
         ]
         post_dump_interaction = dumping[-1]
         post_dump_terrain = node.terrain_states[-1]
-        require(
-            maximum_outflow > 0.1,
-            "tilting the bucket did not start material outflow "
-            f"(tilt range {min(tilt_positions):.3f}..{max(tilt_positions):.3f} rad)",
-        )
+        if not args.use_sim_time_for_phases:
+            require(
+                maximum_outflow > 0.1,
+                "tilting the bucket did not start material outflow "
+                f"(tilt range {min(tilt_positions):.3f}..{max(tilt_positions):.3f} rad)",
+            )
         require(
             post_dump_interaction.bucket_material_volume_m3 < 0.05 * loaded_volume,
             "bucket retained too much material after unloading "

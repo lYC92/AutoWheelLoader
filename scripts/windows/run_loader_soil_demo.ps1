@@ -1,7 +1,10 @@
 [CmdletBinding()]
 param(
     [ValidateSet('physics', 'perception')]
-    [string]$Mode = 'physics'
+    [string]$Mode = 'physics',
+
+    [ValidateSet('auto', 'manual')]
+    [string]$ControlMode = 'auto'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -18,18 +21,18 @@ if (Test-Path -LiteralPath $westonLog) {
         Select-String -Pattern 'use_gfxredir\s*=\s*[01]' |
         Select-Object -Last 1
     if ($null -ne $gfxMode -and $gfxMode.Line -match 'use_gfxredir\s*=\s*0') {
-        throw @'
-WSLg is in COPY MODE, so the Gazebo process can run while its window stays invisible.
-Run .\scripts\windows\repair_wslg_gui.ps1; it repairs WSLg and starts the demo immediately.
-'@
+        Write-Warning 'WSLg is in COPY MODE; repairing it before Gazebo starts.'
+        Write-Warning 'The repair restarts WSL and stops other processes currently running in WSL.'
+        & (Join-Path $PSScriptRoot 'repair_wslg_gui.ps1') -Mode $Mode -ControlMode $ControlMode
+        return
     }
 }
 
 $launcher = "$wslProjectRoot/scripts/wsl/run_loader_soil_demo.sh"
-Write-Host "Starting loader simulation demo in $Mode mode..."
+Write-Host "Starting loader simulation demo in $Mode / $ControlMode mode..."
 Write-Host 'Close the Gazebo window or press Ctrl+C to stop.'
 
-& wsl -d Ubuntu-24.04 -- bash $launcher $Mode
+& wsl -d Ubuntu-24.04 -- bash $launcher $Mode $ControlMode
 $launcherStatus = $LASTEXITCODE
 
 if ($launcherStatus -ne 0) {

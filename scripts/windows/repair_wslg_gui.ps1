@@ -1,7 +1,10 @@
 [CmdletBinding()]
 param(
     [ValidateSet('physics', 'perception')]
-    [string]$Mode = 'physics'
+    [string]$Mode = 'physics',
+
+    [ValidateSet('auto', 'manual')]
+    [string]$ControlMode = 'auto'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -30,9 +33,9 @@ Write-Host 'Restarting WSL. This stops all currently running WSL processes...'
 & wsl --shutdown
 Start-Sleep -Seconds 2
 
-Write-Host "Starting the loader demo immediately in $Mode mode..."
+Write-Host "Starting the loader demo immediately in $Mode / $ControlMode mode..."
 Write-Host 'Keep this PowerShell window open while Gazebo is running.'
-& wsl -d Ubuntu-24.04 -- bash $launcher $Mode
+& wsl -d Ubuntu-24.04 -- bash $launcher $Mode $ControlMode
 $launcherStatus = $LASTEXITCODE
 
 if ($launcherStatus -ne 0) {

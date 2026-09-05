@@ -14,10 +14,9 @@ cd "C:\Users\Liyangchuan\Documents\ChatGPT\New project"
 powershell -ExecutionPolicy Bypass -File .\scripts\windows\run_loader_soil_demo.ps1
 ```
 
-启动器会打开 Gazebo，生成 `soil_loader`，等待 10 秒后自动执行“低速铲取 → 举升 →
+启动器会打开 Gazebo，生成 `soil_loader`，界面就绪后立即自动执行“低速铲取 → 举升 →
 倒车转运 → 制动 → 翻斗卸料”。动作结束后 Gazebo 保持打开，直到关闭窗口或在 PowerShell
 中按 `Ctrl+C`。如果默认镜头没有对准车辆，在左侧 Entity tree 选择 `soil_loader` 后按 `F`。
-可视演示按仿真时间控制每个动作阶段，首次着色器编译导致实时系数降低时不会提前结束。
 仿真服务器继续使用 NVIDIA D3D12；交互界面单独使用 llvmpipe 软件 OpenGL，以规避当前
 Windows 10 / WSLg 中 Qt 与服务器共享 D3D12 上下文时的窗口崩溃。
 
@@ -27,7 +26,32 @@ Windows 10 / WSLg 中 Qt 与服务器共享 D3D12 上下文时的窗口崩溃。
 powershell -ExecutionPolicy Bypass -File .\scripts\windows\run_loader_soil_demo.ps1 -Mode perception
 ```
 
-如果 Gazebo 进程一直存在、任务栏出现 `[WARN:COPY MODE]`，但桌面没有窗口，运行一次：
+启动器还会打开 Foxglove 数据工作台并连接 `ws://localhost:8765`。首次使用需要在浏览器中
+登录 Foxglove，然后从 **Layouts → Import from file...** 导入
+[`foxglove/loader_simulation_layout.json`](foxglove/loader_simulation_layout.json)。预制布局包含
+整车/液压/土体曲线、仪表、原始消息、ROS Topic 拓扑、激光点云和手动操作四组页面。
+
+需要从界面手动驾驶、转向、举升和翻斗时运行：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\windows\run_loader_soil_demo.ps1 -Mode physics -ControlMode manual
+```
+
+手动模式下先在“手动控制”页举升并收斗，使刃口离地，再操作行驶方向键。方向键为按住
+持续动作，松开后控制网关会在 0.35 秒内回中并制动；急停和控制使能也在同一页。自动模式
+与手动模式不要同时向 `/loader/command` 发布命令。详细用法和信号表见
+[docs/observability.md](docs/observability.md)，日常使用简介见
+[docs/user_guide.md](docs/user_guide.md)。
+
+验证 Foxglove 桥接、预制布局字段和手动控制网关的完整监控链路（无 GUI）：
+
+```powershell
+wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ project/scripts/wsl/smoke_test_foxglove_bridge.sh
+```
+
+启动器会自动检查 WSLg。若发现任务栏处于 `[WARN:COPY MODE]`（进程存在但窗口不可见），
+它会修复共享内存、重启 WSL 后继续启动 Gazebo。重启会停止其他正在运行的 WSL 进程。
+也可以单独执行修复启动器：
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\windows\repair_wslg_gui.ps1

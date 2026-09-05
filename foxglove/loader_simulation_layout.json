@@ -1,0 +1,565 @@
+{
+  "configById": {
+    "Tab!loader": {
+      "activeTabIdx": 0,
+      "tabs": [
+        {
+          "title": "整车总览",
+          "layout": {
+            "direction": "row",
+            "first": {
+              "direction": "column",
+              "first": "Plot!drive",
+              "second": {
+                "direction": "row",
+                "first": "Plot!hydraulics",
+                "second": "Plot!soil",
+                "splitPercentage": 50
+              },
+              "splitPercentage": 48
+            },
+            "second": {
+              "direction": "column",
+              "first": {
+                "direction": "row",
+                "first": "Gauge!speed",
+                "second": "Gauge!payload",
+                "splitPercentage": 50
+              },
+              "second": "RawMessages!vehicle",
+              "splitPercentage": 31
+            },
+            "splitPercentage": 69
+          }
+        },
+        {
+          "title": "ROS 节点与消息",
+          "layout": {
+            "direction": "row",
+            "first": "TopicGraph!graph",
+            "second": {
+              "direction": "column",
+              "first": "RawMessages!command",
+              "second": {
+                "direction": "column",
+                "first": "RawMessages!interaction",
+                "second": "RawMessages!terrain",
+                "splitPercentage": 50
+              },
+              "splitPercentage": 34
+            },
+            "splitPercentage": 68
+          }
+        },
+        {
+          "title": "手动控制",
+          "layout": {
+            "direction": "row",
+            "first": {
+              "direction": "column",
+              "first": "Markdown!controlHelp",
+              "second": {
+                "direction": "row",
+                "first": "Teleop!drive",
+                "second": "Teleop!hydraulics",
+                "splitPercentage": 50
+              },
+              "splitPercentage": 28
+            },
+            "second": {
+              "direction": "column",
+              "first": {
+                "direction": "row",
+                "first": {
+                  "direction": "column",
+                  "first": "Publish!enable",
+                  "second": "Publish!disable",
+                  "splitPercentage": 50
+                },
+                "second": {
+                  "direction": "column",
+                  "first": "Publish!estop",
+                  "second": "Publish!estopRelease",
+                  "splitPercentage": 50
+                },
+                "splitPercentage": 50
+              },
+              "second": {
+                "direction": "column",
+                "first": "RawMessages!manualStatus",
+                "second": "RawMessages!manualCommand",
+                "splitPercentage": 35
+              },
+              "splitPercentage": 31
+            },
+            "splitPercentage": 62
+          }
+        },
+        {
+          "title": "感知与三维",
+          "layout": {
+            "direction": "row",
+            "first": {
+              "direction": "column",
+              "first": "3D!vehiclePerception",
+              "second": "3D!observerPerception",
+              "splitPercentage": 50
+            },
+            "second": {
+              "direction": "column",
+              "first": "Plot!imu",
+              "second": {
+                "direction": "column",
+                "first": "RawMessages!imu",
+                "second": "RawMessages!pointcloud",
+                "splitPercentage": 50
+              },
+              "splitPercentage": 42
+            },
+            "splitPercentage": 67
+          }
+        }
+      ]
+    },
+    "Plot!drive": {
+      "foxglovePanelTitle": "行驶与车轮速度",
+      "paths": [
+        {
+          "value": "/loader/state.longitudinal_speed_mps",
+          "label": "车速 m/s",
+          "enabled": true,
+          "timestampMethod": "headerStamp"
+        },
+        {
+          "value": "/loader/state.wheel_speed_radps[:]",
+          "label": "车轮 rad/s",
+          "enabled": true,
+          "timestampMethod": "headerStamp"
+        },
+        {
+          "value": "/loader/command.traction_torque_nm",
+          "label": "牵引扭矩 N·m",
+          "enabled": false,
+          "timestampMethod": "headerStamp"
+        }
+      ],
+      "xAxisVal": "timestamp",
+      "timeRange": "latest",
+      "timeWindowMode": "sliding",
+      "followingViewWidth": 20,
+      "legendDisplay": "top",
+      "showLegend": true,
+      "isSynced": true
+    },
+    "Plot!hydraulics": {
+      "foxglovePanelTitle": "工作装置与液压",
+      "paths": [
+        {
+          "value": "/loader/state.joint_state.position[6]",
+          "label": "动臂角 rad",
+          "enabled": true,
+          "timestampMethod": "headerStamp"
+        },
+        {
+          "value": "/loader/state.joint_state.position[7]",
+          "label": "铲斗角 rad",
+          "enabled": true,
+          "timestampMethod": "headerStamp"
+        },
+        {
+          "value": "/loader/state.lift_cylinder_pressure_pa",
+          "label": "举升压力 Pa",
+          "enabled": false,
+          "timestampMethod": "headerStamp"
+        },
+        {
+          "value": "/loader/state.tilt_cylinder_pressure_pa",
+          "label": "翻斗压力 Pa",
+          "enabled": false,
+          "timestampMethod": "headerStamp"
+        }
+      ],
+      "xAxisVal": "timestamp",
+      "timeRange": "latest",
+      "timeWindowMode": "sliding",
+      "followingViewWidth": 20,
+      "legendDisplay": "top",
+      "showLegend": true,
+      "isSynced": true
+    },
+    "Plot!soil": {
+      "foxglovePanelTitle": "铲斗—土体交互",
+      "paths": [
+        {
+          "value": "/loader/bucket_interaction.maximum_penetration_depth_m",
+          "label": "侵入深度 m",
+          "enabled": true,
+          "timestampMethod": "headerStamp"
+        },
+        {
+          "value": "/loader/bucket_interaction.material_inflow_m3ps",
+          "label": "入斗流量 m³/s",
+          "enabled": true,
+          "timestampMethod": "headerStamp"
+        },
+        {
+          "value": "/loader/bucket_interaction.material_outflow_m3ps",
+          "label": "卸料流量 m³/s",
+          "enabled": true,
+          "timestampMethod": "headerStamp"
+        },
+        {
+          "value": "/loader/bucket_interaction.bucket_wrench.force.x",
+          "label": "切削力 X / N",
+          "enabled": false,
+          "timestampMethod": "headerStamp"
+        },
+        {
+          "value": "/loader/bucket_interaction.bucket_wrench.force.z",
+          "label": "切削力 Z / N",
+          "enabled": false,
+          "timestampMethod": "headerStamp"
+        }
+      ],
+      "xAxisVal": "timestamp",
+      "timeRange": "latest",
+      "timeWindowMode": "sliding",
+      "followingViewWidth": 20,
+      "legendDisplay": "top",
+      "showLegend": true,
+      "isSynced": true
+    },
+    "Plot!imu": {
+      "foxglovePanelTitle": "IMU",
+      "paths": [
+        {
+          "value": "/loader/sensors/imu.linear_acceleration.x",
+          "label": "ax m/s²",
+          "enabled": true,
+          "timestampMethod": "headerStamp"
+        },
+        {
+          "value": "/loader/sensors/imu.linear_acceleration.y",
+          "label": "ay m/s²",
+          "enabled": true,
+          "timestampMethod": "headerStamp"
+        },
+        {
+          "value": "/loader/sensors/imu.linear_acceleration.z",
+          "label": "az m/s²",
+          "enabled": true,
+          "timestampMethod": "headerStamp"
+        },
+        {
+          "value": "/loader/sensors/imu.angular_velocity.z",
+          "label": "yaw rate rad/s",
+          "enabled": true,
+          "timestampMethod": "headerStamp"
+        }
+      ],
+      "xAxisVal": "timestamp",
+      "timeRange": "latest",
+      "timeWindowMode": "sliding",
+      "followingViewWidth": 20,
+      "legendDisplay": "top",
+      "showLegend": true,
+      "isSynced": true
+    },
+    "Gauge!speed": {
+      "foxglovePanelTitle": "车速 m/s",
+      "path": "/loader/state.longitudinal_speed_mps",
+      "style": "dial",
+      "minValue": -4,
+      "maxValue": 4,
+      "colorMap": "turbo",
+      "colorMode": "colormap",
+      "reverse": false,
+      "reverseDirection": false
+    },
+    "Gauge!payload": {
+      "foxglovePanelTitle": "斗内载荷 kg",
+      "path": "/loader/state.bucket_payload_mass_kg",
+      "style": "dial",
+      "minValue": 0,
+      "maxValue": 4800,
+      "colorMap": "green-yellow-red",
+      "colorMode": "colormap",
+      "reverse": false,
+      "reverseDirection": false
+    },
+    "RawMessages!vehicle": {
+      "foxglovePanelTitle": "VehicleState 全量信号",
+      "topicPath": "/loader/state",
+      "diffEnabled": false,
+      "defaultExpanded": true,
+      "fontSize": 13
+    },
+    "RawMessages!command": {
+      "foxglovePanelTitle": "VehicleCommand",
+      "topicPath": "/loader/command",
+      "diffEnabled": false,
+      "defaultExpanded": true,
+      "fontSize": 13
+    },
+    "RawMessages!interaction": {
+      "foxglovePanelTitle": "BucketInteraction",
+      "topicPath": "/loader/bucket_interaction",
+      "diffEnabled": false,
+      "defaultExpanded": true,
+      "fontSize": 13
+    },
+    "RawMessages!terrain": {
+      "foxglovePanelTitle": "TerrainState",
+      "topicPath": "/loader/terrain_state",
+      "diffEnabled": false,
+      "defaultExpanded": false,
+      "fontSize": 13
+    },
+    "RawMessages!manualStatus": {
+      "foxglovePanelTitle": "手动控制网关状态",
+      "topicPath": "/loader/manual/status",
+      "diffEnabled": false,
+      "defaultExpanded": true,
+      "fontSize": 13
+    },
+    "RawMessages!manualCommand": {
+      "foxglovePanelTitle": "最终车辆命令",
+      "topicPath": "/loader/command",
+      "diffEnabled": false,
+      "defaultExpanded": true,
+      "fontSize": 13
+    },
+    "RawMessages!imu": {
+      "foxglovePanelTitle": "IMU 原始消息",
+      "topicPath": "/loader/sensors/imu",
+      "diffEnabled": false,
+      "defaultExpanded": true,
+      "fontSize": 13
+    },
+    "RawMessages!pointcloud": {
+      "foxglovePanelTitle": "观察激光雷达消息",
+      "topicPath": "/loader_soil/observer/scan/points",
+      "diffEnabled": false,
+      "defaultExpanded": false,
+      "fontSize": 13
+    },
+    "TopicGraph!graph": {
+      "foxglovePanelTitle": "ROS 2 节点 / Topic / Service 拓扑"
+    },
+    "Teleop!drive": {
+      "foxglovePanelTitle": "行驶：前 / 后 / 左 / 右（按住动作）",
+      "topic": "/loader/manual/drive",
+      "publishRate": 20,
+      "upButton": {
+        "field": "linear-x",
+        "value": 0.65
+      },
+      "downButton": {
+        "field": "linear-x",
+        "value": -0.65
+      },
+      "leftButton": {
+        "field": "angular-z",
+        "value": 0.65
+      },
+      "rightButton": {
+        "field": "angular-z",
+        "value": -0.65
+      },
+      "stopButton": {
+        "field": "linear-x",
+        "value": 0
+      },
+      "autoSendStopOnRelease": true
+    },
+    "Teleop!hydraulics": {
+      "foxglovePanelTitle": "工作装置：上/下=举升，左/右=收斗/卸料",
+      "topic": "/loader/manual/hydraulics",
+      "publishRate": 20,
+      "upButton": {
+        "field": "linear-z",
+        "value": 1
+      },
+      "downButton": {
+        "field": "linear-z",
+        "value": -1
+      },
+      "leftButton": {
+        "field": "angular-y",
+        "value": 1
+      },
+      "rightButton": {
+        "field": "angular-y",
+        "value": -1
+      },
+      "stopButton": {
+        "field": "linear-z",
+        "value": 0
+      },
+      "autoSendStopOnRelease": true
+    },
+    "Publish!enable": {
+      "foxglovePanelTitle": "控制使能",
+      "topicName": "/loader/manual/enable",
+      "datatype": "std_msgs/msg/Bool",
+      "buttonText": "启用手动控制",
+      "buttonTooltip": "允许控制网关输出命令",
+      "buttonColor": "#00a871",
+      "advancedView": false,
+      "value": "{\n  \"data\": true\n}"
+    },
+    "Publish!disable": {
+      "foxglovePanelTitle": "控制禁用",
+      "topicName": "/loader/manual/enable",
+      "datatype": "std_msgs/msg/Bool",
+      "buttonText": "禁用并制动",
+      "buttonTooltip": "禁止手动输出并触发安全制动",
+      "buttonColor": "#59636e",
+      "advancedView": false,
+      "value": "{\n  \"data\": false\n}"
+    },
+    "Publish!estop": {
+      "foxglovePanelTitle": "急停",
+      "topicName": "/loader/manual/emergency_stop",
+      "datatype": "std_msgs/msg/Bool",
+      "buttonText": "急停",
+      "buttonTooltip": "锁存手动急停",
+      "buttonColor": "#d32f2f",
+      "advancedView": false,
+      "value": "{\n  \"data\": true\n}"
+    },
+    "Publish!estopRelease": {
+      "foxglovePanelTitle": "急停复位",
+      "topicName": "/loader/manual/emergency_stop",
+      "datatype": "std_msgs/msg/Bool",
+      "buttonText": "释放急停",
+      "buttonTooltip": "释放手动控制网关的急停状态",
+      "buttonColor": "#ef8f00",
+      "advancedView": false,
+      "value": "{\n  \"data\": false\n}"
+    },
+    "Markdown!controlHelp": {
+      "foxglovePanelTitle": "手动控制说明",
+      "fontSize": 15,
+      "renderMode": "static",
+      "markdown": "# 装载机手动控制\n\n请使用 `-ControlMode manual` 启动。先按住工作装置的“上”和“左”举升并收斗，让刃口离地，再开始行驶。\n\n- 按住 Teleop 方向键才会持续动作，松手后 0.35 秒内自动回中并制动\n- 行驶面板：上/下前进倒车，左/右铰接转向\n- 工作装置：上/下举升或下降，左/右收斗或卸料\n- 红色急停优先级最高；恢复时先点“释放急停”，再点“启用手动控制”\n- 自动演示模式只监视，请不要在同一 Topic 上抢占命令"
+    },
+    "3D!vehiclePerception": {
+      "foxglovePanelTitle": "车载激光雷达与车辆模型",
+      "cameraState": {
+        "distance": 12,
+        "perspective": true,
+        "phi": 55,
+        "thetaOffset": 135,
+        "targetOffset": [0, 0, 0],
+        "fovy": 45,
+        "near": 0.1,
+        "far": 500
+      },
+      "fixedFrame": "base_link",
+      "followMode": "follow-pose",
+      "followTf": "base_link",
+      "topics": {
+        "/loader/sensors/lidar/scan/points": {
+          "visible": true,
+          "colorField": "z",
+          "colorMode": "colormap",
+          "colorMap": "turbo",
+          "pointSize": 2
+        },
+        "/robot_description": {
+          "visible": true
+        }
+      },
+      "layers": {
+        "loader-grid": {
+          "visible": true,
+          "frameLocked": true,
+          "label": "Ground grid",
+          "instanceId": "loader-grid",
+          "layerId": "foxglove.Grid",
+          "size": 30,
+          "divisions": 30,
+          "lineWidth": 1,
+          "color": "#7b8794",
+          "position": [0, 0, 0],
+          "rotation": [0, 0, 0],
+          "order": 1,
+          "frameId": "base_link"
+        }
+      },
+      "publish": {
+        "type": "point",
+        "poseTopic": "/goal_pose",
+        "pointTopic": "/clicked_point",
+        "poseEstimateTopic": "/initialpose",
+        "poseEstimateXDeviation": 0.5,
+        "poseEstimateYDeviation": 0.5,
+        "poseEstimateThetaDeviation": 0.26179939
+      },
+      "imageMode": {},
+      "synchronize": false
+    },
+    "3D!observerPerception": {
+      "foxglovePanelTitle": "固定观察激光雷达",
+      "cameraState": {
+        "distance": 18,
+        "perspective": true,
+        "phi": 55,
+        "thetaOffset": 135,
+        "targetOffset": [0, 0, 0],
+        "fovy": 45,
+        "near": 0.1,
+        "far": 500
+      },
+      "fixedFrame": "soil_observer_lidar/link/gpu_lidar",
+      "followMode": "follow-pose",
+      "followTf": "soil_observer_lidar/link/gpu_lidar",
+      "topics": {
+        "/loader_soil/observer/scan/points": {
+          "visible": true,
+          "colorField": "z",
+          "colorMode": "colormap",
+          "colorMap": "turbo",
+          "pointSize": 2
+        }
+      },
+      "layers": {
+        "observer-grid": {
+          "visible": true,
+          "frameLocked": true,
+          "label": "Observer grid",
+          "instanceId": "observer-grid",
+          "layerId": "foxglove.Grid",
+          "size": 30,
+          "divisions": 30,
+          "lineWidth": 1,
+          "color": "#7b8794",
+          "position": [0, 0, 0],
+          "rotation": [0, 0, 0],
+          "order": 1,
+          "frameId": "soil_observer_lidar/link/gpu_lidar"
+        }
+      },
+      "publish": {
+        "type": "point",
+        "poseTopic": "/goal_pose",
+        "pointTopic": "/clicked_point",
+        "poseEstimateTopic": "/initialpose",
+        "poseEstimateXDeviation": 0.5,
+        "poseEstimateYDeviation": 0.5,
+        "poseEstimateThetaDeviation": 0.26179939
+      },
+      "imageMode": {},
+      "synchronize": false
+    }
+  },
+  "globalVariables": {},
+  "userNodes": {},
+  "linkedGlobalVariables": [],
+  "playbackConfig": {
+    "speed": 1,
+    "messageOrder": "receiveTime"
+  },
+  "layout": "Tab!loader"
+}

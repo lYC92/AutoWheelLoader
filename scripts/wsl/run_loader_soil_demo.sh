@@ -5,9 +5,14 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 project_root="$(cd "${script_dir}/../.." && pwd)"
 runtime_root="${HOME}/loader_sim_runtime"
 mode="${1:-physics}"
+control_mode="${2:-auto}"
 
 if [[ ${mode} != physics && ${mode} != perception ]]; then
-  printf 'Usage: %s [physics|perception]\n' "$0" >&2
+  printf 'Usage: %s [physics|perception] [auto|manual]\n' "$0" >&2
+  exit 2
+fi
+if [[ ${control_mode} != auto && ${control_mode} != manual ]]; then
+  printf 'Usage: %s [physics|perception] [auto|manual]\n' "$0" >&2
   exit 2
 fi
 
@@ -25,6 +30,9 @@ gui_log="${runtime_root}/log/loader_soil_demo${suffix}_gui.log"
 rsp_log="${runtime_root}/log/loader_soil_demo${suffix}_robot_state_publisher.log"
 bridge_log="${runtime_root}/log/loader_soil_demo${suffix}_bridge.log"
 scenario_log="${runtime_root}/results/loader_soil_demo${suffix}.txt"
+foxglove_log="${runtime_root}/log/loader_soil_demo${suffix}_foxglove.log"
+manual_log="${runtime_root}/log/loader_soil_demo${suffix}_manual_gateway.log"
+sensor_tf_log="${runtime_root}/log/loader_soil_demo${suffix}_sensor_tf.log"
 soil_plugin_dir="${runtime_root}/install/loader_soil/lib"
 
 source /etc/profile.d/loader-sim-wslg.sh
@@ -37,8 +45,13 @@ export GZ_SIM_SYSTEM_PLUGIN_PATH="${soil_plugin_dir}:/opt/ros/jazzy/lib:${GZ_SIM
 export LD_LIBRARY_PATH="${soil_plugin_dir}:${LD_LIBRARY_PATH:-}"
 
 mkdir -p "${runtime_root}/results" "${runtime_root}/log"
+enable_lidar_imu=false
+if [[ ${mode} == perception ]]; then
+  enable_lidar_imu=true
+fi
 xacro "${project_root}/ros_ws/src/loader_description/urdf/loader.urdf.xacro" \
-  enable_ros2_control:=true enable_soil_slice:=true >"${urdf_file}"
+  enable_ros2_control:=true enable_soil_slice:=true \
+  enable_lidar_imu:="${enable_lidar_imu}" >"${urdf_file}"
 
 if gz service -l 2>/dev/null | grep -q '^/world/loader_soil_slice/'; then
   printf '%s\n' 'ERROR: a loader_soil_slice Gazebo server is already running.' >&2
@@ -50,6 +63,9 @@ server_pid=''
 gui_pid=''
 rsp_pid=''
 bridge_pid=''
+foxglove_pid=''
+manual_pid=''
+sensor_tf_pid=''
 
 stop_process() {
   local process_id="$1"
@@ -70,6 +86,9 @@ stop_process() {
 }
 
 cleanup() {
+  stop_process "${manual_pid}"
+  stop_process "${sensor_tf_pid}"
+  stop_process "${foxglove_pid}"
   stop_process "${bridge_pid}"
   stop_process "${rsp_pid}"
   stop_process "${gui_pid}"
@@ -82,6 +101,8 @@ test_arguments=(--use-sim-time-for-phases)
 if [[ ${mode} == perception ]]; then
   bridge_arguments+=(
     '/loader_soil/observer/scan/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked'
+    '/loader/sensors/lidar/scan/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked'
+    '/loader/sensors/imu@sensor_msgs/msg/Imu[gz.msgs.IMU'
   )
   test_arguments+=(--observer-topic /loader_soil/observer/scan/points)
 fi
@@ -92,6 +113,53 @@ ros2 run robot_state_publisher robot_state_publisher \
   --ros-args -p use_sim_time:=true -p robot_description:="$(<"${urdf_file}")" \
   >"${rsp_log}" 2>&1 &
 rsp_pid=$!
+
+if [[ ${mode} == perception ]]; then
+  # Gazebo scopes sensor frame IDs below the sensor name, while the URDF TF tree
+  # ends at lidar_link.  This identity alias lets Foxglove render the vehicle
+  # point cloud and robot model in the same base_link frame.
+  ros2 run tf2_ros static_transform_publisher \
+    --x 0 --y 0 --z 0 --roll 0 --pitch 0 --yaw 0 \
+    --frame-id lidar_link \
+    --child-frame-id soil_loader/lidar_link/loader_gpu_lidar \
+    --ros-args -p use_sim_time:=true >"${sensor_tf_log}" 2>&1 &
+  sensor_tf_pid=$!
+fi
+
+ros2 launch foxglove_bridge foxglove_bridge_launch.xml \
+  address:=127.0.0.1 port:=8765 use_sim_time:=true \
+  >"${foxglove_log}" 2>&1 &
+foxglove_pid=$!
+
+foxglove_ready=false
+for _ in $(seq 1 40); do
+  if (exec 9<>/dev/tcp/127.0.0.1/8765) 2>/dev/null; then
+    exec 9>&-
+    exec 9<&-
+    foxglove_ready=true
+    break
+  fi
+  if ! kill -0 "${foxglove_pid}" >/dev/null 2>&1; then
+    printf '%s\n' 'ERROR: Foxglove Bridge exited during startup.' >&2
+    tail -n 120 "${foxglove_log}" >&2
+    exit 1
+  fi
+  sleep 0.25
+done
+if [[ ${foxglove_ready} != true ]]; then
+  printf '%s\n' 'ERROR: timed out waiting for Foxglove Bridge on port 8765.' >&2
+  tail -n 120 "${foxglove_log}" >&2
+  exit 1
+fi
+
+foxglove_url='https://app.foxglove.dev/~/view?ds=foxglove-websocket&ds.url=ws%3A%2F%2Flocalhost%3A8765'
+if [[ ${LOADER_OPEN_FOXGLOVE:-1} != 0 ]] && command -v powershell.exe >/dev/null 2>&1; then
+  powershell.exe -NoProfile -NonInteractive -Command \
+    "Start-Process '${foxglove_url}'" >/dev/null 2>&1 || true
+fi
+printf '%s\n' 'Foxglove telemetry: ws://localhost:8765'
+printf 'Import this layout once: %s\n' \
+  "${project_root}/foxglove/loader_simulation_layout.json"
 
 printf '%s\n' 'Starting the Gazebo server...'
 gz sim -s -r "${world_file}" >"${server_log}" 2>&1 &
@@ -153,6 +221,12 @@ done
 ros2 run controller_manager spawner loader_command_controller \
   --controller-manager /controller_manager --controller-manager-timeout 30 >/dev/null
 
+if [[ ${control_mode} == manual ]]; then
+  python3 "${project_root}/tools/ros/loader_manual_gateway.py" \
+    --ros-args -p use_sim_time:=true >"${manual_log}" 2>&1 &
+  manual_pid=$!
+fi
+
 for _ in $(seq 1 60); do
   if gz service -l 2>/dev/null | grep -q '^/gui/move_to$'; then
     break
@@ -171,19 +245,25 @@ if ! gz service -l 2>/dev/null | grep -q '^/gui/move_to$'; then
   exit 1
 fi
 
-printf '%s\n' 'Loader is ready. The automated dig cycle starts in 10 seconds.'
 printf '%s\n' 'If needed, select soil_loader in Entity tree and press F to focus it.'
-sleep 10
 
-set +e
-python3 "${project_root}/tools/ros/test_loader_soil_coupling.py" \
-  "${test_arguments[@]}" | tee "${scenario_log}"
-scenario_status=${PIPESTATUS[0]}
-set -e
-
-if [[ ${scenario_status} -eq 0 ]]; then
-  printf '%s\n' 'Demo cycle complete. Gazebo will remain open.'
+scenario_status=0
+if [[ ${control_mode} == auto ]]; then
+  printf '%s\n' 'Loader is ready. The automated dig cycle starts now.'
+  set +e
+  python3 "${project_root}/tools/ros/test_loader_soil_coupling.py" \
+    "${test_arguments[@]}" | tee "${scenario_log}"
+  scenario_status=${PIPESTATUS[0]}
+  set -e
 else
+  printf '%s\n' 'Loader is ready for manual control from the Foxglove Teleop panels.'
+  printf '%s\n' 'Raise and curl the bucket before driving so the cutting edge clears the ground.'
+  printf '%s\n' 'The gateway brakes automatically when a Teleop button is released.'
+fi
+
+if [[ ${control_mode} == auto && ${scenario_status} -eq 0 ]]; then
+  printf '%s\n' 'Demo cycle complete. Gazebo will remain open.'
+elif [[ ${scenario_status} -ne 0 ]]; then
   printf 'Demo cycle failed with status %d. Gazebo will remain open for inspection.\n' \
     "${scenario_status}" >&2
 fi

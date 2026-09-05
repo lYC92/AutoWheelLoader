@@ -66,6 +66,7 @@ apt-get install -y \
   ros-jazzy-ros2-controllers \
   ros-jazzy-gz-ros2-control \
   ros-jazzy-gz-ros2-control-demos \
+  ros-jazzy-foxglove-bridge \
   ros-jazzy-xacro \
   ros-jazzy-joint-state-publisher-gui \
   ros-dev-tools
@@ -104,6 +105,6 @@ install -D -m 0644 \
 
 echo "[7/7] Verifying installed package roots"
 test -f /opt/ros/jazzy/setup.bash
-bash -lc 'source /opt/ros/jazzy/setup.bash && ros2 pkg prefix ros_gz_sim && ros2 pkg prefix controller_manager && ros2 pkg prefix gz_ros2_control'
+bash -lc 'source /opt/ros/jazzy/setup.bash && ros2 pkg prefix ros_gz_sim && ros2 pkg prefix controller_manager && ros2 pkg prefix gz_ros2_control && ros2 pkg prefix foxglove_bridge'
 
 echo "ROS 2 Jazzy and Gazebo Harmonic deployment completed."
