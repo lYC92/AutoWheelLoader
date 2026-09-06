@@ -10,7 +10,7 @@ a{color:#146452;text-underline-offset:3px}a:hover{color:#083e32}a:focus-visible,
 aside{align-self:start;position:sticky;top:99px;max-height:calc(100vh - 125px);overflow:auto;padding:8px 12px 16px 0;font-size:14px}aside h2{margin:0 0 12px;font-size:16px;border:0;padding:0}.toc{list-style:none;padding:0;margin:0}.toc a{display:block;padding:7px 11px;border-radius:6px;color:#48606e;text-decoration:none;line-height:1.65}.toc a:hover,.toc a.active{background:#dceee9;color:#174f43}.aside-note{color:var(--muted);border-top:1px solid var(--line);padding-top:15px;margin-top:18px;font-size:13px}
 main{min-width:0;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:38px 46px 48px;box-shadow:0 5px 24px #19384905}.eyebrow{color:var(--accent);font-size:13px;font-weight:700;letter-spacing:.1em}h1{font-size:32px;line-height:1.5;margin:12px 0 22px;letter-spacing:-.02em}h2{font-size:25px;line-height:1.5;margin:0 0 22px;padding-top:8px}h3{font-size:19px;line-height:1.65;margin:28px 0 12px;color:#195446}p{margin:14px 0}strong{font-weight:700;color:#163a47}section{border-top:1px solid var(--line);padding-top:30px;margin-top:36px;scroll-margin-top:95px}li{padding-left:4px;margin-bottom:12px}ol,ul{padding-left:25px}
 code{font-family:Consolas,'Microsoft YaHei',monospace;font-size:.91em;background:#edf3f5;border-radius:4px;padding:2px 5px;overflow-wrap:anywhere}pre{margin:0;padding:16px 20px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.75}pre code{padding:0;background:none;font-size:14px;color:#e9f3f7}.code-box{background:#203a49;border-radius:9px;margin:18px 0;overflow:hidden}.code-label{font-size:12px;color:#c7dde8;padding:7px 20px;border-bottom:1px solid #486371;background:#2a4656}
-.table-scroll{overflow:auto;margin:20px 0;border:1px solid var(--line);border-radius:8px}table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.8;table-layout:auto}th,td{padding:12px 14px;text-align:left;vertical-align:top;overflow-wrap:anywhere;border-bottom:1px solid var(--line)}th{background:#edf4f6;font-weight:700;color:#264d60}td:first-child{min-width:140px;width:30%;color:#243f4e}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#fbfcfd}td code{font-size:13px}figure{margin:24px 0}figure svg{width:100%;height:auto;display:block}.page-footer{margin-top:35px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}.mobile-toc{display:none}
+.table-scroll{overflow:auto;margin:20px 0;border:1px solid var(--line);border-radius:8px}table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.8;table-layout:auto}th,td{padding:12px 14px;text-align:left;vertical-align:top;overflow-wrap:anywhere;border-bottom:1px solid var(--line)}th{background:#edf4f6;font-weight:700;color:#264d60}td:first-child{min-width:140px;width:30%;color:#243f4e}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#fbfcfd}td code{font-size:13px}figure{margin:24px 0}figure svg,figure img{width:100%;height:auto;display:block}.page-footer{margin-top:35px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}.mobile-toc{display:none}
 @media(min-width:1400px){main{padding-left:60px;padding-right:60px}}
 @media(max-width:1050px){.layout{grid-template-columns:220px minmax(0,1fr);gap:20px;padding:22px}main{padding:28px}h1{font-size:28px}.topbar{padding:12px 22px}}
 @media(max-width:780px){.topbar{position:static;align-items:flex-start;flex-direction:column;padding:16px}.layout{display:block;padding:16px}aside{position:static;max-height:none;padding:0 0 20px}.toc{display:grid;grid-template-columns:1fr 1fr;gap:2px}.aside-note{display:none}main{padding:25px 20px}h1{font-size:25px}h2{font-size:22px}table{min-width:530px}td:first-child{min-width:130px}figure{overflow:auto}figure svg{min-width:690px}section{scroll-margin-top:20px}html{scroll-padding-top:20px}.topnav a,.topnav button{font-size:13px}}
@@ -21,7 +21,7 @@ code{font-family:Consolas,'Microsoft YaHei',monospace;font-size:.91em;background
 <main><div class="eyebrow">从使用方法，到代码职责</div><h1 id="heading-0-1">无人装载机仿真软件：零基础说明书</h1>
 <p>适用对象：想知道这套软件在做什么、怎样使用、每块代码负责什么，但还不会读 ROS 或 C++ 的项目使用者。</p>
 <p>文档版本：2026-09-06。内容以当前项目代码和已保存的测试结果为依据。后续开发状态请看 <a href="deployment_status.md">开发状态</a>。</p>
-<p>装载机模型正在单独更新。本版着重解释软件职责和阅读入口；模型尺寸、安装位置等具体数值请以最新模型文件为准。</p>
+<p>本版包含修复后的 L580 外观和第四阶段定位评测结果；模型尺寸、安装位置等具体数值请以最新模型文件为准。</p>
 <p><strong>你现在不需要从第一行代码开始学。先认识软件的几个部分，再顺着一个动作看它们怎样配合。</strong></p>
 <section id="section-1">
 <h2>1. 先弄清楚：这到底是一套什么软件</h2>
@@ -71,7 +71,7 @@ code{font-family:Consolas,'Microsoft YaHei',monospace;font-size:.91em;background
       <text x="50" y="159">手动：Foxglove → 手动网关</text><text x="50" y="181">自动：预设动作脚本</text>
       <text x="425" y="159">loader_control 正式控制器</text><text x="425" y="181">检查命令、液压与关节输出</text>
       <text x="800" y="159">Gazebo ＋ loader_soil</text><text x="800" y="181">车辆、碰撞、砂土与载荷</text>
-      <text x="50" y="327">雷达 / IMU → 名义效应</text><text x="50" y="349">当前定位另加平地裁剪</text>
+      <text x="50" y="327">雷达 / IMU → 名义效应</text><text x="50" y="349">车体过滤与地面识别</text>
       <text x="425" y="327">KISS-ICP 激光里程计</text><text x="425" y="349">当前未融合 IMU</text>
       <text x="800" y="327">evaluate_localization.py</text><text x="800" y="349">真值与估计 → 误差报告</text>
     </g>
@@ -236,6 +236,9 @@ code{font-family:Consolas,'Microsoft YaHei',monospace;font-size:.91em;background
 <p>例如，“车速”字段叫 <code>longitudinal_speed_mps</code>，末尾的 <code>mps</code> 说明单位是米/秒。其他程序按照同一个字段名读取它，就能正确交流。</p>
 <h3 id="heading-6-2">6.2 loader_description：规定车长什么样、各部件怎样连接</h3>
 <p>核心文件是 <code>ros_ws/src/loader_description/urdf/loader.urdf.xacro</code>。里面描述车架、车轮、动臂、铲斗、质量、惯量、关节限制，以及雷达和 IMU 的安装位置。Xacro 可以看作带参数开关的车辆模型模板。</p>
+<p>现在默认使用 L580 装载机外观，能看到驾驶室、发动机罩、轮胎花纹、轮毂、动臂和铲斗。已修正轮胎安装偏位，并让完整驾驶室留在后车架，避免转向时驾驶室被拉开。车顶小圆柱表示雷达。</p>
+<figure class="overview"><img src="assets/loader_l580.png" alt="L580 外观，转向约 20 度的离线模型预览"></figure>
+<p>这张图由正式车辆模型生成。外观变精细，不表示质量、碰撞和液压参数已经完成实车标定；目前这些计算仍使用名义参数。雷达会看到新外观，所以已把雷达移到车顶上方，并重新验证定位输入。<a href="../ros_ws/src/loader_description/meshes/l580/README.md">模型来源与修复说明</a>记录了具体修改。</p>
 <p>启动时，它被展开为 Gazebo 可以使用的车辆描述。<code>enable_ros2_control</code> 等参数决定启用哪些插件；<code>enable_lidar_imu</code> 决定是否加入传感器；<code>enable_ground_truth</code> 决定是否输出评测真值。</p>
 <p><code>config/nominal_linkage.yaml</code> 与 <code>tools/kinematics/generate_linkage_table.py</code> 用于检查举升、翻斗的几何关系。当前控制器中仍有直接写在 C++ 里的名义几何公式，不能认为改了这份 YAML 就自动改好了整个动力学模型。</p>
 <p><code>launch/display.launch.py</code> 是另一个入口，用 RViz 和关节滑块检查模型显示。它不是当前整车力级铲装演示的启动器。</p>
@@ -266,7 +269,7 @@ code{font-family:Consolas,'Microsoft YaHei',monospace;font-size:.91em;background
   → 原始点云 /loader/sensors/lidar/scan/points
   → 效应处理：丢点、旋转畸变
   → /loader/sensors/lidar/scan/points_effect
-  → 平地裁剪 filter_localization_cloud.py
+  → 车体过滤和地面识别 filter_localization_cloud.py
   → /loader/localization/points
   → KISS-ICP
   → 估计位置 /loader/localization/odometry
@@ -280,20 +283,22 @@ Gazebo 独立真实位置 /loader/ground_truth/odometry
 <th scope="col">为什么需要它</th>
 </tr></thead><tbody>
 <tr><td><code>bootstrap_localization.sh</code></td><td>下载固定版本并构建 KISS-ICP，便于复现</td></tr>
-<tr><td><code>simulation/config/localization/kiss_icp.yaml</code></td><td>指定量程、裁剪高度、算法参数和线程数</td></tr>
+<tr><td><code>simulation/config/localization/kiss_icp.yaml</code></td><td>指定量程、地面识别、车体过滤、算法参数和线程数</td></tr>
 <tr><td><code>generate_localization_world.py</code></td><td>在现有感知世界周围加入 8 个固定标志物</td></tr>
 <tr><td><code>run_localization_scenario.py</code></td><td>用控制命令完成可重复的举升、倒车、前进行驶流程</td></tr>
-<tr><td><code>filter_localization_cloud.py</code></td><td>从效应点云中排除近场、远场、无效点和当前平地回波</td></tr>
+<tr><td><code>filter_localization_cloud.py</code></td><td>按扫描时刻的关节位置过滤车体，再识别并去除地面回波</td></tr>
+<tr><td><code>localization_geometry.py</code></td><td>实现地面平面拟合和车体包围盒计算，不读取车辆真实位置</td></tr>
 <tr><td><code>evaluate_localization.py</code></td><td>按时间匹配算法估计和真实位置，输出误差报告</td></tr>
 <tr><td><code>test_localization_metrics.py</code></td><td>用可手算的轨迹检查评分代码，防止错误对齐掩盖漂移</td></tr>
 </tbody></table></div>
 <h3 id="heading-7-1">为什么要裁掉部分地面点</h3>
-<p>第一轮扫描中，大面积平地的重复采样让配准几乎以为车辆没动。对当前平地试验做高度裁剪后，结果有明显改善。这个阈值根据当前雷达安装高度设置，不适合直接搬到坡地或剧烈颠簸场景；后续需要更完整的地面分割和车体滤除。</p>
+<p>第一轮扫描中，大面积平地的重复采样让配准几乎以为车辆没动。最初用固定高度裁剪改善了结果；现在改成从每帧点云中寻找地面平面，因此不再依赖写死的雷达离地高度。程序还会根据扫描时刻的关节位置排除车架、轮胎、动臂和铲斗附近的点，避免把自身运动当作环境变化。</p>
+<p>这仍有适用范围：地面识别只接受倾斜不超过 30 度、传感器下方有足够面积支持的平面；识别不到时保留非车体点并记录警告。车体过滤使用网格包围盒，可能连同紧贴车体的外部物体点一起排除。坡地和动态铲装仍需要实测，不能只凭代码支持就算通过。</p>
 <h3 id="heading-7-2">真值、坐标系和误差怎么理解</h3>
 <p><strong>真值</strong>是仿真器知道的真实运动状态，相当于评分时的参考答案；KISS-ICP 不读取这条答案通道。</p>
 <p><strong>坐标系</strong>是“从哪里开始量、朝哪个方向量”的约定。<code>world</code> 是仿真世界的参考，<code>base_link</code> 是车体参考，<code>lidar_link</code> 是雷达参考，<code>odom</code> 是里程计使用的参考。TF 是它们之间的位置和朝向换算关系。</p>
 <p>评测器先用第一对位姿把两个参考系对齐，后续就比较偏差，不用整条轨迹重新拟合。<strong>RMSE</strong> 可以理解为把整段试验的误差合成一个数，大误差受到更大权重；它不是最大误差，也不表示每一帧都偏同样的距离。</p>
-<p><strong>2026-09-06 当前单次基线：</strong>真实行程约 16.7 米，185 对位姿，位置 RMSE 约 0.54 米，最大位置误差约 1.19 米；位置 RMSE 目标为 0.15 米，尚未通过。详细指标见 <a href="localization.md">定位说明</a>。这条基线暂未融合 IMU，也没有闭环建图或已有地图重定位。</p>
+<p><strong>2026-09-06 当前结果：</strong>L580 新外观、车顶雷达、自适应地面识别和车体过滤组合下，三次约 17 米的名义行驶试验，位置 RMSE 分别为 <strong>0.100、0.116、0.106 米</strong>，均通过 0.15 米目标。旧版 0.54 米记录保留为历史基线；新旧模型、雷达高度和前处理同时变化，不能只归功于某一个改动。详细指标见 <a href="localization.md">定位说明</a>。这仅代表当前固定标志物场景通过；IMU 融合、闭环建图、已有地图重定位和动态铲装定位尚未完成。</p>
 </section>
 <section id="section-8">
 <h2>8. 想改某个效果，应该找哪里</h2>
@@ -312,7 +317,7 @@ Gazebo 独立真实位置 /loader/ground_truth/odometry
 <tr><td>整车铲土受力和材料转移</td><td><code>loader_soil/src/loader_soil_slice_system.cpp</code> 及 Xacro 中的插件参数</td><td>构建、检查铲装和守恒</td></tr>
 <tr><td>雷达分辨率、频率、距离噪声；IMU 噪声</td><td>车辆 Xacro 中的传感器定义</td><td>重启，再检查传感器数据</td></tr>
 <tr><td>雷达额外丢点和旋转畸变</td><td><code>loader_sensor_effects/config/nominal.yaml</code></td><td>重启 perception，运行效应检查</td></tr>
-<tr><td>当前定位参数和平地裁剪</td><td><code>simulation/config/localization/kiss_icp.yaml</code></td><td>重跑定位评测，与旧报告对比</td></tr>
+<tr><td>当前定位参数、地面识别和车体过滤</td><td><code>simulation/config/localization/kiss_icp.yaml</code></td><td>重跑定位评测，与同模型配置的报告对比</td></tr>
 <tr><td>新的车辆命令或状态字段</td><td><code>loader_sim_msgs/msg/</code>，以及所有读写它的代码</td><td>构建，并同步改发布、接收和布局</td></tr>
 </tbody></table></div>
 <p>表中省略 <code>ros_ws/src/</code> 的包路径，都位于该目录下；完整可点击路径见 <a href="code_map.html">代码地图</a>。</p>
@@ -378,11 +383,11 @@ Gazebo 独立真实位置 /loader/ground_truth/odometry
 <th scope="col">还缺什么</th>
 </tr></thead><tbody>
 <tr><td>第一阶段：基础环境</td><td>ROS、Gazebo、GPU 和通信基础已跑通</td><td>持续关注本机运行稳定性</td></tr>
-<tr><td>第二阶段：装载机</td><td>简化模型、正式力级控制、基本保护已跑通</td><td>厂家几何与实车参数标定，轮胎和液压细化</td></tr>
+<tr><td>第二阶段：装载机</td><td>L580 细节外观已接入并修正装配；正式力级控制、基本保护已跑通</td><td>物理仍为名义模型；厂家几何与实车参数标定，轮胎和液压细化</td></tr>
 <tr><td>第三阶段：砂土</td><td>二维土料已接入整车；独立三维高度场原型已验证</td><td>三维内核迁入整车、溢料、载荷惯量和材料标定</td></tr>
 <tr><td>Foxglove 可视化</td><td>六页布局已准备；14 个感知模式实时通道和控制回路通过</td><td>登录后对六页布局做目视确认</td></tr>
 <tr><td>第四阶段 M1：传感器效应</td><td>原始/效应点云逐帧对应，实测均为 10 Hz；IMU 噪声检查通过</td><td>平移畸变、更多误差来源、目标传感器标定</td></tr>
-<tr><td>第四阶段 M2：定位</td><td>KISS-ICP、独立真值和自动误差报告已接通</td><td>0.15 m 精度门槛、IMU 融合、多工况重复评测</td></tr>
+<tr><td>第四阶段 M2：定位</td><td>自适应地面识别与车体过滤已接入；三次名义行驶均通过 0.15 m RMSE 门槛</td><td>IMU 融合、坡地/转向/动态铲装、多工况重复评测</td></tr>
 <tr><td>后续自主作业</td><td>已有路线和部分配置骨架</td><td>完整规划控制、地图重定位、鱼眼/BEV 等继续开发</td></tr>
 </tbody></table></div>
 <p><strong><code>nominal</code> 表示目前采用估算或简化参数。</strong> <code>validated</code> 才表示经过所规定的对照和验收。文件里写了一个配置项或安装了某个库，不等于对应功能已经验收。</p>
@@ -404,7 +409,7 @@ Gazebo 独立真实位置 /loader/ground_truth/odometry
 <tr><td>手动前进时车推不动</td><td>铲刃是否顶住地面，是否仍在急停或禁用状态</td><td>先举升收斗，再核对手动使能状态</td></tr>
 <tr><td>提示 18765 已被占用</td><td>前一次仿真或桥可能还开着</td><td>回原启动窗口正常结束，再启动</td></tr>
 <tr><td><code>Package not found</code> 或找不到插件</td><td>构建结果或运行环境未加载</td><td>从正式启动器启动；必要时重新构建</td></tr>
-<tr><td><code>[WARN:COPY MODE]</code>、窗口不出现</td><td>WSLg 图形显示异常</td><td>当前启动器会尝试修复；此修复会重启 WSL 并停止其进程</td></tr>
+<tr><td><code>[WARN:COPY MODE]</code>、窗口不出现</td><td>WSLg 图形显示异常</td><td>有仿真运行时先等待结束；启动器会阻止此时自动重启 WSL</td></tr>
 <tr><td>整台 Windows 蓝屏重启</td><td>需要主机故障证据，不能只看项目日志</td><td>保留时间、错误码和转储信息，参考已有主机故障记录</td></tr>
 </tbody></table></div>
 <p>如果需要我继续排查，提供“用的哪条启动命令、在哪个窗口、做到哪一步、最后的错误文字”就足够开始。比如：“用 perception 启动，Gazebo 的车会动，但 Foxglove 的整车总览没有车速曲线。”</p>

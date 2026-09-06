@@ -1,0 +1,4 @@
+[INFO] [1788707122.900786109] [loader_localization_crop]: ground=adaptive, self_filter=True, visual_boxes=15
+[WARN] [1788707131.402986149] [loader_localization_crop]: missing scan-time body TF: dropped scan
+[WARN] [1788707136.518674662] [loader_localization_crop]: missing scan-time body TF: dropped scan
+[WARN] [1788707141.559389212] [loader_localization_crop]: missing scan-time body TF: dropped scan

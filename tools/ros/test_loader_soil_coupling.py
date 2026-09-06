@@ -109,6 +109,8 @@ def run_phase(
     lift_valve: float = 0.0,
     tilt_valve: float = 0.0,
     emergency_stop: bool = False,
+    lift_target: float | None = None,
+    tilt_target: float | None = None,
 ) -> None:
     deadline = node.phase_time_s() + duration_s
     wall_deadline = time.monotonic() + max(60.0, 20.0 * duration_s)
@@ -119,6 +121,10 @@ def run_phase(
                 f"simulation clock did not advance through a {duration_s:.1f}s phase"
             )
         if time.monotonic() >= next_publish:
+            if lift_target is not None:
+                lift_valve = pose_valve(node.vehicle_states[-1], "lift_joint", lift_target)
+            if tilt_target is not None:
+                tilt_valve = pose_valve(node.vehicle_states[-1], "bucket_tilt_joint", tilt_target)
             node.publish_command(
                 gear=gear,
                 traction_torque_nm=torque,
@@ -129,6 +135,39 @@ def run_phase(
             )
             next_publish = time.monotonic() + 0.02
         rclpy.spin_once(node, timeout_sec=0.01)
+
+
+def pose_valve(state: VehicleState, joint: str, target: float) -> float:
+    # Nominal valve feed-forward balances gravity; feedback corrects settling
+    # and payload changes. These are commands to the force-level controller.
+    bias = 0.15 if joint == "lift_joint" else 0.08
+    return max(-1.0, min(1.0, bias + 3.0 * (target - joint_position(state, joint))))
+
+
+def prepare_cutting_pose(node: SoilCouplingHarness) -> None:
+    """Recover from arbitrary startup settling before applying wheel torque."""
+    deadline = node.phase_time_s() + 8.0
+    stable_since = None
+    while node.phase_time_s() < deadline:
+        run_phase(node, 0.1, gear=VehicleCommand.GEAR_NEUTRAL, torque=0.0,
+                  brake=1.0, lift_target=0.0, tilt_target=0.0)
+        state = node.vehicle_states[-1]
+        errors = [abs(joint_position(state, name))
+                  for name in ("lift_joint", "bucket_tilt_joint")]
+        if max(errors) < 0.06:
+            if stable_since is None:
+                stable_since = node.phase_time_s()
+            if node.phase_time_s() - stable_since >= 0.3:
+                print("PASS  cutting pose ready: "
+                      f"lift={joint_position(state, 'lift_joint'):.3f}, "
+                      f"tilt={joint_position(state, 'bucket_tilt_joint'):.3f} rad", flush=True)
+                return
+        else:
+            stable_since = None
+    state = node.vehicle_states[-1]
+    raise RuntimeError("cutting pose did not settle; drive withheld: "
+                       f"lift={joint_position(state, 'lift_joint'):.3f}, "
+                       f"tilt={joint_position(state, 'bucket_tilt_joint'):.3f} rad")
 
 
 def main() -> int:
@@ -178,12 +217,7 @@ def main() -> int:
         require(len(initial_profile) == 280, "terrain height profile has the wrong size")
         require(initial_terrain.cell_size_m == 0.05, "terrain cell size is incorrect")
         require(initial_terrain.slice_width_m == 2.7, "terrain slice width is incorrect")
-        run_phase(
-            node,
-            0.1 if args.use_sim_time_for_phases else 1.0,
-            gear=VehicleCommand.GEAR_NEUTRAL,
-            torque=0.0,
-        )
+        prepare_cutting_pose(node)
         first_interaction_index = len(node.interactions)
         first_state_index = len(node.vehicle_states)
         run_phase(
@@ -191,6 +225,8 @@ def main() -> int:
             6.0,
             gear=VehicleCommand.GEAR_FORWARD,
             torque=10000.0,
+            lift_target=0.0,
+            tilt_target=0.0,
         )
         cutting = node.interactions[first_interaction_index:]
         driving = node.vehicle_states[first_state_index:]
@@ -217,7 +253,9 @@ def main() -> int:
                 f"wheel torque did not produce wheel motion: {maximum_wheel_speed:.4f} rad/s, "
                 f"{len(driving)} states, faults={driving[-1].fault_flags}, "
                 f"estop={driving[-1].emergency_stop_active}, "
-                f"efforts={list(driving[-1].joint_state.effort)}")
+                f"efforts={list(driving[-1].joint_state.effort)}, "
+                f"lift={joint_position(driving[-1], 'lift_joint'):.3f}, "
+                f"tilt={joint_position(driving[-1], 'bucket_tilt_joint'):.3f} rad")
         require(maximum_vehicle_speed > 0.05, "wheel torque did not produce vehicle motion")
         require(maximum_vehicle_speed < 4.0, "soil proxy caused an implausible speed transient")
         require(maximum_penetration > 0.01, "bucket never penetrated analytic terrain")
@@ -272,7 +310,8 @@ def main() -> int:
             gear=VehicleCommand.GEAR_NEUTRAL,
             torque=0.0,
             brake=1.0,
-            lift_valve=1.0,
+            lift_target=0.35,
+            tilt_target=0.25,
         )
         lifting_states = node.vehicle_states[lift_state_start_index:]
         require(bool(lifting_states), "no vehicle feedback during lift phase")
@@ -290,6 +329,8 @@ def main() -> int:
             3.0,
             gear=VehicleCommand.GEAR_REVERSE,
             torque=-10000.0,
+            lift_target=0.35,
+            tilt_target=0.25,
         )
         reversing_states = node.vehicle_states[reverse_state_start_index:]
         require(bool(reversing_states), "no vehicle feedback during reverse phase")
@@ -303,6 +344,8 @@ def main() -> int:
             gear=VehicleCommand.GEAR_NEUTRAL,
             torque=0.0,
             brake=1.0,
+            lift_target=0.35,
+            tilt_target=0.25,
         )
 
         dump_start_index = len(node.interactions)
@@ -314,6 +357,7 @@ def main() -> int:
             torque=0.0,
             brake=1.0,
             tilt_valve=-1.0,
+            lift_target=0.35,
         )
         dumping = node.interactions[dump_start_index:]
         dump_vehicle_states = node.vehicle_states[dump_state_start_index:]
@@ -447,6 +491,12 @@ def main() -> int:
         print(f"FAIL loader-soil coupled smoke: {error}", file=sys.stderr)
         return 1
     finally:
+        # Explicitly stop on failure too, rather than waiting for command timeout.
+        for _ in range(5):
+            node.publish_command(gear=VehicleCommand.GEAR_NEUTRAL,
+                                 traction_torque_nm=0.0, brake_command=1.0,
+                                 emergency_stop=True)
+            rclpy.spin_once(node, timeout_sec=0.02)
         node.destroy_node()
         rclpy.shutdown()
 

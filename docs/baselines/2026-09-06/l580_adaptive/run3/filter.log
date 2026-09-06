@@ -1,0 +1,3 @@
+[INFO] [1788707250.165794180] [loader_localization_crop]: ground=adaptive, self_filter=True, visual_boxes=15
+[WARN] [1788707259.017247791] [loader_localization_crop]: missing scan-time body TF: dropped scan
+[WARN] [1788707260.153774985] [loader_localization_crop]: self-filter queue overflow: dropped oldest scan

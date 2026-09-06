@@ -24,7 +24,7 @@
       <text x="50" y="159">手动：Foxglove → 手动网关</text><text x="50" y="181">自动：预设动作脚本</text>
       <text x="425" y="159">loader_control 正式控制器</text><text x="425" y="181">检查命令、液压与关节输出</text>
       <text x="800" y="159">Gazebo ＋ loader_soil</text><text x="800" y="181">车辆、碰撞、砂土与载荷</text>
-      <text x="50" y="327">雷达 / IMU → 名义效应</text><text x="50" y="349">当前定位另加平地裁剪</text>
+      <text x="50" y="327">雷达 / IMU → 名义效应</text><text x="50" y="349">车体过滤与地面识别</text>
       <text x="425" y="327">KISS-ICP 激光里程计</text><text x="425" y="349">当前未融合 IMU</text>
       <text x="800" y="327">evaluate_localization.py</text><text x="800" y="349">真值与估计 → 误差报告</text>
     </g>

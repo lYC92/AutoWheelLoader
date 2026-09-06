@@ -37,6 +37,9 @@ powershell -ExecutionPolicy Bypass -File .\scripts\windows\run_loader_soil_demo.
 传感器效应和定位，共六页。更新后请重新导入布局。
 
 第四阶段已接入日常感知模式：原始点云经过丢点/旋转畸变后发布到 `points_effect`。
+装载机默认使用修复后的 L580 细节外观；新的车体过滤与自适应地面识别已接入定位，
+三次名义行驶的位置 RMSE 为 0.100 / 0.116 / 0.106 m，均低于 0.15 m 目标。
+该结果仅覆盖当前固定标志物场景，IMU 融合和动态铲装定位仍待完成。
 激光里程计基线与真值误差评测见 [docs/localization.md](docs/localization.md)。首次运行
 `scripts/wsl/bootstrap_localization.sh` 构建后，可启动：
 

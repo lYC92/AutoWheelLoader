@@ -1,0 +1,35 @@
+[
+  {
+    "run": 1,
+    "matched_poses": 176,
+    "travel_m": 16.838535540152186,
+    "translation_rmse_m": 0.09984205681153754,
+    "translation_max_m": 0.19509057620763495,
+    "rotation_rmse_deg": 1.6492196652737845,
+    "sim_latency_p95_s": 0.05449999999999999,
+    "odometry_sim_hz": 9.887005649717514,
+    "nominal_accuracy_pass": true
+  },
+  {
+    "run": 2,
+    "matched_poses": 196,
+    "travel_m": 17.01677517549742,
+    "translation_rmse_m": 0.11618280442060282,
+    "translation_max_m": 0.23731209046186313,
+    "rotation_rmse_deg": 1.6209571132842504,
+    "sim_latency_p95_s": 0.05450000000000088,
+    "odometry_sim_hz": 10.0,
+    "nominal_accuracy_pass": true
+  },
+  {
+    "run": 3,
+    "matched_poses": 193,
+    "travel_m": 17.07013304145268,
+    "translation_rmse_m": 0.10555712845784175,
+    "translation_max_m": 0.22362919020024563,
+    "rotation_rmse_deg": 1.5826323099189137,
+    "sim_latency_p95_s": 0.05600000000000094,
+    "odometry_sim_hz": 10.0,
+    "nominal_accuracy_pass": true
+  }
+]

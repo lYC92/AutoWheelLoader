@@ -10,7 +10,7 @@ a{color:#146452;text-underline-offset:3px}a:hover{color:#083e32}a:focus-visible,
 aside{align-self:start;position:sticky;top:99px;max-height:calc(100vh - 125px);overflow:auto;padding:8px 12px 16px 0;font-size:14px}aside h2{margin:0 0 12px;font-size:16px;border:0;padding:0}.toc{list-style:none;padding:0;margin:0}.toc a{display:block;padding:7px 11px;border-radius:6px;color:#48606e;text-decoration:none;line-height:1.65}.toc a:hover,.toc a.active{background:#dceee9;color:#174f43}.aside-note{color:var(--muted);border-top:1px solid var(--line);padding-top:15px;margin-top:18px;font-size:13px}
 main{min-width:0;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:38px 46px 48px;box-shadow:0 5px 24px #19384905}.eyebrow{color:var(--accent);font-size:13px;font-weight:700;letter-spacing:.1em}h1{font-size:32px;line-height:1.5;margin:12px 0 22px;letter-spacing:-.02em}h2{font-size:25px;line-height:1.5;margin:0 0 22px;padding-top:8px}h3{font-size:19px;line-height:1.65;margin:28px 0 12px;color:#195446}p{margin:14px 0}strong{font-weight:700;color:#163a47}section{border-top:1px solid var(--line);padding-top:30px;margin-top:36px;scroll-margin-top:95px}li{padding-left:4px;margin-bottom:12px}ol,ul{padding-left:25px}
 code{font-family:Consolas,'Microsoft YaHei',monospace;font-size:.91em;background:#edf3f5;border-radius:4px;padding:2px 5px;overflow-wrap:anywhere}pre{margin:0;padding:16px 20px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.75}pre code{padding:0;background:none;font-size:14px;color:#e9f3f7}.code-box{background:#203a49;border-radius:9px;margin:18px 0;overflow:hidden}.code-label{font-size:12px;color:#c7dde8;padding:7px 20px;border-bottom:1px solid #486371;background:#2a4656}
-.table-scroll{overflow:auto;margin:20px 0;border:1px solid var(--line);border-radius:8px}table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.8;table-layout:auto}th,td{padding:12px 14px;text-align:left;vertical-align:top;overflow-wrap:anywhere;border-bottom:1px solid var(--line)}th{background:#edf4f6;font-weight:700;color:#264d60}td:first-child{min-width:140px;width:30%;color:#243f4e}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#fbfcfd}td code{font-size:13px}figure{margin:24px 0}figure svg{width:100%;height:auto;display:block}.page-footer{margin-top:35px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}.mobile-toc{display:none}
+.table-scroll{overflow:auto;margin:20px 0;border:1px solid var(--line);border-radius:8px}table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.8;table-layout:auto}th,td{padding:12px 14px;text-align:left;vertical-align:top;overflow-wrap:anywhere;border-bottom:1px solid var(--line)}th{background:#edf4f6;font-weight:700;color:#264d60}td:first-child{min-width:140px;width:30%;color:#243f4e}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#fbfcfd}td code{font-size:13px}figure{margin:24px 0}figure svg,figure img{width:100%;height:auto;display:block}.page-footer{margin-top:35px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}.mobile-toc{display:none}
 @media(min-width:1400px){main{padding-left:60px;padding-right:60px}}
 @media(max-width:1050px){.layout{grid-template-columns:220px minmax(0,1fr);gap:20px;padding:22px}main{padding:28px}h1{font-size:28px}.topbar{padding:12px 22px}}
 @media(max-width:780px){.topbar{position:static;align-items:flex-start;flex-direction:column;padding:16px}.layout{display:block;padding:16px}aside{position:static;max-height:none;padding:0 0 20px}.toc{display:grid;grid-template-columns:1fr 1fr;gap:2px}.aside-note{display:none}main{padding:25px 20px}h1{font-size:25px}h2{font-size:22px}table{min-width:530px}td:first-child{min-width:130px}figure{overflow:auto}figure svg{min-width:690px}section{scroll-margin-top:20px}html{scroll-padding-top:20px}.topnav a,.topnav button{font-size:13px}}
@@ -86,7 +86,9 @@ code{font-family:Consolas,'Microsoft YaHei',monospace;font-size:.91em;background
 <th scope="col">用途</th>
 </tr></thead><tbody>
 <tr><td><a href="../ros_ws/src/loader_description/urdf/loader.urdf.xacro">loader.urdf.xacro</a></td><td>正式模型模板：部件、质量、关节、传感器及插件开关。模型更新重点入口</td></tr>
-<tr><td><code>ros_ws/src/loader_description/meshes/</code></td><td>正在更新的模型网格资产目录；网格用于外观、碰撞还是传感器几何，取决于模型文件怎样引用它</td></tr>
+<tr><td><a href="../ros_ws/src/loader_description/meshes/l580/README.md">meshes/l580/README.md</a></td><td>L580 原始网格、修复部件和来源。用于外观和 GPU 雷达可见几何，物理碰撞仍采用名义几何体</td></tr>
+<tr><td><a href="../tools/model/prepare_loader_meshes.py">prepare_loader_meshes.py</a></td><td>修复轮胎跨轴残片与居中、分开前后车架、拆分玻璃和轮毂材质；通过 Blender 离线运行</td></tr>
+<tr><td><a href="../tools/model/render_loader.py">render_loader.py</a></td><td>从展开后的正式模型生成外观预览，可调整举升、翻斗和转向角</td></tr>
 <tr><td><a href="../ros_ws/src/loader_description/config/nominal_linkage.yaml">nominal_linkage.yaml</a></td><td>名义连杆几何与采样范围，供运动学验证工具读取</td></tr>
 <tr><td><a href="../ros_ws/src/loader_description/config/model_data_requirements.yaml">model_data_requirements.yaml</a></td><td>从简化模型走向实车模型所需数据的清单</td></tr>
 <tr><td><a href="../ros_ws/src/loader_description/launch/display.launch.py">display.launch.py</a></td><td>启动 RViz、模型发布和关节滑块，检查模型显示；区别于整车力级演示</td></tr>
@@ -138,7 +140,9 @@ code{font-family:Consolas,'Microsoft YaHei',monospace;font-size:.91em;background
 <tr><td><a href="../tools/ros/test_loader_soil_coupling.py">test_loader_soil_coupling.py</a></td><td>既是整车土料验收，也是默认自动演示的动作脚本，包含铲取、举升、转运与卸料</td></tr>
 <tr><td><a href="../tools/ros/run_localization_scenario.py">run_localization_scenario.py</a></td><td>专用定位行驶动作，先通过液压控制收斗举升，再倒车和前进</td></tr>
 <tr><td><a href="../tools/ros/generate_localization_world.py">generate_localization_world.py</a></td><td>从既有感知世界生成带固定标志物的测试世界，输出到运行目录</td></tr>
-<tr><td><a href="../tools/ros/filter_localization_cloud.py">filter_localization_cloud.py</a></td><td>效应流下游的名义平地裁剪，压紧为有限 XYZ 点，供 KISS-ICP 配准</td></tr>
+<tr><td><a href="../tools/ros/filter_localization_cloud.py">filter_localization_cloud.py</a></td><td>按扫描时刻 TF 过滤车体、识别地面，压紧为有限 XYZ 点；TF 缺失时有界等待后丢帧</td></tr>
+<tr><td><a href="../tools/ros/localization_geometry.py">localization_geometry.py</a></td><td>地面平面拟合、网格包围盒和坐标变换，纯几何计算，不消费真值</td></tr>
+<tr><td><a href="../tools/ros/test_localization_geometry.py">test_localization_geometry.py</a></td><td>不同高度、坡面、墙面、无效点以及运动铲斗的解析测试</td></tr>
 <tr><td><a href="../tools/ros/evaluate_localization.py">evaluate_localization.py</a></td><td>接收里程计和独立真值，按时间插值、初始对齐并输出 JSON/CSV 报告</td></tr>
 <tr><td><a href="../tools/ros/test_localization_metrics.py">test_localization_metrics.py</a></td><td>检查裁剪、初始对齐、插值和漂移统计是否符合已知答案</td></tr>
 <tr><td><a href="../tools/ros/test_loader_dynamics.py">test_loader_dynamics.py</a></td><td>检查车辆动力学响应、命令限幅、急停和超时；可被不同控制链测试调用</td></tr>
@@ -183,7 +187,7 @@ code{font-family:Consolas,'Microsoft YaHei',monospace;font-size:.91em;background
 <tr><td><a href="../simulation/worlds/soil_slice_collision_masks.sdf">soil_slice_collision_masks.sdf</a></td><td>专门验证刚性地面和松散料代理的碰撞分层</td></tr>
 <tr><td><a href="../simulation/smoke/loader_smoke.sdf">loader_smoke.sdf</a></td><td>最小 Gazebo/GPU 相机启动与性能检查场景</td></tr>
 <tr><td><a href="../simulation/config/gui/loader_demo.config">loader_demo.config</a></td><td>Gazebo 演示窗口和初始视图设置</td></tr>
-<tr><td><a href="../simulation/config/localization/kiss_icp.yaml">kiss_icp.yaml</a></td><td>当前定位算法和名义平地裁剪参数，正式定位启动器会加载</td></tr>
+<tr><td><a href="../simulation/config/localization/kiss_icp.yaml">kiss_icp.yaml</a></td><td>当前定位算法、地面识别和车体过滤参数；固定高度裁剪保留为历史对照模式</td></tr>
 <tr><td><a href="../simulation/config/materials/dry_sand_nominal.yaml">dry_sand_nominal.yaml</a></td><td>二维砂土原型的材料与几何参数；不自动覆盖 C++ 土料插件</td></tr>
 <tr><td><a href="../simulation/config/materials/dry_sand_3d_nominal.yaml">dry_sand_3d_nominal.yaml</a></td><td>独立三维砂土原型配置</td></tr>
 <tr><td><a href="../simulation/config/chrono/dem_smoke.json">dem_smoke.json</a></td><td>Chrono 小规模颗粒冒烟场景参数</td></tr>
