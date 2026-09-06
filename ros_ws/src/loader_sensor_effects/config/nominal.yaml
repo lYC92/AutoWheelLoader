@@ -1,0 +1,10 @@
+lidar_effects_node:
+  ros__parameters:
+    use_sim_time: true
+    input_topic: /loader/sensors/lidar/scan/points
+    output_topic: /loader/sensors/lidar/scan/points_effect
+    imu_topic: /loader/sensors/imu
+    dropout_probability: 0.10
+    distortion_enabled: true
+    random_seed: 7
+    scan_period_s: 0.1

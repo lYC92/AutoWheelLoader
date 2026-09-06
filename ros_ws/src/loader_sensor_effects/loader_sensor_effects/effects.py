@@ -56,13 +56,18 @@ def apply_rotation_distortion(
     width: int,
     scan_period_s: float,
     angular_velocity_rps: np.ndarray,
+    point_indices: np.ndarray | None = None,
 ) -> np.ndarray:
-    """Express points captured during a rotating scan in the start-of-scan frame.
+    """Synthesize measurements of a static scene from an instantaneous cloud.
 
     The sensor frame rotates with the vehicle at angular_velocity_rps while the
     beam sweeps.  A point captured at time t_i must be rotated by
-    -omega * t_i to express it in the frame at t=0.
+    -omega * t_i to express the reference point in the later sensor frame.
+    Preserve original organized-cloud indices when invalid points are removed.
     """
-    times = scan_column_times(width, xyz.shape[0], scan_period_s)
+    if width <= 0 or not np.isfinite(scan_period_s) or scan_period_s <= 0:
+        raise ValueError("scan width and period must be positive")
+    indices = np.arange(xyz.shape[0]) if point_indices is None else np.asarray(point_indices)
+    times = (indices % width) * (scan_period_s / width)
     angle_vectors = -np.asarray(angular_velocity_rps, dtype=np.float64)[None, :] * times[:, None]
     return rodrigues_rotate(xyz, angle_vectors)

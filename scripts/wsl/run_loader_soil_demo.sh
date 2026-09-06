@@ -6,6 +6,29 @@ project_root="$(cd "${script_dir}/../.." && pwd)"
 runtime_root="${HOME}/loader_sim_runtime"
 mode="${1:-physics}"
 control_mode="${2:-auto}"
+localization="${3:-none}"
+scenario="${4:-soil}"
+if [[ ${scenario} != soil && ${scenario} != localization ]]; then
+  printf 'ERROR: scenario must be soil or localization.\n' >&2
+  exit 2
+fi
+if [[ ${scenario} == localization && ( ${localization} != kiss_icp || ${control_mode} != auto ) ]]; then
+  printf 'ERROR: localization scenario requires auto / kiss_icp.\n' >&2
+  exit 2
+fi
+headless="${LOADER_HEADLESS:-0}"
+if [[ ${localization} != none && ${localization} != kiss_icp ]]; then
+  printf 'ERROR: localization must be none or kiss_icp.\n' >&2
+  exit 2
+fi
+if [[ ${localization} != none && ${mode} != perception ]]; then
+  printf 'ERROR: localization requires perception mode.\n' >&2
+  exit 2
+fi
+if [[ ${headless} == 1 && ${control_mode} != auto ]]; then
+  printf 'ERROR: headless validation requires auto mode.\n' >&2
+  exit 2
+fi
 
 if [[ ${mode} != physics && ${mode} != perception ]]; then
   printf 'Usage: %s [physics|perception] [auto|manual]\n' "$0" >&2
@@ -33,29 +56,47 @@ scenario_log="${runtime_root}/results/loader_soil_demo${suffix}.txt"
 foxglove_log="${runtime_root}/log/loader_soil_demo${suffix}_foxglove.log"
 manual_log="${runtime_root}/log/loader_soil_demo${suffix}_manual_gateway.log"
 sensor_tf_log="${runtime_root}/log/loader_soil_demo${suffix}_sensor_tf.log"
+effects_log="${runtime_root}/log/loader_soil_demo${suffix}_sensor_effects.log"
+imu_tf_log="${runtime_root}/log/loader_soil_demo${suffix}_imu_tf.log"
 soil_plugin_dir="${runtime_root}/install/loader_soil/lib"
 
 source /etc/profile.d/loader-sim-wslg.sh
 set +u
 source /opt/ros/jazzy/setup.bash
 source "${runtime_root}/install/setup.bash"
+if [[ ${localization} == kiss_icp ]]; then
+  if [[ ! -f ${runtime_root}/localization/install/setup.bash ]]; then
+    printf 'ERROR: run scripts/wsl/bootstrap_localization.sh first.\n' >&2
+    exit 2
+  fi
+  source "${runtime_root}/localization/install/setup.bash"
+fi
 set -u
 
 export GZ_SIM_SYSTEM_PLUGIN_PATH="${soil_plugin_dir}:/opt/ros/jazzy/lib:${GZ_SIM_SYSTEM_PLUGIN_PATH:-}"
 export LD_LIBRARY_PATH="${soil_plugin_dir}:${LD_LIBRARY_PATH:-}"
 
 mkdir -p "${runtime_root}/results" "${runtime_root}/log"
+if [[ ${scenario} == localization ]]; then
+  world_file="${runtime_root}/results/loader_localization.world.sdf"
+  python3 "${project_root}/tools/ros/generate_localization_world.py" "${world_file}"
+fi
 enable_lidar_imu=false
 if [[ ${mode} == perception ]]; then
   enable_lidar_imu=true
 fi
 xacro "${project_root}/ros_ws/src/loader_description/urdf/loader.urdf.xacro" \
   enable_ros2_control:=true enable_soil_slice:=true \
-  enable_lidar_imu:="${enable_lidar_imu}" >"${urdf_file}"
+  enable_lidar_imu:="${enable_lidar_imu}" \
+  enable_ground_truth:="${enable_lidar_imu}" >"${urdf_file}"
 
 if gz service -l 2>/dev/null | grep -q '^/world/loader_soil_slice/'; then
   printf '%s\n' 'ERROR: a loader_soil_slice Gazebo server is already running.' >&2
   printf '%s\n' 'Close the existing Gazebo window, then run this launcher again.' >&2
+  exit 3
+fi
+if (exec 9<>/dev/tcp/127.0.0.1/8765) 2>/dev/null; then
+  printf 'ERROR: Foxglove port 8765 is already in use. Close the existing demo first.\n' >&2
   exit 3
 fi
 
@@ -66,6 +107,11 @@ bridge_pid=''
 foxglove_pid=''
 manual_pid=''
 sensor_tf_pid=''
+effects_pid=''
+imu_tf_pid=''
+localization_pid=''
+localization_crop_pid=''
+evaluation_pid=''
 
 stop_process() {
   local process_id="$1"
@@ -86,6 +132,11 @@ stop_process() {
 }
 
 cleanup() {
+  stop_process "${evaluation_pid}"
+  stop_process "${localization_pid}"
+  stop_process "${localization_crop_pid}"
+  stop_process "${effects_pid}"
+  stop_process "${imu_tf_pid}"
   stop_process "${manual_pid}"
   stop_process "${sensor_tf_pid}"
   stop_process "${foxglove_pid}"
@@ -103,6 +154,7 @@ if [[ ${mode} == perception ]]; then
     '/loader_soil/observer/scan/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked'
     '/loader/sensors/lidar/scan/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked'
     '/loader/sensors/imu@sensor_msgs/msg/Imu[gz.msgs.IMU'
+    '/loader/ground_truth/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry'
   )
   test_arguments+=(--observer-topic /loader_soil/observer/scan/points)
 fi
@@ -124,6 +176,26 @@ if [[ ${mode} == perception ]]; then
     --child-frame-id soil_loader/lidar_link/loader_gpu_lidar \
     --ros-args -p use_sim_time:=true >"${sensor_tf_log}" 2>&1 &
   sensor_tf_pid=$!
+  ros2 run tf2_ros static_transform_publisher \
+    --frame-id imu_link --child-frame-id soil_loader/imu_link/loader_imu \
+    --ros-args -p use_sim_time:=true >"${imu_tf_log}" 2>&1 &
+  imu_tf_pid=$!
+  ros2 run loader_sensor_effects lidar_effects_node --ros-args \
+    --params-file "${project_root}/ros_ws/src/loader_sensor_effects/config/nominal.yaml" \
+    >"${effects_log}" 2>&1 &
+  effects_pid=$!
+  if [[ ${localization} == kiss_icp ]]; then
+    python3 "${project_root}/tools/ros/filter_localization_cloud.py" --ros-args \
+      --params-file "${project_root}/simulation/config/localization/kiss_icp.yaml" \
+      >"${runtime_root}/log/loader_localization_crop.log" 2>&1 &
+    localization_crop_pid=$!
+    ros2 run kiss_icp kiss_icp_node --ros-args \
+      --params-file "${project_root}/simulation/config/localization/kiss_icp.yaml" \
+      -r pointcloud_topic:=/loader/localization/points \
+      -r kiss/odometry:=/loader/localization/odometry \
+      >"${runtime_root}/log/loader_localization.log" 2>&1 &
+    localization_pid=$!
+  fi
 fi
 
 ros2 launch foxglove_bridge foxglove_bridge_launch.xml \
@@ -153,7 +225,7 @@ if [[ ${foxglove_ready} != true ]]; then
 fi
 
 foxglove_url='https://app.foxglove.dev/~/view?ds=foxglove-websocket&ds.url=ws%3A%2F%2Flocalhost%3A8765'
-if [[ ${LOADER_OPEN_FOXGLOVE:-1} != 0 ]] && command -v powershell.exe >/dev/null 2>&1; then
+if [[ ${headless} != 1 && ${LOADER_OPEN_FOXGLOVE:-1} != 0 ]] && command -v powershell.exe >/dev/null 2>&1; then
   powershell.exe -NoProfile -NonInteractive -Command \
     "Start-Process '${foxglove_url}'" >/dev/null 2>&1 || true
 fi
@@ -183,6 +255,7 @@ if ! gz service -l 2>/dev/null | grep -q '^/world/loader_soil_slice/create$'; th
   exit 1
 fi
 
+if [[ ${headless} != 1 ]]; then
 printf '%s\n' 'Opening the Gazebo window. Initial scene loading can take several seconds...'
 (
   # On this Windows 10 / WSLg host, running Qt and the simulation server on the
@@ -194,6 +267,7 @@ printf '%s\n' 'Opening the Gazebo window. Initial scene loading can take several
   exec gz sim -g --gui-config "${gui_config}"
 ) >"${gui_log}" 2>&1 &
 gui_pid=$!
+fi
 
 spawn_output="$(ros2 run ros_gz_sim create \
   -world loader_soil_slice \
@@ -220,6 +294,8 @@ done
 
 ros2 run controller_manager spawner loader_command_controller \
   --controller-manager /controller_manager --controller-manager-timeout 30 >/dev/null
+ros2 run controller_manager spawner joint_state_broadcaster \
+  --controller-manager /controller_manager --controller-manager-timeout 30 >/dev/null
 
 if [[ ${control_mode} == manual ]]; then
   python3 "${project_root}/tools/ros/loader_manual_gateway.py" \
@@ -227,6 +303,7 @@ if [[ ${control_mode} == manual ]]; then
   manual_pid=$!
 fi
 
+if [[ ${headless} != 1 ]]; then
 for _ in $(seq 1 60); do
   if gz service -l 2>/dev/null | grep -q '^/gui/move_to$'; then
     break
@@ -246,19 +323,48 @@ if ! gz service -l 2>/dev/null | grep -q '^/gui/move_to$'; then
 fi
 
 printf '%s\n' 'If needed, select soil_loader in Entity tree and press F to focus it.'
+fi
+
+if [[ ${scenario} == localization ]]; then
+  python3 "${project_root}/tools/ros/evaluate_localization.py" \
+    --output "${runtime_root}/results/localization" \
+    >"${runtime_root}/log/localization_evaluation.log" 2>&1 &
+  evaluation_pid=$!
+  sleep 3
+fi
 
 scenario_status=0
 if [[ ${control_mode} == auto ]]; then
-  printf '%s\n' 'Loader is ready. The automated dig cycle starts now.'
+  printf 'Loader is ready. Starting %s scenario.\n' "${scenario}"
   set +e
-  python3 "${project_root}/tools/ros/test_loader_soil_coupling.py" \
-    "${test_arguments[@]}" | tee "${scenario_log}"
+  if [[ ${scenario} == localization ]]; then
+    python3 "${project_root}/tools/ros/run_localization_scenario.py" | tee "${scenario_log}"
+  else
+    python3 "${project_root}/tools/ros/test_loader_soil_coupling.py" \
+      "${test_arguments[@]}" | tee "${scenario_log}"
+  fi
   scenario_status=${PIPESTATUS[0]}
   set -e
 else
   printf '%s\n' 'Loader is ready for manual control from the Foxglove Teleop panels.'
   printf '%s\n' 'Raise and curl the bucket before driving so the cutting edge clears the ground.'
   printf '%s\n' 'The gateway brakes automatically when a Teleop button is released.'
+fi
+
+if [[ -n ${evaluation_pid} ]]; then
+  kill -INT "${evaluation_pid}" >/dev/null 2>&1 || true
+  set +e
+  wait "${evaluation_pid}"
+  evaluation_status=$?
+  set -e
+  evaluation_pid=''
+  cat "${runtime_root}/log/localization_evaluation.log"
+  if [[ ${evaluation_status} -ne 0 ]]; then
+    scenario_status=${evaluation_status}
+  fi
+fi
+if [[ ${headless} == 1 ]]; then
+  exit "${scenario_status}"
 fi
 
 if [[ ${control_mode} == auto && ${scenario_status} -eq 0 ]]; then

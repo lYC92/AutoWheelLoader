@@ -1,0 +1,13 @@
+PASS  foxglove_bridge accepts TCP connections on 127.0.0.1:8765
+PASS  /foxglove_bridge node is running
+PASS  14 layout topics exist in the ROS graph (skipped 2 topics for inactive modes)
+PASS  18 layout field paths resolve against live message types
+PASS  Teleop drive input maps to a forward traction command
+PASS  stale Teleop input falls back to neutral braking within the timeout
+PASS  emergency stop latches and releases through the gateway
+PASS  /loader/manual/status publishes the documented JSON summary
+PASS  WebSocket handshake, CDR schemas and live samples for 14 topics
+INFO  maximum source timestamp reordering: 16.000 ms
+PASS  raw/effect point clouds and IMU connect to base_link through wire TF
+PASS  WebSocket Teleop -> bridge -> gateway -> VehicleCommand CDR round trip
+PASS  Foxglove bridge, layout and manual gateway verified end to end.

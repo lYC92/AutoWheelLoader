@@ -3,17 +3,18 @@
 
 Checks, in order:
   1. foxglove_bridge accepts TCP on 127.0.0.1:8765 and its node is in the graph.
-  2. Every topic referenced by foxglove/loader_simulation_layout.json exists in
-     the ROS graph (perception-only topics are skipped unless they exist).
+  2. Layout topics exist in the ROS graph; perception mode requires sensors.
   3. Every message field path used by the layout's Plot/Gauge panels resolves
      against the actual message type advertised on that topic.
   4. The manual gateway closes the loop: Teleop Twist input produces the
      expected VehicleCommand, stale input brakes, and emergency stop latches.
+  5. WebSocket CDR messages, source time, TF and command round trip are live.
 """
 
 from __future__ import annotations
 
 import json
+import argparse
 import math
 import re
 import socket
@@ -34,10 +35,12 @@ LAYOUT_PATH = PROJECT_ROOT / "foxglove" / "loader_simulation_layout.json"
 PERCEPTION_ONLY_TOPICS = {
     "/loader/sensors/imu",
     "/loader/sensors/lidar/scan/points",
+    "/loader/sensors/lidar/scan/points_effect",
     "/loader_soil/observer/scan/points",
 }
 
 ARRAY_SUFFIX = re.compile(r"\[[^\]]*\]$")
+LOCALIZATION_ONLY_TOPICS = {"/loader/localization/odometry", "/loader/localization/points"}
 
 
 class CheckFailed(RuntimeError):
@@ -133,7 +136,7 @@ def check_bridge_socket() -> None:
     print("PASS  foxglove_bridge accepts TCP connections on 127.0.0.1:8765")
 
 
-def check_layout_topics(node: BridgeCheck) -> None:
+def check_layout_topics(node: BridgeCheck, perception: bool = False) -> None:
     topics, field_paths = collect_layout_references(
         json.loads(LAYOUT_PATH.read_text(encoding="utf-8"))
     )
@@ -142,6 +145,11 @@ def check_layout_topics(node: BridgeCheck) -> None:
         30.0,
         "/loader/state to appear in the ROS graph",
     )
+    required = topics - LOCALIZATION_ONLY_TOPICS
+    if not perception:
+        required -= PERCEPTION_ONLY_TOPICS
+    node.wait_for(lambda: required <= {t for t, _ in node.get_topic_names_and_types()},
+                  30.0, "all layout topics to finish DDS discovery")
     graph = dict()
     for name, types in node.get_topic_names_and_types():
         graph.setdefault(name, []).extend(types)
@@ -162,7 +170,7 @@ def check_layout_topics(node: BridgeCheck) -> None:
     skipped = []
     for topic in sorted(topics):
         if topic not in graph:
-            if topic in PERCEPTION_ONLY_TOPICS:
+            if (topic in PERCEPTION_ONLY_TOPICS and not perception) or topic in LOCALIZATION_ONLY_TOPICS:
                 skipped.append(topic)
             else:
                 missing.append(topic)
@@ -170,7 +178,7 @@ def check_layout_topics(node: BridgeCheck) -> None:
         raise CheckFailed(f"layout topics missing from the ROS graph: {missing}")
     print(
         f"PASS  {len(topics) - len(skipped)} layout topics exist in the ROS graph "
-        f"(skipped {len(skipped)} perception-only topics)"
+        f"(skipped {len(skipped)} topics for inactive modes)"
     )
 
     checked = 0
@@ -255,17 +263,22 @@ def check_manual_gateway(node: BridgeCheck) -> None:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--mode", choices=["physics", "perception"], default="physics")
+    args = parser.parse_args()
     try:
         check_bridge_socket()
         rclpy.init()
         node = BridgeCheck()
         try:
-            check_layout_topics(node)
+            check_layout_topics(node, args.mode == "perception")
             check_manual_gateway(node)
+            from foxglove_wire_check import check_wire
+            check_wire(perception=args.mode == "perception")
         finally:
             node.destroy_node()
             rclpy.shutdown()
-    except CheckFailed as error:
+    except (CheckFailed, AssertionError, OSError, TimeoutError) as error:
         print(f"FAIL  {error}", file=sys.stderr)
         return 1
     print("PASS  Foxglove bridge, layout and manual gateway verified end to end.")

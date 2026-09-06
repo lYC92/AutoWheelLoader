@@ -1,0 +1,8 @@
+PASS  effect unit checks: deterministic dropout, Rodrigues rotation
+PASS  missing returns preserve scan timing; padded rows and intensity preserved
+PASS  sensor mount perturbations baked into URDF origins
+INFO  source rate=10.00 Hz, effect rate=10.00 Hz; raw=44, effect=44
+PASS  44 timestamp-matched raw/effect pairs; effect rate=10.00 Hz (simulation time)
+PASS  effect cloud live: dropout=0.103 stationary distortion max=0.00856 m layout/frame preserved
+PASS  IMU noise model: accel_z std=0.01744 m/s^2 gyro_z std=0.001643 rad/s around gravity mean
+PASS  sensor effect channel and IMU noise model verified end to end.

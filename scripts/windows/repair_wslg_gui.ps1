@@ -4,7 +4,13 @@ param(
     [string]$Mode = 'physics',
 
     [ValidateSet('auto', 'manual')]
-    [string]$ControlMode = 'auto'
+    [string]$ControlMode = 'auto',
+
+    [ValidateSet('none', 'kiss_icp')]
+    [string]$Localization = 'none',
+
+    [ValidateSet('soil', 'localization')]
+    [string]$Scenario = 'soil'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -35,7 +41,7 @@ Start-Sleep -Seconds 2
 
 Write-Host "Starting the loader demo immediately in $Mode / $ControlMode mode..."
 Write-Host 'Keep this PowerShell window open while Gazebo is running.'
-& wsl -d Ubuntu-24.04 -- bash $launcher $Mode $ControlMode
+& wsl -d Ubuntu-24.04 -- bash $launcher $Mode $ControlMode $Localization $Scenario
 $launcherStatus = $LASTEXITCODE
 
 if ($launcherStatus -ne 0) {

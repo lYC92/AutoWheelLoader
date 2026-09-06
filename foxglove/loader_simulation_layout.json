@@ -118,6 +118,34 @@
             },
             "splitPercentage": 67
           }
+        },
+        {
+          "title": "第四阶段·传感器",
+          "layout": {
+            "direction": "row",
+            "first": "3D!effectPerception",
+            "second": {
+              "direction": "column",
+              "first": "RawMessages!effectCloud",
+              "second": "Plot!imu",
+              "splitPercentage": 45
+            },
+            "splitPercentage": 65
+          }
+        },
+        {
+          "title": "第四阶段·定位",
+          "layout": {
+            "direction": "row",
+            "first": "3D!localization",
+            "second": {
+              "direction": "column",
+              "first": "Plot!localization",
+              "second": "RawMessages!localization",
+              "splitPercentage": 50
+            },
+            "splitPercentage": 65
+          }
         }
       ]
     },
@@ -451,7 +479,11 @@
         "perspective": true,
         "phi": 55,
         "thetaOffset": 135,
-        "targetOffset": [0, 0, 0],
+        "targetOffset": [
+          0,
+          0,
+          0
+        ],
         "fovy": 45,
         "near": 0.1,
         "far": 500
@@ -482,8 +514,16 @@
           "divisions": 30,
           "lineWidth": 1,
           "color": "#7b8794",
-          "position": [0, 0, 0],
-          "rotation": [0, 0, 0],
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
           "order": 1,
           "frameId": "base_link"
         }
@@ -507,7 +547,11 @@
         "perspective": true,
         "phi": 55,
         "thetaOffset": 135,
-        "targetOffset": [0, 0, 0],
+        "targetOffset": [
+          0,
+          0,
+          0
+        ],
         "fovy": 45,
         "near": 0.1,
         "far": 500
@@ -535,8 +579,16 @@
           "divisions": 30,
           "lineWidth": 1,
           "color": "#7b8794",
-          "position": [0, 0, 0],
-          "rotation": [0, 0, 0],
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
           "order": 1,
           "frameId": "soil_observer_lidar/link/gpu_lidar"
         }
@@ -552,6 +604,194 @@
       },
       "imageMode": {},
       "synchronize": false
+    },
+    "3D!effectPerception": {
+      "foxglovePanelTitle": "算法输入：丢点与旋转畸变",
+      "cameraState": {
+        "distance": 12,
+        "perspective": true,
+        "phi": 55,
+        "thetaOffset": 135,
+        "targetOffset": [
+          0,
+          0,
+          0
+        ],
+        "fovy": 45,
+        "near": 0.1,
+        "far": 500
+      },
+      "fixedFrame": "base_link",
+      "followMode": "follow-pose",
+      "followTf": "base_link",
+      "topics": {
+        "/robot_description": {
+          "visible": true
+        },
+        "/loader/sensors/lidar/scan/points_effect": {
+          "visible": true,
+          "colorField": "z",
+          "colorMode": "colormap",
+          "colorMap": "turbo",
+          "pointSize": 2
+        }
+      },
+      "layers": {
+        "loader-grid": {
+          "visible": true,
+          "frameLocked": true,
+          "label": "Ground grid",
+          "instanceId": "loader-grid",
+          "layerId": "foxglove.Grid",
+          "size": 30,
+          "divisions": 30,
+          "lineWidth": 1,
+          "color": "#7b8794",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "order": 1,
+          "frameId": "base_link"
+        }
+      },
+      "publish": {
+        "type": "point",
+        "poseTopic": "/goal_pose",
+        "pointTopic": "/clicked_point",
+        "poseEstimateTopic": "/initialpose",
+        "poseEstimateXDeviation": 0.5,
+        "poseEstimateYDeviation": 0.5,
+        "poseEstimateThetaDeviation": 0.26179939
+      },
+      "imageMode": {},
+      "synchronize": false
+    },
+    "RawMessages!effectCloud": {
+      "foxglovePanelTitle": "算法输入点云（保留原始时间戳）",
+      "topicPath": "/loader/sensors/lidar/scan/points_effect",
+      "diffEnabled": false,
+      "defaultExpanded": false,
+      "fontSize": 13
+    },
+    "3D!localization": {
+      "foxglovePanelTitle": "激光里程计与点云（odom）",
+      "cameraState": {
+        "distance": 12,
+        "perspective": true,
+        "phi": 55,
+        "thetaOffset": 135,
+        "targetOffset": [
+          0,
+          0,
+          0
+        ],
+        "fovy": 45,
+        "near": 0.1,
+        "far": 500
+      },
+      "fixedFrame": "odom",
+      "followMode": "follow-pose",
+      "followTf": "base_link",
+      "topics": {
+        "/robot_description": {
+          "visible": true
+        },
+        "/loader/sensors/lidar/scan/points_effect": {
+          "visible": true,
+          "colorField": "z",
+          "colorMode": "colormap",
+          "colorMap": "turbo",
+          "pointSize": 2
+        },
+        "/loader/localization/odometry": {
+          "visible": true
+        },
+        "/loader/localization/points": {
+          "visible": false,
+          "colorField": "z",
+          "colorMode": "colormap",
+          "colorMap": "turbo",
+          "pointSize": 3
+        }
+      },
+      "layers": {
+        "loader-grid": {
+          "visible": true,
+          "frameLocked": true,
+          "label": "Ground grid",
+          "instanceId": "loader-grid",
+          "layerId": "foxglove.Grid",
+          "size": 30,
+          "divisions": 30,
+          "lineWidth": 1,
+          "color": "#7b8794",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "order": 1,
+          "frameId": "base_link"
+        }
+      },
+      "publish": {
+        "type": "point",
+        "poseTopic": "/goal_pose",
+        "pointTopic": "/clicked_point",
+        "poseEstimateTopic": "/initialpose",
+        "poseEstimateXDeviation": 0.5,
+        "poseEstimateYDeviation": 0.5,
+        "poseEstimateThetaDeviation": 0.26179939
+      },
+      "imageMode": {},
+      "synchronize": false
+    },
+    "Plot!localization": {
+      "foxglovePanelTitle": "估计位置 / m（初始车体坐标系）",
+      "paths": [
+        {
+          "value": "/loader/localization/odometry.pose.pose.position.x",
+          "enabled": true,
+          "label": "x m",
+          "timestampMethod": "headerStamp"
+        },
+        {
+          "value": "/loader/localization/odometry.pose.pose.position.y",
+          "enabled": true,
+          "label": "y m",
+          "timestampMethod": "headerStamp"
+        },
+        {
+          "value": "/loader/localization/odometry.pose.pose.position.z",
+          "enabled": true,
+          "label": "z m",
+          "timestampMethod": "headerStamp"
+        }
+      ],
+      "xAxisVal": "timestamp",
+      "timeRange": "latest",
+      "timeWindowMode": "sliding",
+      "followingViewWidth": 20,
+      "showLegend": true,
+      "legendDisplay": "top",
+      "isSynced": true
+    },
+    "RawMessages!localization": {
+      "foxglovePanelTitle": "定位输出（非实车标定结果）",
+      "topicPath": "/loader/localization/odometry",
+      "defaultExpanded": true
     }
   },
   "globalVariables": {},

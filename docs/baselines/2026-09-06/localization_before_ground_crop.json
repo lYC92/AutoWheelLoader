@@ -1,0 +1,16 @@
+{
+  "algorithm": "KISS-ICP 1ffa7d7512f10bfc8b1185095011fa31184019e3",
+  "input": "/loader/sensors/lidar/scan/points_effect",
+  "alignment": "initial pose only; interpolated Gazebo truth; no trajectory fitting",
+  "matched_poses": 165,
+  "truth_samples": 909,
+  "duration_sim_s": 18.1,
+  "travel_m": 16.848641371504137,
+  "translation_rmse_m": 6.239083292725488,
+  "translation_max_m": 11.597677507888253,
+  "rotation_rmse_deg": 0.015458914801295196,
+  "rotation_max_deg": 0.056372672771042714,
+  "sim_latency_p95_s": 0.045999999999999375,
+  "odometry_sim_hz": 9.060773480662982,
+  "nominal_accuracy_pass": false
+}

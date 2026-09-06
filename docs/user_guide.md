@@ -35,7 +35,7 @@ cd "C:\Users\Liyangchuan\Documents\ChatGPT\New project"
 
 ## 3. 观测变量
 
-预制布局四个标签页：
+预制布局六个标签页；升级后重新导入 JSON 布局：
 
 - **整车总览**：车速/四轮轮速曲线、牵引扭矩、动臂角/铲斗角、液压压力、土体侵入深度、
   入斗/卸料流量、切削力；右侧车速和斗内载荷仪表、`VehicleState` 全量原始消息。
@@ -44,6 +44,22 @@ cd "C:\Users\Liyangchuan\Documents\ChatGPT\New project"
 - **手动控制**：见第 4 节。
 - **感知与三维**：车载雷达和固定观察雷达点云、车辆模型、IMU 曲线
   （只有 `-Mode perception` 启动时有点云数据）。
+- **第四阶段·传感器**：查看带名义丢点/旋转畸变的算法输入点云。
+- **第四阶段·定位**：查看里程计估计和 odom 下的车辆/点云，需启用定位。
+
+首次构建定位基线：
+
+```powershell
+wsl -d Ubuntu-24.04 -- bash '/mnt/c/Users/Liyangchuan/Documents/ChatGPT/New project/scripts/wsl/bootstrap_localization.sh'
+```
+
+之后使用以下命令运行带激光里程计的行驶试验；动作结束自动保存定位误差报告：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\windows\run_loader_soil_demo.ps1 -Mode perception -Localization kiss_icp -Scenario localization
+```
+
+报告和当前基线限制见 [localization.md](localization.md)。此里程计暂未融合 IMU、未做闭环建图。
 
 常用观测手段：
 

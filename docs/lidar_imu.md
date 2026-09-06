@@ -23,23 +23,29 @@
 
 - 随机丢点：`dropout_probability` 参数，丢点写为 NaN 以保持 1024×32 有组织布局，
   `random_seed` 固定时逐帧可复现；
-- 旋转扫描运动畸变：按列采集时刻与最新 IMU 角速度做 Rodrigues 旋转，把所有点统一到
-  扫描起始帧（名义近似：陀螺轴与雷达轴对齐，平移畸变暂未建模）；
+- 旋转扫描运动畸变：按原始列索引和最新 IMU 角速度，把瞬时理想点转换成扫描过程中
+  各采样时刻的测量坐标，模拟未去畸变的扫描；这不是去畸变算法。名义近似假定
+  陀螺轴与雷达轴对齐，平移畸变暂未建模；
 - IMU 噪声由 Gazebo 内建模型直接产生（见上表），xacro 参数
   `imu_gyro_noise_stddev`/`imu_gyro_bias_stddev`/`imu_accel_noise_stddev`/`imu_accel_bias_stddev`
   控制，置 0 即恢复理想测量；
 - 传感器安装标定扰动：xacro 参数 `lidar_mount_offset_xyz/rpy`、`imu_mount_offset_xyz/rpy`
   叠加在名义安装位姿上。
 
-验收（2026-09-05 本机通过）：
+正式 perception 启动器已自动加载 `loader_sensor_effects/config/nominal.yaml`，
+KISS-ICP 消费效应流。ROS 桥的点云端为可靠发布，效应节点使用可靠订阅，避免本机 WSL
+大消息分片丢失造成整帧丢失；这与模型中有意加入的 10% 点级丢失是两回事。
+
+验收（2026-09-06 本机复测通过）：
 
 ```powershell
 wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ project/scripts/wsl/smoke_test_sensor_effects.sh
 ```
 
-结果：丢点率 0.101（目标 0.10），静止畸变最大 0.0141 m（陀螺噪声在 120 m 量程端的
-物理一致表现），IMU 噪声实测标准差与配置一致（加速度计 0.01621 m/s²，陀螺
-0.001664 rad/s），安装扰动正确写入 URDF；单元检查覆盖丢点确定性和 Rodrigues 旋转。
+结果：44 对源时间戳一致的原始/效应扫描，均为 10.00 Hz；丢点率 0.103（目标 0.10），
+静止畸变最大 0.00856 m，IMU 噪声实测标准差与配置一致（加速度计 0.01744 m/s²，
+陀螺 0.001643 rad/s），安装扰动正确写入 URDF。单元检查还覆盖：NaN 不改变后续
+列的采样时刻、带行填充的 PointCloud2、强度字段及填充字节不被改写。
 证据：`/home/lyc/loader_sim_runtime/results/sensor_effects_smoke.txt`。
 
 ## 验证
@@ -88,7 +94,8 @@ wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ proj
 - IMU 温漂、轴不正交和动态零偏（当前为零均值固定零偏）；
 - 雷达平移运动畸变（需接入轮速/车速真值）、强度/反射率、雨尘衰减；
 - 传感器标定真值的独立发布通道（当前扰动直接写进 URDF/TF）；
-- 点云定位算法接入、地图和自动定位误差评测；
+- KISS-ICP 接入与自动真值评测已建立（见 [定位基线](localization.md)），精度验收、地图、
+  重定位和 IMU 融合仍待完成；
 - 使用目标实车雷达/IMU 的扫描模式、噪声和安装参数替换当前名义值。
 
 因此当前链路可用于接口开发和基本算法冒烟测试，尚不能作为目标传感器的统计仿真模型。

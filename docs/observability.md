@@ -12,7 +12,7 @@ PlotJuggler 适合后续做数十条高速时序信号的精细对齐、变换�
 ## 界面结构
 
 预制布局位于 [`../foxglove/loader_simulation_layout.json`](../foxglove/loader_simulation_layout.json)，
-分为四页：
+分为六页（更新后需要重新导入布局文件）：
 
 | 页面 | 主要内容 | 用途 |
 | --- | --- | --- |
@@ -20,6 +20,8 @@ PlotJuggler 适合后续做数十条高速时序信号的精细对齐、变换�
 | ROS 节点与消息 | Topic Graph、`VehicleCommand`、`VehicleState`、土体交互和地形状态 | 检查节点、Topic、服务及消息字段 |
 | 手动控制 | 两个 Teleop 十字键、使能、禁用、急停、急停复位、网关状态 | 手动驾驶和工作装置操作 |
 | 感知与三维 | 观察雷达/车载雷达点云、机器人模型、IMU 曲线和原始消息 | 调试激光雷达、定位和后续 BEV 感知 |
+| 第四阶段·传感器 | 丢点/旋转畸变后的点云、IMU、消息时间戳 | 检查算法实际输入，与理想点云对照 |
+| 第四阶段·定位 | odom 坐标系下的车辆、点云、估计位置曲线和里程计 | 使用 `-Mode perception -Localization kiss_icp` |
 
 Foxglove Bridge 默认向界面公布当前 ROS 图中的全部 Topic、参数和服务，因此预制面板不是
 信号白名单。要观察任意新节点或新消息，可在 Foxglove 中新增 Plot、Raw Messages、Topic
@@ -106,6 +108,10 @@ powershell -ExecutionPolicy Bypass -File .\scripts\windows\run_loader_soil_demo.
 | `/joint_states` | 完整关节位置、速度和力/力矩 |
 | `/tf`、`/tf_static` | 车辆与传感器坐标变换 |
 | `/loader/sensors/lidar/scan/points` | 车载 32 线雷达点云，仅 perception 模式 |
+| `/loader/sensors/lidar/scan/points_effect` | 算法输入：名义 10% 丢点与旋转畸变，保留扫描时间戳 |
+| `/loader/localization/points` | KISS-ICP 实际配准点；效应流经名义平地裁剪后的 XYZ |
+| `/loader/localization/odometry` | KISS-ICP 估计，仅启用定位时存在；不是地图全局定位 |
+| `/loader/ground_truth/odometry` | world 下的仿真真值，只供评测，不作为算法输入 |
 | `/loader_soil/observer/scan/points` | 固定观察雷达点云，仅 perception 模式 |
 | `/loader/sensors/imu` | 车载 IMU，仅 perception 模式 |
 | `/loader/manual/status` | 手动使能、急停、输入新鲜度和最终网关输出摘要 |
@@ -126,14 +132,25 @@ Plot 面板支持直接输入消息路径，例如
 
 ## 自动化验收
 
-整条监控链路（桥接端口、`/foxglove_bridge` 节点、布局引用的全部 Topic 与消息字段路径、
-手动网关的驾驶映射、超时回中制动和急停锁存/释放）由以下脚本在无 GUI 模式下验收：
+监控链路检查包括 ROS 话题/字段、真实 WebSocket 协议协商、CDR 消息解码、URDF、
+动态关节与 TF、手动网关超时/急停，以及 WebSocket 发布工作装置命令后的回读。
+perception 模式额外强制检查原始/效应点云、IMU 和通向 base_link 的 TF；缺失即失败。
 
 ```powershell
 wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ project/scripts/wsl/smoke_test_foxglove_bridge.sh
+wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ project/scripts/wsl/smoke_test_foxglove_bridge.sh perception
 ```
 
-检查结果写入 WSL 的 `/home/lyc/loader_sim_runtime/results/foxglove_bridge_smoke.txt`。
+检查结果写入 WSL 的 `~/loader_sim_runtime/results/foxglove_bridge_{physics,perception}_smoke.txt`。
+测试使用独立 ROS domain 和 Gazebo partition；8765 端口已占用时会退出。
+首次运行在运行目录创建独立 Python venv 并安装固定版本 websockets 15.0.1。
+
+2026-09-06 复核发现并修复：旧启动器遗漏 `joint_state_broadcaster`，导致 `/joint_states`
+和 `/tf` 只有订阅端、没有实际消息。当前正式启动器和测试均显式激活该广播器。
+本机 Bridge 3.4.1 使用 `foxglove.sdk.v1`；测试同时提供 SDK 和旧 v1 子协议供协商。
+高频回调可能造成相邻时间戳轻微乱序；首轮实测 2–4 ms，最终感知回归最大 16 ms。
+验收要求源时间持续推进、乱序不超过
+100 ms，Plot 使用消息 header 时间戳。协议验收不替代登录后对预制布局的目视检查。
 
 ## 故障检查
 

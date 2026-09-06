@@ -17,14 +17,15 @@ import math
 import sys
 import time
 import xml.etree.ElementTree as ET
+from types import SimpleNamespace
 
 import numpy as np
 import rclpy
 from rclpy.node import Node
-from sensor_msgs.msg import Imu, PointCloud2
+from sensor_msgs.msg import Imu, PointCloud2, PointField
 
 from loader_sensor_effects.effects import dropout_keep_mask, rodrigues_rotate
-from loader_sensor_effects.lidar_effects_node import cloud_dtype
+from loader_sensor_effects.lidar_effects_node import cloud_dtype, LidarEffectsNode
 
 DROPOUT_PROBABILITY = 0.10
 RANDOM_SEED = 7
@@ -60,6 +61,32 @@ def unit_checks() -> None:
     identity = rodrigues_rotate(np.array([[1.0, 2.0, 3.0]]), np.zeros((1, 3)))
     require(np.allclose(identity[0], [1.0, 2.0, 3.0]), "zero rotation must be identity")
     print("PASS  effect unit checks: deterministic dropout, Rodrigues rotation")
+
+    # A missing early return must not move later samples to an earlier column.
+    # Two rows with padding also detect treating PointCloud2 as a flat buffer.
+    cloud = PointCloud2(height=2, width=4, point_step=16, row_step=72, is_dense=False)
+    cloud.fields = [PointField(name=name, offset=4*i, datatype=PointField.FLOAT32, count=1)
+                    for i, name in enumerate(("x", "y", "z", "intensity"))]
+    raw_data = bytearray([0xA5] * (cloud.row_step * cloud.height))
+    points = np.ndarray((2, 4), dtype=cloud_dtype(cloud), buffer=raw_data, strides=(72, 16))
+    points["x"], points["y"], points["z"], points["intensity"] = 1.0, 0.0, 0.0, 42.0
+    points["x"][0, 1] = np.nan
+    cloud.data = bytes(raw_data)
+    output = []
+    fake = SimpleNamespace(distortion_enabled=True, scan_period_s=0.1,
+                           angular_velocity=np.array([0., 0., 1.]),
+                           dropout_probability=0., random_seed=7, scan_sequence=0,
+                           publisher=SimpleNamespace(publish=output.append))
+    LidarEffectsNode.on_cloud(fake, cloud)
+    out = output[0]
+    actual = np.ndarray((2, 4), dtype=cloud_dtype(out), buffer=bytes(out.data), strides=(72, 16))
+    require(np.allclose(actual["y"][1], -np.sin(np.arange(4)*0.025)), "second-row scan timing changed")
+    require(abs(actual["y"][0, 2] + math.sin(0.05)) < 1e-7, "NaN shifted scan column timing")
+    require(np.isnan(actual["x"][0, 1]), "invalid return was invented")
+    require(np.all(actual["intensity"] == 42), "non-XYZ fields changed")
+    require(bytes(out.data)[64:72] == bytes(raw_data)[64:72], "row padding changed")
+    require(len(out.data) == out.row_step*out.height, "PointCloud2 data length is inconsistent")
+    print("PASS  missing returns preserve scan timing; padded rows and intensity preserved")
 
 
 def urdf_checks(urdf_path: str) -> None:
@@ -120,8 +147,21 @@ def live_checks(node: EffectHarness) -> None:
     require(len(node.effect_clouds) >= 20, f"only {len(node.effect_clouds)} effect clouds")
     require(len(node.imu_messages) >= 400, f"only {len(node.imu_messages)} IMU messages")
 
-    raw = node.raw_clouds[-1]
-    effect = node.effect_clouds[-1]
+    def stamp(message):
+        return message.header.stamp.sec * 1_000_000_000 + message.header.stamp.nanosec
+    raw_by_stamp = {stamp(m): m for m in node.raw_clouds}
+    pairs = [(raw_by_stamp[stamp(m)], m) for m in node.effect_clouds if stamp(m) in raw_by_stamp]
+    require(len(pairs) >= 10, "raw/effect clouds do not share source timestamps")
+    raw, effect = pairs[-1]
+    stamps = [stamp(m) for m in node.effect_clouds]
+    require(all(b > a for a, b in zip(stamps, stamps[1:])), "effect timestamps are not increasing")
+    frequency = (len(stamps)-1)*1e9/(stamps[-1]-stamps[0])
+    raw_stamps = [stamp(m) for m in node.raw_clouds]
+    raw_frequency = (len(raw_stamps)-1)*1e9/(raw_stamps[-1]-raw_stamps[0])
+    print(f"INFO  source rate={raw_frequency:.2f} Hz, effect rate={frequency:.2f} Hz; "
+          f"raw={len(raw_stamps)}, effect={len(stamps)}", flush=True)
+    require(9.0 <= frequency <= 11.0, f"effect simulation-time frequency is {frequency:.2f} Hz")
+    print(f"PASS  {len(pairs)} timestamp-matched raw/effect pairs; effect rate={frequency:.2f} Hz (simulation time)")
     require(
         effect.width == raw.width and effect.height == raw.height
         and effect.point_step == raw.point_step,

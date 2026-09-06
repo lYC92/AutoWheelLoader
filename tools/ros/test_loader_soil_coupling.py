@@ -112,20 +112,23 @@ def run_phase(
 ) -> None:
     deadline = node.phase_time_s() + duration_s
     wall_deadline = time.monotonic() + max(60.0, 20.0 * duration_s)
+    next_publish = 0.0
     while node.phase_time_s() < deadline:
         if time.monotonic() >= wall_deadline:
             raise RuntimeError(
                 f"simulation clock did not advance through a {duration_s:.1f}s phase"
             )
-        node.publish_command(
-            gear=gear,
-            traction_torque_nm=torque,
-            brake_command=brake,
-            lift_valve=lift_valve,
-            tilt_valve=tilt_valve,
-            emergency_stop=emergency_stop,
-        )
-        rclpy.spin_once(node, timeout_sec=0.02)
+        if time.monotonic() >= next_publish:
+            node.publish_command(
+                gear=gear,
+                traction_torque_nm=torque,
+                brake_command=brake,
+                lift_valve=lift_valve,
+                tilt_valve=tilt_valve,
+                emergency_stop=emergency_stop,
+            )
+            next_publish = time.monotonic() + 0.02
+        rclpy.spin_once(node, timeout_sec=0.01)
 
 
 def main() -> int:
@@ -149,11 +152,20 @@ def main() -> int:
                 and node.terrain_states
                 and node.vehicle_states
                 and (args.observer_topic is None or len(node.observer_clouds) >= 3)
+                and node.command_publisher.get_subscription_count() > 0
+                and (not args.use_sim_time_for_phases or (
+                    node.phase_time_s() > 0.0
+                    and abs(node.phase_time_s() - (
+                        node.vehicle_states[-1].header.stamp.sec
+                        + node.vehicle_states[-1].header.stamp.nanosec*1e-9)) < 0.1))
             ):
                 break
         require(bool(node.interactions), "no BucketInteraction messages")
         require(bool(node.terrain_states), "no TerrainState messages")
         require(bool(node.vehicle_states), "no VehicleState messages")
+        require(node.command_publisher.get_subscription_count() > 0, "controller command subscription not discovered")
+        if args.use_sim_time_for_phases:
+            require(node.phase_time_s() > 0.0, "simulation clock has not initialized")
         if args.observer_topic is not None:
             require(len(node.observer_clouds) >= 3, "no initial observer lidar point clouds")
             initial_observer_cloud = node.observer_clouds[-1]
@@ -201,7 +213,11 @@ def main() -> int:
         final_terrain = node.terrain_states[-1]
         maximum_reported_payload_mass = max(state.bucket_payload_mass_kg for state in driving)
 
-        require(maximum_wheel_speed > 0.1, "wheel torque did not produce wheel motion")
+        require(maximum_wheel_speed > 0.1,
+                f"wheel torque did not produce wheel motion: {maximum_wheel_speed:.4f} rad/s, "
+                f"{len(driving)} states, faults={driving[-1].fault_flags}, "
+                f"estop={driving[-1].emergency_stop_active}, "
+                f"efforts={list(driving[-1].joint_state.effort)}")
         require(maximum_vehicle_speed > 0.05, "wheel torque did not produce vehicle motion")
         require(maximum_vehicle_speed < 4.0, "soil proxy caused an implausible speed transient")
         require(maximum_penetration > 0.01, "bucket never penetrated analytic terrain")

@@ -29,7 +29,16 @@ powershell -ExecutionPolicy Bypass -File .\scripts\windows\run_loader_soil_demo.
 启动器还会打开 Foxglove 数据工作台并连接 `ws://localhost:8765`。首次使用需要在浏览器中
 登录 Foxglove，然后从 **Layouts → Import from file...** 导入
 [`foxglove/loader_simulation_layout.json`](foxglove/loader_simulation_layout.json)。预制布局包含
-整车/液压/土体曲线、仪表、原始消息、ROS Topic 拓扑、激光点云和手动操作四组页面。
+整车/液压/土体曲线、仪表、原始消息、ROS Topic 拓扑、激光点云、手动操作，以及第四阶段
+传感器效应和定位，共六页。更新后请重新导入布局。
+
+第四阶段已接入日常感知模式：原始点云经过丢点/旋转畸变后发布到 `points_effect`。
+激光里程计基线与真值误差评测见 [docs/localization.md](docs/localization.md)。首次运行
+`scripts/wsl/bootstrap_localization.sh` 构建后，可启动：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\windows\run_loader_soil_demo.ps1 -Mode perception -Localization kiss_icp -Scenario localization
+```
 
 需要从界面手动驾驶、转向、举升和翻斗时运行：
 

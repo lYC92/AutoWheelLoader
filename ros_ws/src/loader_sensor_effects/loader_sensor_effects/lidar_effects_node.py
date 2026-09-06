@@ -9,11 +9,13 @@ and deterministic under a fixed seed.
 
 from __future__ import annotations
 
+import array
 import math
 
 import numpy as np
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import Imu, PointCloud2
 
 from loader_sensor_effects.effects import (
@@ -60,6 +62,10 @@ class LidarEffectsNode(Node):
         self.distortion_enabled = bool(self.get_parameter("distortion_enabled").value)
         self.random_seed = int(self.get_parameter("random_seed").value)
         self.scan_period_s = float(self.get_parameter("scan_period_s").value)
+        if not 0.0 <= self.dropout_probability <= 1.0:
+            raise ValueError("dropout_probability must be between 0 and 1")
+        if not math.isfinite(self.scan_period_s) or self.scan_period_s <= 0:
+            raise ValueError("scan_period_s must be positive and finite")
 
         self.angular_velocity = np.zeros(3)
         self.scan_sequence = 0
@@ -67,8 +73,11 @@ class LidarEffectsNode(Node):
         input_topic = str(self.get_parameter("input_topic").value)
         output_topic = str(self.get_parameter("output_topic").value)
         self.publisher = self.create_publisher(PointCloud2, output_topic, 10)
+        # The local ros_gz bridge offers RELIABLE. Large organized clouds are
+        # fragmented in DDS; best-effort reception loses whole scans on this WSL
+        # transport even while the raw reliable subscriber receives all 10 Hz.
         self.create_subscription(PointCloud2, input_topic, self.on_cloud, 10)
-        self.create_subscription(Imu, str(self.get_parameter("imu_topic").value), self.on_imu, 50)
+        self.create_subscription(Imu, str(self.get_parameter("imu_topic").value), self.on_imu, qos_profile_sensor_data)
         self.get_logger().info(
             f"Lidar effects ready: {input_topic} -> {output_topic} "
             f"(dropout={self.dropout_probability}, distortion={self.distortion_enabled}, "
@@ -87,16 +96,24 @@ class LidarEffectsNode(Node):
 
     def on_cloud(self, message: PointCloud2) -> None:
         count = message.width * message.height
+        if count == 0:
+            return
         dtype = cloud_dtype(message)
-        points = np.frombuffer(bytes(message.data), dtype=dtype, count=count).copy()
+        # Respect row padding and preserve every non-XYZ field and padding byte.
+        data = bytearray(message.data)
+        points = np.ndarray(
+            (message.height, message.width), dtype=dtype, buffer=data,
+            strides=(message.row_step, message.point_step),
+        )
 
-        xyz = np.stack([points["x"], points["y"], points["z"]], axis=1).astype(np.float64)
+        xyz = np.stack([points["x"].ravel(), points["y"].ravel(), points["z"].ravel()], axis=1).astype(np.float64)
         finite = np.isfinite(xyz).all(axis=1)
 
         if self.distortion_enabled:
             distorted = xyz.copy()
             distorted[finite] = apply_rotation_distortion(
-                xyz[finite], message.width, self.scan_period_s, self.angular_velocity
+                xyz[finite], message.width, self.scan_period_s, self.angular_velocity,
+                point_indices=np.flatnonzero(finite),
             )
             xyz = distorted
 
@@ -107,9 +124,9 @@ class LidarEffectsNode(Node):
         drop = ~keep & finite
         xyz[drop] = math.nan
 
-        points["x"] = xyz[:, 0]
-        points["y"] = xyz[:, 1]
-        points["z"] = xyz[:, 2]
+        points["x"] = xyz[:, 0].reshape(points.shape)
+        points["y"] = xyz[:, 1].reshape(points.shape)
+        points["z"] = xyz[:, 2].reshape(points.shape)
 
         out = PointCloud2()
         out.header = message.header
@@ -120,7 +137,9 @@ class LidarEffectsNode(Node):
         out.height = message.height
         out.width = message.width
         out.is_dense = False
-        out.data = points.tobytes()
+        # ROS accepts array('B') directly. Assigning bytes triggers Python's
+        # per-byte type/range validation on every megabyte-sized scan.
+        out.data = array.array("B", data)
         self.publisher.publish(out)
 
 
