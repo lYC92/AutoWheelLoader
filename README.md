@@ -5,6 +5,10 @@ Windows 10 + WSL2 上的无人装载机仿真平台。基础环境、GPU 图形�
 
 完整路线见 [windows_loader_simulation_plan.md](windows_loader_simulation_plan.md)。
 
+**第一次接触这个项目？** 先读 [零基础软件说明书](docs/beginner_guide.md)，再按需查
+[代码地图](docs/code_map.md)。也可以用浏览器直接打开 [带目录的阅读版](docs/beginner_guide.html)，
+无需启动仿真。
+
 ## 一键运行可视化演示
 
 在普通 PowerShell 中进入项目目录，运行：

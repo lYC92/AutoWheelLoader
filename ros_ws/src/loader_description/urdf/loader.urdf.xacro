@@ -6,6 +6,9 @@
     linkage measurements before dynamics results may be used quantitatively.
   -->
   <xacro:arg name="model_fidelity" default="nominal"/>
+  <!-- Visual-only: replace primitive visuals with the L580 wheel-loader meshes.
+       Collisions, inertia, and joints are unchanged, so dynamics are unaffected. -->
+  <xacro:arg name="mesh_visuals" default="true"/>
   <xacro:arg name="enable_dynamics" default="false"/>
   <xacro:arg name="enable_lidar_imu" default="false"/>
   <xacro:arg name="enable_ros2_control" default="false"/>
@@ -31,12 +34,13 @@
   <xacro:property name="nominal_track" value="2.5"/>
   <xacro:property name="nominal_wheel_radius" value="0.75"/>
   <xacro:property name="nominal_wheel_width" value="0.55"/>
+  <xacro:property name="loader_mesh_dir" value="file:///$(find loader_description)/meshes/l580"/>
 
   <material name="loader_yellow"><color rgba="0.95 0.58 0.03 1"/></material>
   <material name="loader_dark"><color rgba="0.08 0.09 0.10 1"/></material>
   <material name="bucket_gray"><color rgba="0.28 0.30 0.32 1"/></material>
 
-  <xacro:macro name="box_link" params="name mass size_x size_y size_z geometry_xyz material">
+  <xacro:macro name="box_link" params="name mass size_x size_y size_z geometry_xyz material mesh:=''">
     <link name="${name}">
       <inertial>
         <origin xyz="${geometry_xyz}" rpy="0 0 0"/>
@@ -47,8 +51,15 @@
           izz="${mass * (size_x * size_x + size_y * size_y) / 12.0}"/>
       </inertial>
       <visual>
-        <origin xyz="${geometry_xyz}" rpy="0 0 0"/>
-        <geometry><box size="${size_x} ${size_y} ${size_z}"/></geometry>
+        <xacro:if value="${mesh != '' and '$(arg mesh_visuals)' == 'true'}">
+          <!-- Mesh is baked into the link frame; keep the primitive as collision. -->
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry><mesh filename="${mesh}"/></geometry>
+        </xacro:if>
+        <xacro:unless value="${mesh != '' and '$(arg mesh_visuals)' == 'true'}">
+          <origin xyz="${geometry_xyz}" rpy="0 0 0"/>
+          <geometry><box size="${size_x} ${size_y} ${size_z}"/></geometry>
+        </xacro:unless>
         <material name="${material}"/>
       </visual>
       <collision>
@@ -71,8 +82,15 @@
           izz="${mass * (3 * nominal_wheel_radius * nominal_wheel_radius + nominal_wheel_width * nominal_wheel_width) / 12.0}"/>
       </inertial>
       <visual>
-        <origin xyz="0 0 0" rpy="${pi / 2.0} 0 0"/>
-        <geometry><cylinder radius="${nominal_wheel_radius}" length="${nominal_wheel_width}"/></geometry>
+        <xacro:if value="'$(arg mesh_visuals)' == 'true'">
+          <!-- Mesh is centered on the link frame with the axle along +y. -->
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry><mesh filename="${loader_mesh_dir}/wheel.STL"/></geometry>
+        </xacro:if>
+        <xacro:unless value="'$(arg mesh_visuals)' == 'true'">
+          <origin xyz="0 0 0" rpy="${pi / 2.0} 0 0"/>
+          <geometry><cylinder radius="${nominal_wheel_radius}" length="${nominal_wheel_width}"/></geometry>
+        </xacro:unless>
         <material name="loader_dark"/>
       </visual>
       <collision>
@@ -86,7 +104,8 @@
 
   <xacro:box_link
     name="rear_frame" mass="7200" size_x="2.8" size_y="2.2" size_z="0.8"
-    geometry_xyz="-1.4 0 0.15" material="loader_yellow"/>
+    geometry_xyz="-1.4 0 0.15" material="loader_yellow"
+    mesh="${loader_mesh_dir}/rear_body.STL"/>
   <joint name="base_to_rear_frame" type="fixed">
     <parent link="base_link"/>
     <child link="rear_frame"/>
@@ -95,7 +114,8 @@
 
   <xacro:box_link
     name="front_frame" mass="6200" size_x="3.0" size_y="2.2" size_z="0.75"
-    geometry_xyz="1.5 0 0.15" material="loader_yellow"/>
+    geometry_xyz="1.5 0 0.15" material="loader_yellow"
+    mesh="${loader_mesh_dir}/front_body.STL"/>
   <joint name="articulation_joint" type="revolute">
     <parent link="rear_frame"/>
     <child link="front_frame"/>
@@ -147,7 +167,8 @@
 
   <xacro:box_link
     name="lift_arm" mass="1200" size_x="2.8" size_y="0.55" size_z="0.35"
-    geometry_xyz="1.4 0 0" material="loader_yellow"/>
+    geometry_xyz="1.4 0 0" material="loader_yellow"
+    mesh="${loader_mesh_dir}/lift_arm.STL"/>
   <joint name="lift_joint" type="revolute">
     <parent link="front_frame"/><child link="lift_arm"/>
     <origin xyz="0.75 0 0.65" rpy="0 0 0"/>
@@ -158,7 +179,8 @@
 
   <xacro:box_link
     name="bucket" mass="1800" size_x="1.25" size_y="2.7" size_z="0.85"
-    geometry_xyz="0.40 0 -0.20" material="bucket_gray"/>
+    geometry_xyz="0.40 0 -0.20" material="bucket_gray"
+    mesh="${loader_mesh_dir}/bucket.STL"/>
   <joint name="bucket_tilt_joint" type="revolute">
     <parent link="lift_arm"/><child link="bucket"/>
     <origin xyz="2.8 0 0" rpy="0 0 0"/>

@@ -1,5 +1,8 @@
 # 使用简介：启动项目与观测变量
 
+如果还不清楚各个软件和代码模块分别做什么，请先读 [零基础软件说明书](beginner_guide.md)
+和 [代码地图](code_map.md)；本文主要用于日常操作速查。
+
 本文面向日常使用。环境安装和验收脚本见 [README.md](../README.md)，
 界面设计细节见 [observability.md](observability.md)。
 

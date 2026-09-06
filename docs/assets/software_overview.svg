@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="570" viewBox="0 0 1120 570" role="img" aria-labelledby="title desc">
+  <title id="title">装载机软件的三条工作链</title>
+  <desc id="desc">操作或脚本发出命令，经正式控制器驱动 Gazebo 与砂土模型。虚拟传感器的测量经过效应和裁剪进入定位算法。仿真真值与定位估计在独立评测器中比较。ROS 数据经桥接在 Foxglove 展示。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="#456579" stroke-width="1.6"/></marker>
+  </defs>
+  <rect width="1120" height="570" rx="20" fill="#f1f6f9"/>
+  <g font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif">
+    <text x="30" y="40" font-size="20" font-weight="700" fill="#193849">先看谁负责，再看数据怎样走</text>
+    <text x="30" y="69" font-size="15" fill="#526b79">箭头表示命令或数据流；物理运动、算法估计与评分分别处理。</text>
+    <g fill="#fff" stroke="#c5d7e0" stroke-width="1.5">
+      <rect x="30" y="99" width="310" height="100" rx="12"/>
+      <rect x="405" y="99" width="310" height="100" rx="12"/>
+      <rect x="780" y="99" width="310" height="100" rx="12"/>
+      <rect x="30" y="267" width="310" height="100" rx="12"/>
+      <rect x="405" y="267" width="310" height="100" rx="12"/>
+      <rect x="780" y="267" width="310" height="100" rx="12"/>
+    </g>
+    <g fill="#193849" font-size="20" font-weight="700">
+      <text x="50" y="132">① 发出命令</text><text x="425" y="132">② 计算力与扭矩</text><text x="800" y="132">③ 计算物理运动</text>
+      <text x="50" y="300">④ 生成传感器测量</text><text x="425" y="300">⑤ 根据测量估计位置</text><text x="800" y="300">⑥ 用真实位置评分</text>
+    </g>
+    <g fill="#526b79" font-size="15">
+      <text x="50" y="159">手动：Foxglove → 手动网关</text><text x="50" y="181">自动：预设动作脚本</text>
+      <text x="425" y="159">loader_control 正式控制器</text><text x="425" y="181">检查命令、液压与关节输出</text>
+      <text x="800" y="159">Gazebo ＋ loader_soil</text><text x="800" y="181">车辆、碰撞、砂土与载荷</text>
+      <text x="50" y="327">雷达 / IMU → 名义效应</text><text x="50" y="349">当前定位另加平地裁剪</text>
+      <text x="425" y="327">KISS-ICP 激光里程计</text><text x="425" y="349">当前未融合 IMU</text>
+      <text x="800" y="327">evaluate_localization.py</text><text x="800" y="349">真值与估计 → 误差报告</text>
+    </g>
+    <g fill="none" stroke="#456579" stroke-width="2" marker-end="url(#arrow)">
+      <path d="M346 149H396"/><path d="M721 149H771"/>
+      <path d="M935 203V225H185V257"/>
+      <path d="M346 317H396"/><path d="M721 317H771"/>
+      <path d="M1030 203V257" stroke-dasharray="5 4"/>
+    </g>
+    <g fill="#456579" font-size="13">
+      <text x="475" y="246">物理世界产生虚拟测量</text><text x="1041" y="240">真值</text>
+    </g>
+    <rect x="30" y="403" width="1060" height="121" rx="12" fill="#dceee9"/>
+    <text x="50" y="438" font-size="20" font-weight="700" fill="#20594d">Foxglove：观察实验数据的工作台</text>
+    <text x="50" y="469" font-size="16" fill="#2f6559">状态、关节、土料、点云、IMU、定位等 ROS 数据 → Foxglove Bridge → 浏览器面板</text>
+    <text x="50" y="498" font-size="15" fill="#2f6559">手动模式还可以从页面发送输入；真正的运动计算仍在控制器与 Gazebo 中完成。</text>
+    <text x="30" y="553" font-size="13" fill="#526b79">当前软件快照 · 2026-09-06　｜　第三方基础软件与项目代码共同组成整套系统</text>
+  </g>
+</svg>

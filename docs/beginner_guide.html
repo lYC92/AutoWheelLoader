@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="面向零基础使用者的装载机仿真软件说明与代码地图。"><title>零基础说明书 · 装载机仿真软件</title><style>
+:root{color-scheme:light;--ink:#233846;--muted:#536977;--accent:#146452;--line:#dce5e9;--paper:#fff;--bg:#f3f6f8}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:100px}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 'Microsoft YaHei','Noto Sans CJK SC',system-ui,sans-serif}
+a{color:#146452;text-underline-offset:3px}a:hover{color:#083e32}a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #c98013;outline-offset:4px}
+.topbar{position:sticky;top:0;z-index:5;background:#193849;color:#fff;border-bottom:1px solid #304f60;padding:13px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{font-size:17px;font-weight:700}.topnav{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.topnav a,.topnav button{font:inherit;font-size:14px;color:#fff;text-decoration:none;padding:5px 13px;border:1px solid #55717f;border-radius:7px;background:transparent;cursor:pointer}.topnav a[aria-current=page]{background:#dceee9;color:#174f43;border-color:#dceee9}
+.layout{max-width:1500px;margin:auto;display:grid;grid-template-columns:270px minmax(0,1fr);gap:30px;padding:30px}
+aside{align-self:start;position:sticky;top:99px;max-height:calc(100vh - 125px);overflow:auto;padding:8px 12px 16px 0;font-size:14px}aside h2{margin:0 0 12px;font-size:16px;border:0;padding:0}.toc{list-style:none;padding:0;margin:0}.toc a{display:block;padding:7px 11px;border-radius:6px;color:#48606e;text-decoration:none;line-height:1.65}.toc a:hover,.toc a.active{background:#dceee9;color:#174f43}.aside-note{color:var(--muted);border-top:1px solid var(--line);padding-top:15px;margin-top:18px;font-size:13px}
+main{min-width:0;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:38px 46px 48px;box-shadow:0 5px 24px #19384905}.eyebrow{color:var(--accent);font-size:13px;font-weight:700;letter-spacing:.1em}h1{font-size:32px;line-height:1.5;margin:12px 0 22px;letter-spacing:-.02em}h2{font-size:25px;line-height:1.5;margin:0 0 22px;padding-top:8px}h3{font-size:19px;line-height:1.65;margin:28px 0 12px;color:#195446}p{margin:14px 0}strong{font-weight:700;color:#163a47}section{border-top:1px solid var(--line);padding-top:30px;margin-top:36px;scroll-margin-top:95px}li{padding-left:4px;margin-bottom:12px}ol,ul{padding-left:25px}
+code{font-family:Consolas,'Microsoft YaHei',monospace;font-size:.91em;background:#edf3f5;border-radius:4px;padding:2px 5px;overflow-wrap:anywhere}pre{margin:0;padding:16px 20px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.75}pre code{padding:0;background:none;font-size:14px;color:#e9f3f7}.code-box{background:#203a49;border-radius:9px;margin:18px 0;overflow:hidden}.code-label{font-size:12px;color:#c7dde8;padding:7px 20px;border-bottom:1px solid #486371;background:#2a4656}
+.table-scroll{overflow:auto;margin:20px 0;border:1px solid var(--line);border-radius:8px}table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.8;table-layout:auto}th,td{padding:12px 14px;text-align:left;vertical-align:top;overflow-wrap:anywhere;border-bottom:1px solid var(--line)}th{background:#edf4f6;font-weight:700;color:#264d60}td:first-child{min-width:140px;width:30%;color:#243f4e}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#fbfcfd}td code{font-size:13px}figure{margin:24px 0}figure svg{width:100%;height:auto;display:block}.page-footer{margin-top:35px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}.mobile-toc{display:none}
+@media(min-width:1400px){main{padding-left:60px;padding-right:60px}}
+@media(max-width:1050px){.layout{grid-template-columns:220px minmax(0,1fr);gap:20px;padding:22px}main{padding:28px}h1{font-size:28px}.topbar{padding:12px 22px}}
+@media(max-width:780px){.topbar{position:static;align-items:flex-start;flex-direction:column;padding:16px}.layout{display:block;padding:16px}aside{position:static;max-height:none;padding:0 0 20px}.toc{display:grid;grid-template-columns:1fr 1fr;gap:2px}.aside-note{display:none}main{padding:25px 20px}h1{font-size:25px}h2{font-size:22px}table{min-width:530px}td:first-child{min-width:130px}figure{overflow:auto}figure svg{min-width:690px}section{scroll-margin-top:20px}html{scroll-padding-top:20px}.topnav a,.topnav button{font-size:13px}}
+@media print{@page{size:A4;margin:16mm}body{background:#fff;font-size:10pt;line-height:1.65}.topbar,aside,.page-footer{display:none}.layout{display:block;padding:0;max-width:none}main{border:0;box-shadow:none;padding:0}.eyebrow{font-size:9pt}h1{font-size:23pt}h2{font-size:16pt}h3{font-size:12pt}h1,h2,h3{break-after:avoid}section{padding-top:18px;margin-top:22px}table{font-size:9pt;min-width:0!important}th,td{padding:7px 9px}thead{display:table-header-group}tr,figure,.code-box{break-inside:avoid}.table-scroll{overflow:visible;border-radius:0}figure svg{min-width:0!important}a{color:inherit;text-decoration:none}.code-box{background:#f1f5f7;border:1px solid #ccc}.code-label{background:#e8eef1;color:#333}pre code{color:#222}pre{padding:10px;line-height:1.5}pre code{font-size:9pt}p{orphans:3;widows:3}}
+</style></head>
+<body><header class="topbar"><div class="brand">装载机仿真软件 · 学习与查阅</div><nav class="topnav" aria-label="文档切换"><a href="beginner_guide.html" aria-current="page">零基础说明书</a><a href="code_map.html">代码地图</a><button type="button" onclick="window.print()">打印 / 保存 PDF</button></nav></header>
+<div class="layout"><aside aria-label="章节目录"><h2>本页目录</h2><ol class="toc"><li><a href="#section-1">1. 先弄清楚：这到底是一套什么软件</a></li><li><a href="#section-2">2. 六个部分分别在做什么</a></li><li><a href="#section-3">3. 文件在哪里，程序又在哪里运行</a></li><li><a href="#section-4">4. 第一次怎么用：只选一种模式启动</a></li><li><a href="#section-5">5. 跟着一次“举升”看懂代码如何合作</a></li><li><a href="#section-6">6. 六个 ROS 包：核心代码分别负责什么</a></li><li><a href="#section-7">7. 定位为什么又多了好几个程序</a></li><li><a href="#section-8">8. 想改某个效果，应该找哪里</a></li><li><a href="#section-9">9. 测试文件在干什么，怎样看结果</a></li><li><a href="#section-10">10. 当前做到哪了，哪些还不能当作完成</a></li><li><a href="#section-11">11. 看不懂或出问题时，先从现象判断</a></li><li><a href="#section-12">12. 想继续深入，按问题选文档</a></li></ol><p class="aside-note">初次阅读先看整体和启动方法。<br>用 Ctrl+F 搜索文件名或关键词。<br><br>离线阅读 · 无需启动仿真<br>文档快照：2026-09-06</p></aside>
+<main><div class="eyebrow">从使用方法，到代码职责</div><h1 id="heading-0-1">无人装载机仿真软件：零基础说明书</h1>
+<p>适用对象：想知道这套软件在做什么、怎样使用、每块代码负责什么，但还不会读 ROS 或 C++ 的项目使用者。</p>
+<p>文档版本：2026-09-06。内容以当前项目代码和已保存的测试结果为依据。后续开发状态请看 <a href="deployment_status.md">开发状态</a>。</p>
+<p>装载机模型正在单独更新。本版着重解释软件职责和阅读入口；模型尺寸、安装位置等具体数值请以最新模型文件为准。</p>
+<p><strong>你现在不需要从第一行代码开始学。先认识软件的几个部分，再顺着一个动作看它们怎样配合。</strong></p>
+<section id="section-1">
+<h2>1. 先弄清楚：这到底是一套什么软件</h2>
+<p>这是一套在电脑里做装载机实验的软件。电脑中有一辆简化装载机、一片地面和一堆砂土。你或程序发出驾驶、举升、翻斗命令，软件计算车怎么动、铲斗受到多少阻力、装进多少材料，再把过程和数据展示出来。</p>
+<p>它主要帮助我们回答三类问题：车能否按命令动作；传感器能否看到周围环境；定位算法能否判断车走到了哪里。</p>
+<div class="table-scroll"><table><thead><tr>
+<th scope="col">你看到的东西</th>
+<th scope="col">背后实际发生的事情</th>
+</tr></thead><tbody>
+<tr><td>车轮转动、车往前走</td><td>控制程序施加扭矩，Gazebo 计算运动和碰撞</td></tr>
+<tr><td>铲斗举起、土堆出现缺口</td><td>控制程序计算工作装置受力，土料程序扣除被铲走的体积</td></tr>
+<tr><td>Foxglove 中出现车速曲线</td><td>状态数据经过消息通道送到浏览器</td></tr>
+<tr><td>一大片彩色的点</td><td>虚拟雷达测到了周围表面，点的颜色用于帮助观察</td></tr>
+<tr><td>定位页面显示位置</td><td>KISS-ICP 根据前后扫描的变化估计车辆移动</td></tr>
+<tr><td>自动演示完成一套动作</td><td>脚本按预设流程发命令，部分动作使用关节反馈</td></tr>
+</tbody></table></div>
+<p><strong>当前自动演示是预先编写的作业流程。自主找料堆、规划路线、决定怎么铲装，还没有全部实现。</strong> 开发时使用 AI 写代码，也不表示仿真车里已经运行了大语言模型或完整自动驾驶系统。</p>
+<h3 id="heading-1-1">第一次阅读怎么安排</h3>
+<p>先读第 2、3 节，建立整体认识；想实际操作时读第 4 节；想知道代码在干什么时读第 5～7 节。遇到文件名不认识，就打开配套 <a href="code_map.html">代码地图</a>。第 8～11 节用于查参数、结果和故障，不用一次背完。</p>
+</section>
+<section id="section-2">
+<h2>2. 六个部分分别在做什么</h2>
+<p>可以把这套软件看成一场分工明确的实验：有人发命令，有人算运动，有人模拟测量，还有人记录成绩。</p>
+<figure class="overview"><svg xmlns="http://www.w3.org/2000/svg" width="1120" height="570" viewBox="0 0 1120 570" role="img" aria-labelledby="title desc">
+  <title id="title">装载机软件的三条工作链</title>
+  <desc id="desc">操作或脚本发出命令，经正式控制器驱动 Gazebo 与砂土模型。虚拟传感器的测量经过效应和裁剪进入定位算法。仿真真值与定位估计在独立评测器中比较。ROS 数据经桥接在 Foxglove 展示。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="#456579" stroke-width="1.6"/></marker>
+  </defs>
+  <rect width="1120" height="570" rx="20" fill="#f1f6f9"/>
+  <g font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif">
+    <text x="30" y="40" font-size="20" font-weight="700" fill="#193849">先看谁负责，再看数据怎样走</text>
+    <text x="30" y="69" font-size="15" fill="#526b79">箭头表示命令或数据流；物理运动、算法估计与评分分别处理。</text>
+    <g fill="#fff" stroke="#c5d7e0" stroke-width="1.5">
+      <rect x="30" y="99" width="310" height="100" rx="12"/>
+      <rect x="405" y="99" width="310" height="100" rx="12"/>
+      <rect x="780" y="99" width="310" height="100" rx="12"/>
+      <rect x="30" y="267" width="310" height="100" rx="12"/>
+      <rect x="405" y="267" width="310" height="100" rx="12"/>
+      <rect x="780" y="267" width="310" height="100" rx="12"/>
+    </g>
+    <g fill="#193849" font-size="20" font-weight="700">
+      <text x="50" y="132">① 发出命令</text><text x="425" y="132">② 计算力与扭矩</text><text x="800" y="132">③ 计算物理运动</text>
+      <text x="50" y="300">④ 生成传感器测量</text><text x="425" y="300">⑤ 根据测量估计位置</text><text x="800" y="300">⑥ 用真实位置评分</text>
+    </g>
+    <g fill="#526b79" font-size="15">
+      <text x="50" y="159">手动：Foxglove → 手动网关</text><text x="50" y="181">自动：预设动作脚本</text>
+      <text x="425" y="159">loader_control 正式控制器</text><text x="425" y="181">检查命令、液压与关节输出</text>
+      <text x="800" y="159">Gazebo ＋ loader_soil</text><text x="800" y="181">车辆、碰撞、砂土与载荷</text>
+      <text x="50" y="327">雷达 / IMU → 名义效应</text><text x="50" y="349">当前定位另加平地裁剪</text>
+      <text x="425" y="327">KISS-ICP 激光里程计</text><text x="425" y="349">当前未融合 IMU</text>
+      <text x="800" y="327">evaluate_localization.py</text><text x="800" y="349">真值与估计 → 误差报告</text>
+    </g>
+    <g fill="none" stroke="#456579" stroke-width="2" marker-end="url(#arrow)">
+      <path d="M346 149H396"/><path d="M721 149H771"/>
+      <path d="M935 203V225H185V257"/>
+      <path d="M346 317H396"/><path d="M721 317H771"/>
+      <path d="M1030 203V257" stroke-dasharray="5 4"/>
+    </g>
+    <g fill="#456579" font-size="13">
+      <text x="475" y="246">物理世界产生虚拟测量</text><text x="1041" y="240">真值</text>
+    </g>
+    <rect x="30" y="403" width="1060" height="121" rx="12" fill="#dceee9"/>
+    <text x="50" y="438" font-size="20" font-weight="700" fill="#20594d">Foxglove：观察实验数据的工作台</text>
+    <text x="50" y="469" font-size="16" fill="#2f6559">状态、关节、土料、点云、IMU、定位等 ROS 数据 → Foxglove Bridge → 浏览器面板</text>
+    <text x="50" y="498" font-size="15" fill="#2f6559">手动模式还可以从页面发送输入；真正的运动计算仍在控制器与 Gazebo 中完成。</text>
+    <text x="30" y="553" font-size="13" fill="#526b79">当前软件快照 · 2026-09-06　｜　第三方基础软件与项目代码共同组成整套系统</text>
+  </g>
+</svg>
+</figure>
+<div class="table-scroll"><table><thead><tr>
+<th scope="col">部分</th>
+<th scope="col">用日常语言解释</th>
+<th scope="col">你最容易找到的入口</th>
+</tr></thead><tbody>
+<tr><td>启动器</td><td>按顺序把实验需要的程序叫起来，结束时关闭它们</td><td><code>scripts/windows/run_loader_soil_demo.ps1</code></td></tr>
+<tr><td>车辆模型与控制器</td><td>模型规定车的形状和连接；控制器把命令变成关节上的力或扭矩</td><td><code>loader_description</code>、<code>loader_control</code></td></tr>
+<tr><td>Gazebo 与土料模型</td><td>Gazebo 计算物理运动；土料插件计算铲土阻力、材料转移和料堆变化</td><td>Gazebo、<code>loader_soil</code></td></tr>
+<tr><td>传感器与效应处理</td><td>模拟雷达、IMU 的测量，再给雷达加入部分丢点和扫描畸变</td><td><code>loader.urdf.xacro</code>、<code>loader_sensor_effects</code></td></tr>
+<tr><td>定位与评测</td><td>定位程序估计位置；另一个程序用仿真中的真实位置来评分</td><td>KISS-ICP、<code>evaluate_localization.py</code></td></tr>
+<tr><td>Foxglove</td><td>把数据画成曲线、仪表和点云；手动模式下也能发送操作输入</td><td><code>foxglove/loader_simulation_layout.json</code></td></tr>
+</tbody></table></div>
+<p>ROS 2 负责让这些程序通过规定好的消息交流。例如，控制器发布“当前车速”，Foxglove 接收并画图，其他程序也可以接收同一条信息。</p>
+<h3 id="heading-2-1">两个画面为什么同时存在</h3>
+<p><strong>Gazebo 窗口主要看物理现场</strong>：车在哪里、铲斗有没有碰到地面、砂堆怎么变了。</p>
+<p><strong>Foxglove 页面主要看数据</strong>：车速是多少、液压压力怎么变、雷达测到了什么、定位估计是否在移动。它展示的是程序收到的数据；例如选择 <code>odom</code> 坐标系时，车辆的位置会受到定位估计影响，不能直接当作真实位置。</p>
+<p>Foxglove 布局文件只规定面板怎么摆、显示哪个数据。修改曲线颜色不会改变装载机物理参数。</p>
+</section>
+<section id="section-3">
+<h2>3. 文件在哪里，程序又在哪里运行</h2>
+<p>本项目使用 Windows 和 Windows 内的 Ubuntu 两个环境。</p>
+<div class="table-scroll"><table><thead><tr>
+<th scope="col">位置</th>
+<th scope="col">放什么</th>
+<th scope="col">通常怎样接触它</th>
+</tr></thead><tbody>
+<tr><td>Windows 项目目录</td><td>我们写的源代码、场景、配置、文档</td><td>在文件资源管理器或编辑器中打开</td></tr>
+<tr><td>Ubuntu / WSL</td><td>ROS 2、Gazebo、控制程序和定位算法的运行环境</td><td>Windows 启动器会替你进入</td></tr>
+<tr><td>WSL 运行目录</td><td>编译产物、已安装的程序、日志和实验结果</td><td>排查问题或查看报告时打开</td></tr>
+</tbody></table></div>
+<p>Windows 源码目录是：</p>
+<div class="code-box"><div class="code-label">路径 / 流程</div><pre><code>C:\Users\Liyangchuan\Documents\ChatGPT\New project</code></pre></div>
+<p>Ubuntu 访问同一份源码时，路径写成：</p>
+<div class="code-box"><div class="code-label">路径 / 流程</div><pre><code>/mnt/c/Users/Liyangchuan/Documents/ChatGPT/New project</code></pre></div>
+<p><strong>这两个路径指向同一份项目文件，不是两套需要手动同步的代码。</strong> 路径里的空格是名称的一部分，复制命令时保留引号。</p>
+<p>程序编译和实验结果主要放在：</p>
+<div class="code-box"><div class="code-label">路径 / 流程</div><pre><code>/home/lyc/loader_sim_runtime</code></pre></div>
+<p>你也可以在 Windows 文件资源管理器的地址栏粘贴下面这一行：</p>
+<div class="code-box"><div class="code-label">路径 / 流程</div><pre><code>\\wsl.localhost\Ubuntu-24.04\home\lyc\loader_sim_runtime</code></pre></div>
+<h3 id="heading-3-1">build、install、log、results 有什么区别</h3>
+<div class="table-scroll"><table><thead><tr>
+<th scope="col">目录</th>
+<th scope="col">直观含义</th>
+<th scope="col">是否应该在里面改源代码</th>
+</tr></thead><tbody>
+<tr><td><code>build/</code></td><td>编译过程的中间文件，相当于加工现场</td><td>不在这里改</td></tr>
+<tr><td><code>install/</code></td><td>构建后供程序启动使用的文件</td><td>回项目源码目录改，再构建</td></tr>
+<tr><td><code>log/</code></td><td>启动、运行、出错的过程记录</td><td>主要用于阅读</td></tr>
+<tr><td><code>results/</code></td><td>测试报告、数据表、生成的模型等实验产物</td><td>用于分析与保存证据</td></tr>
+<tr><td><code>localization/</code></td><td>单独构建的第三方 KISS-ICP 源码和程序</td><td>日常先改项目里的定位配置</td></tr>
+</tbody></table></div>
+<p><strong>构建</strong>就是把源代码加工成可运行的程序。<strong>启动</strong>是让已经构建好的程序开始工作。安装环境、构建代码、启动演示是三件不同的事；日常看演示通常只需要启动。</p>
+</section>
+<section id="section-4">
+<h2>4. 第一次怎么用：只选一种模式启动</h2>
+<p>以下操作针对当前已经部署好的这台电脑。第一次先看基础演示，熟悉后再看传感器和定位。每次结束前一个演示，再启动下一个。</p>
+<h3 id="heading-4-1">4.1 打开基础演示</h3>
+<p>打开普通 Windows PowerShell，先输入：</p>
+<div class="code-box"><div class="code-label">PowerShell · 复制完整命令</div><pre><code>cd &quot;C:\Users\Liyangchuan\Documents\ChatGPT\New project&quot;</code></pre></div>
+<p>再输入：</p>
+<div class="code-box"><div class="code-label">PowerShell · 复制完整命令</div><pre><code>powershell -ExecutionPolicy Bypass -File .\scripts\windows\run_loader_soil_demo.ps1</code></pre></div>
+<p>启动成功后，会出现 Gazebo 窗口和 Foxglove 浏览器页面。终端会记录启动过程。车辆自动执行铲取、举升、倒车转运、制动和卸料，你先观察即可。动作结束后，Gazebo 会继续开着。</p>
+<p>如果镜头没有对准车，在 Gazebo 的 <code>Entity tree</code>（物体列表）中选中 <code>soil_loader</code>，按 <code>F</code> 聚焦。刚启动时需要等待场景和控制器就绪。</p>
+<p><strong>结束方法：</strong>关闭 Gazebo 窗口，或者回启动它的 PowerShell 按 <code>Ctrl+C</code>。只关闭 Foxglove 浏览器页面，不会停止仿真。</p>
+<h3 id="heading-4-2">4.2 想自己操作车</h3>
+<p>先结束自动演示，再运行完整命令：</p>
+<div class="code-box"><div class="code-label">PowerShell · 复制完整命令</div><pre><code>powershell -ExecutionPolicy Bypass -File .\scripts\windows\run_loader_soil_demo.ps1 -Mode physics -ControlMode manual</code></pre></div>
+<p>在 Foxglove 的“手动控制”页，先举升、收斗，让铲刃离开地面，再尝试行驶。方向键按住时持续操作，松开后网关会在约 0.35 秒内回中制动。工作装置和行驶使用各自的操作面板，详细按钮映射见 <a href="user_guide.md">使用简介</a>。</p>
+<p>急停会保持生效，恢复时使用“释放急停”和“启用手动控制”。这些控制只用于当前仿真实验。</p>
+<h3 id="heading-4-3">4.3 想看雷达和 IMU</h3>
+<div class="code-box"><div class="code-label">PowerShell · 复制完整命令</div><pre><code>powershell -ExecutionPolicy Bypass -File .\scripts\windows\run_loader_soil_demo.ps1 -Mode perception</code></pre></div>
+<p>这会运行带传感器的自动铲装演示。“感知与三维”页看原始雷达和 IMU；“第四阶段·传感器”页看加入丢点、扫描畸变后的点云。</p>
+<p>基础 <code>physics</code> 模式中没有这些感知话题，所以对应面板为空是正常现象。</p>
+<h3 id="heading-4-4">4.4 想看定位算法和误差报告</h3>
+<p>本机已完成 KISS-ICP 构建，可以直接运行：</p>
+<div class="code-box"><div class="code-label">PowerShell · 复制完整命令</div><pre><code>powershell -ExecutionPolicy Bypass -File .\scripts\windows\run_loader_soil_demo.ps1 -Mode perception -Localization kiss_icp -Scenario localization</code></pre></div>
+<p>程序会在有固定标志物的场景中，执行举升收斗、倒车、制动、前进和停车，并记录定位结果与真值。动作结束后生成误差报告。它是专门的行驶试验，与默认铲装演示的动作不同。</p>
+<p>如果以后换了环境，启动时明确提示需要构建定位程序，才执行以下命令：</p>
+<div class="code-box"><div class="code-label">PowerShell · 复制完整命令</div><pre><code>wsl -d Ubuntu-24.04 -u lyc -- bash &#x27;/mnt/c/Users/Liyangchuan/Documents/ChatGPT/New project/scripts/wsl/bootstrap_localization.sh&#x27;</code></pre></div>
+<h3 id="heading-4-5">4.5 命令里的几个选项是什么意思</h3>
+<div class="table-scroll"><table><thead><tr>
+<th scope="col">选项</th>
+<th scope="col">可以填什么</th>
+<th scope="col">改变什么</th>
+</tr></thead><tbody>
+<tr><td><code>-Mode</code></td><td><code>physics</code> 或 <code>perception</code></td><td>是否启用当前感知链路；两种都计算物理运动</td></tr>
+<tr><td><code>-ControlMode</code></td><td><code>auto</code> 或 <code>manual</code></td><td>命令由演示脚本发，还是由你在页面上操作</td></tr>
+<tr><td><code>-Localization</code></td><td><code>none</code> 或 <code>kiss_icp</code></td><td>是否运行当前激光里程计</td></tr>
+<tr><td><code>-Scenario</code></td><td><code>soil</code> 或 <code>localization</code></td><td>选择默认铲装流程，还是专用定位行驶流程</td></tr>
+</tbody></table></div>
+<p>不写选项时，默认是 <code>physics + auto + none + soil</code>。定位需要 <code>perception</code>；专用定位行驶流程还要求 <code>auto + kiss_icp</code>。先使用上面给出的完整组合，不必自己拼选项。</p>
+<h3 id="heading-4-6">4.6 Foxglove 第一次需要做什么</h3>
+<p>浏览器可能先显示登录页。登录后连接 <strong>Foxglove WebSocket</strong> 数据源，地址为 <code>ws://localhost:8765</code>。<code>localhost</code> 表示当前电脑，<code>8765</code> 是这条连接使用的端口编号。</p>
+<p>在布局菜单寻找 <code>Layouts → Import from file...</code>，选择：</p>
+<div class="code-box"><div class="code-label">路径 / 流程</div><pre><code>C:\Users\Liyangchuan\Documents\ChatGPT\New project\foxglove\loader_simulation_layout.json</code></pre></div>
+<p>界面菜单名称可能随 Foxglove 版本变化；核心操作是“从文件导入布局”。项目更新布局后，需要重新导入文件。</p>
+<div class="table-scroll"><table><thead><tr>
+<th scope="col">标签页</th>
+<th scope="col">第一次重点看什么</th>
+</tr></thead><tbody>
+<tr><td>整车总览</td><td>车速、压力和斗内载荷有没有随动作变化</td></tr>
+<tr><td>ROS 节点与消息</td><td>各程序交换的数据长什么样，暂时不必理解所有字段</td></tr>
+<tr><td>手动控制</td><td>驾驶、举升、翻斗和急停按钮</td></tr>
+<tr><td>感知与三维</td><td>雷达有没有看到地面、车体和周围物体</td></tr>
+<tr><td>第四阶段·传感器</td><td>加入效应后的传感器输入</td></tr>
+<tr><td>第四阶段·定位</td><td>算法估计的位置有没有随行驶变化</td></tr>
+</tbody></table></div>
+<p>截至本文版本，真实数据和控制回路自动检查已通过；此前浏览器停在登录页，登录后的六页布局目视验收仍待完成。</p>
+</section>
+<section id="section-5">
+<h2>5. 跟着一次“举升”看懂代码如何合作</h2>
+<p>这里以手动举升为例。你不用理解每个函数，只需要知道信息经过了哪些站。</p>
+<ol>
+<li><strong>你按下 Foxglove 的工作装置按钮。</strong> 浏览器发送操作输入，Foxglove Bridge 把它交给 ROS 2。</li>
+<li><strong><code>loader_manual_gateway.py</code> 翻译输入。</strong> 它把行驶和工作装置输入整理成统一的 <code>VehicleCommand</code>，发送到 <code>/loader/command</code>。它还处理输入超时、使能和急停。</li>
+<li><strong><code>loader_command_controller.cpp</code> 计算执行器输出。</strong> 它检查命令，计算名义油压和机构受力，向正式控制接口写入力或扭矩。</li>
+<li><strong>Gazebo 计算下一步运动。</strong> 车体质量、关节连接、重力、碰撞和外力共同决定动臂到底举了多少。</li>
+<li><strong>相关程序发布状态。</strong> 控制器发 <code>/loader/state</code>；<code>joint_state_broadcaster</code> 发 <code>/joint_states</code>；<code>robot_state_publisher</code> 根据关节角计算各部件间的坐标变换。</li>
+<li><strong>Foxglove 更新显示。</strong> 你看到举升角、压力曲线和车体模型发生变化。Gazebo 窗口也显示物理世界中的新姿态。</li>
+</ol>
+<p>自动模式只更换第 1、2 步的命令来源：由演示脚本直接发布统一命令，后面的正式控制链仍然使用。</p>
+<h3 id="heading-5-1">三个容易看错的地方</h3>
+<p><code>lift_valve_command = 0.25</code> 表示归一化的阀控制请求，不表示铲斗升高 0.25 米。实际运动还取决于重力、负载、机构位置等。</p>
+<p><code>VehicleCommand</code> 表示“希望怎么做”，<code>VehicleState</code> 表示“当前反馈是什么”。命令发出后，反馈不一定马上达到目标。</p>
+<p>当前整车状态里的纵向速度由轮速换算；定位评分使用另一条独立的 Gazebo 位姿真值，不能用轮速推算值替代真实运动轨迹。</p>
+<p>模型文件描述车的结构；当前正常动作通过力或扭矩驱动。读取关节状态来画模型，与直接把物理车辆瞬移到目标位置，是两种不同操作。</p>
+</section>
+<section id="section-6">
+<h2>6. 六个 ROS 包：核心代码分别负责什么</h2>
+<p>ROS 包可以理解为按功能整理的一组文件，集中放在 <code>ros_ws/src/</code>。每个包里面经常能看到 <code>package.xml</code> 和 <code>CMakeLists.txt</code>：前者声明名称和依赖，后者说明怎样构建、安装。这两个文件主要用于装配软件。</p>
+<h3 id="heading-6-1">6.1 loader_sim_msgs：规定数据怎么写</h3>
+<p>它定义程序之间交换的“四种表格”，本身不让车运动。</p>
+<div class="table-scroll"><table><thead><tr>
+<th scope="col">文件</th>
+<th scope="col">表格里装什么</th>
+</tr></thead><tbody>
+<tr><td><code>VehicleCommand.msg</code></td><td>挡位、牵引扭矩、制动、转向目标、举升/翻斗阀命令、急停</td></tr>
+<tr><td><code>VehicleState.msg</code></td><td>车速、轮速、关节状态、油缸位置和压力、斗内载荷、故障状态</td></tr>
+<tr><td><code>BucketInteraction.msg</code></td><td>铲斗受力、侵入深度、材料流入流出、斗内材料体积和质量</td></tr>
+<tr><td><code>TerrainState.msg</code></td><td>砂土高度、剩余体积、挖走/卸回体积、守恒误差</td></tr>
+</tbody></table></div>
+<p>例如，“车速”字段叫 <code>longitudinal_speed_mps</code>，末尾的 <code>mps</code> 说明单位是米/秒。其他程序按照同一个字段名读取它，就能正确交流。</p>
+<h3 id="heading-6-2">6.2 loader_description：规定车长什么样、各部件怎样连接</h3>
+<p>核心文件是 <code>ros_ws/src/loader_description/urdf/loader.urdf.xacro</code>。里面描述车架、车轮、动臂、铲斗、质量、惯量、关节限制，以及雷达和 IMU 的安装位置。Xacro 可以看作带参数开关的车辆模型模板。</p>
+<p>启动时，它被展开为 Gazebo 可以使用的车辆描述。<code>enable_ros2_control</code> 等参数决定启用哪些插件；<code>enable_lidar_imu</code> 决定是否加入传感器；<code>enable_ground_truth</code> 决定是否输出评测真值。</p>
+<p><code>config/nominal_linkage.yaml</code> 与 <code>tools/kinematics/generate_linkage_table.py</code> 用于检查举升、翻斗的几何关系。当前控制器中仍有直接写在 C++ 里的名义几何公式，不能认为改了这份 YAML 就自动改好了整个动力学模型。</p>
+<p><code>launch/display.launch.py</code> 是另一个入口，用 RViz 和关节滑块检查模型显示。它不是当前整车力级铲装演示的启动器。</p>
+<h3 id="heading-6-3">6.3 loader_control：当前正式执行命令的地方</h3>
+<p>核心文件是 <code>ros_ws/src/loader_control/src/loader_command_controller.cpp</code>。</p>
+<p>它接收 <code>/loader/command</code>，读取各关节的位置与速度，计算轮端扭矩、制动、铰接转向、举升与翻斗输出，同时处理命令限幅、超时和急停。它还接收土料模块的斗内质量，写进整车状态供其他程序读取。</p>
+<p>它运行在 ROS 2 的 <code>controller_manager</code> 中；后者负责装载、启动控制器，并组织控制接口。控制器输出经 Gazebo 的 <code>GazeboSimSystem</code> 接口作用到仿真关节。</p>
+<p>四个车轮、铰接、举升、翻斗共有 7 路主动输出；加上后桥摆动，当前读取 8 个关节状态。<code>config/loader_controllers.yaml</code> 规定控制器类型和 500 Hz 更新频率等。</p>
+<p>以后读 C++ 时，可以先找 <code>on_configure</code>（准备订阅和发布）、<code>on_activate</code>（开始工作）、<code>update</code>（每次控制更新），不用从数学辅助函数逐行读起。</p>
+<h3 id="heading-6-4">6.4 loader_soil：铲土、卸土和砂堆变化</h3>
+<p>核心文件是 <code>ros_ws/src/loader_soil/src/loader_soil_slice_system.cpp</code>，作为插件加载进 Gazebo。</p>
+<p>它跟踪斗刃位置，计算侵入、扫过的材料体积、名义切削阻力和入斗量。卸料时把体积重新放回地形；装进斗里的材料还会产生向下的重量，并在状态中报告质量。</p>
+<p>当前整车使用“二维剖面加固定宽度”的砂土模型：先保存沿一个方向的高度，再外挤成有宽度的料堆。画面中的一排料柱用于显示和雷达测量。它能看起来是三维的，但内部还不是完整三维散料模型。</p>
+<p>当前载荷处理包含额外重力和名义质心反馈，完整的载荷惯量更新仍待开发。砂土阻力由插件负责；刚性地面仍保留 Gazebo 碰撞，避免把砂土阻力重复算两遍。</p>
+<h3 id="heading-6-5">6.5 loader_sensor_effects：让雷达输入带上名义误差</h3>
+<p>核心代码有两个文件：<code>effects.py</code> 保存丢点和旋转计算，<code>lidar_effects_node.py</code> 负责接收、处理和发布点云。</p>
+<p>输入是原始雷达点云，输出是 <code>/loader/sensors/lidar/scan/points_effect</code>。当前配置对点进行约 10% 的随机丢失，并根据 IMU 角速度加入旋转扫描畸变。丢掉的点用 <code>NaN</code> 表示“这一点没有有效测量”，不是坐标变成零。</p>
+<p>配置放在 <code>ros_ws/src/loader_sensor_effects/config/nominal.yaml</code>。原始点云仍保留用于对照，但原始雷达本身也已配置距离噪声，不能把它理解为完全无误差的数据。</p>
+<p>IMU 的基础噪声配置在车辆 Xacro 的 Gazebo 传感器定义里。本包当前没有融合 IMU 来计算车辆位置，也没有实现平移扫描畸变。</p>
+<h3 id="heading-6-6">6.6 loader_dynamics：保留的早期动力学原型</h3>
+<p>核心文件是 <code>ros_ws/src/loader_dynamics/src/loader_dynamics_system.cpp</code>。它以前直接从 ROS 命令驱动 Gazebo 关节，现在保留作独立测试和对照，日常演示默认关闭。</p>
+<p><strong>现在看正式车辆控制行为，应先找 <code>loader_control</code>。</strong> 两份代码中有相似公式，是开发迁移留下的结果。不要同时启用 <code>enable_dynamics</code> 和 <code>enable_ros2_control</code>，否则两套执行器会争用关节。</p>
+</section>
+<section id="section-7">
+<h2>7. 定位为什么又多了好几个程序</h2>
+<p>定位要分开处理“测量”“估计”和“评分”，否则容易出现拿真实答案假装算法结果的情况。当前流程如下：</p>
+<div class="code-box"><div class="code-label">路径 / 流程</div><pre><code>Gazebo 雷达
+  → 原始点云 /loader/sensors/lidar/scan/points
+  → 效应处理：丢点、旋转畸变
+  → /loader/sensors/lidar/scan/points_effect
+  → 平地裁剪 filter_localization_cloud.py
+  → /loader/localization/points
+  → KISS-ICP
+  → 估计位置 /loader/localization/odometry
+  → 评测器 evaluate_localization.py
+
+Gazebo 独立真实位置 /loader/ground_truth/odometry
+  → 同一个评测器，用于比较与评分</code></pre></div>
+<p>KISS-ICP 使用前后点云的重合关系估计运动。这个算法来自第三方项目，其源码放在 WSL 运行目录的 <code>localization/src/kiss-icp/</code>。项目内保存固定版本的构建脚本、参数和接入代码。</p>
+<div class="table-scroll"><table><thead><tr>
+<th scope="col">文件</th>
+<th scope="col">为什么需要它</th>
+</tr></thead><tbody>
+<tr><td><code>bootstrap_localization.sh</code></td><td>下载固定版本并构建 KISS-ICP，便于复现</td></tr>
+<tr><td><code>simulation/config/localization/kiss_icp.yaml</code></td><td>指定量程、裁剪高度、算法参数和线程数</td></tr>
+<tr><td><code>generate_localization_world.py</code></td><td>在现有感知世界周围加入 8 个固定标志物</td></tr>
+<tr><td><code>run_localization_scenario.py</code></td><td>用控制命令完成可重复的举升、倒车、前进行驶流程</td></tr>
+<tr><td><code>filter_localization_cloud.py</code></td><td>从效应点云中排除近场、远场、无效点和当前平地回波</td></tr>
+<tr><td><code>evaluate_localization.py</code></td><td>按时间匹配算法估计和真实位置，输出误差报告</td></tr>
+<tr><td><code>test_localization_metrics.py</code></td><td>用可手算的轨迹检查评分代码，防止错误对齐掩盖漂移</td></tr>
+</tbody></table></div>
+<h3 id="heading-7-1">为什么要裁掉部分地面点</h3>
+<p>第一轮扫描中，大面积平地的重复采样让配准几乎以为车辆没动。对当前平地试验做高度裁剪后，结果有明显改善。这个阈值根据当前雷达安装高度设置，不适合直接搬到坡地或剧烈颠簸场景；后续需要更完整的地面分割和车体滤除。</p>
+<h3 id="heading-7-2">真值、坐标系和误差怎么理解</h3>
+<p><strong>真值</strong>是仿真器知道的真实运动状态，相当于评分时的参考答案；KISS-ICP 不读取这条答案通道。</p>
+<p><strong>坐标系</strong>是“从哪里开始量、朝哪个方向量”的约定。<code>world</code> 是仿真世界的参考，<code>base_link</code> 是车体参考，<code>lidar_link</code> 是雷达参考，<code>odom</code> 是里程计使用的参考。TF 是它们之间的位置和朝向换算关系。</p>
+<p>评测器先用第一对位姿把两个参考系对齐，后续就比较偏差，不用整条轨迹重新拟合。<strong>RMSE</strong> 可以理解为把整段试验的误差合成一个数，大误差受到更大权重；它不是最大误差，也不表示每一帧都偏同样的距离。</p>
+<p><strong>2026-09-06 当前单次基线：</strong>真实行程约 16.7 米，185 对位姿，位置 RMSE 约 0.54 米，最大位置误差约 1.19 米；位置 RMSE 目标为 0.15 米，尚未通过。详细指标见 <a href="localization.md">定位说明</a>。这条基线暂未融合 IMU，也没有闭环建图或已有地图重定位。</p>
+</section>
+<section id="section-8">
+<h2>8. 想改某个效果，应该找哪里</h2>
+<p>先说清楚你想改变的是“画面”“物理行为”“测量误差”还是“算法”，通常就能缩小到一个目录。</p>
+<div class="table-scroll"><table><thead><tr>
+<th scope="col">想改什么</th>
+<th scope="col">先找哪里</th>
+<th scope="col">修改后通常要做什么</th>
+</tr></thead><tbody>
+<tr><td>曲线颜色、显示哪个变量、面板位置</td><td><code>foxglove/loader_simulation_layout.json</code></td><td>重新导入布局</td></tr>
+<tr><td>Gazebo 镜头与 GUI 初始设置</td><td><code>simulation/config/gui/loader_demo.config</code></td><td>重新启动演示</td></tr>
+<tr><td>自动动作的顺序或持续时间</td><td><code>tools/ros/test_loader_soil_coupling.py</code>；定位行驶用 <code>run_localization_scenario.py</code></td><td>重启对应试验并检查动作</td></tr>
+<tr><td>手动按钮对应的牵引、转向上限和超时</td><td><code>tools/ros/loader_manual_gateway.py</code></td><td>重启手动演示并验证按钮和制动</td></tr>
+<tr><td>车身尺寸、质量、关节、雷达安装位置</td><td><code>loader_description/urdf/loader.urdf.xacro</code></td><td>重新生成模型；同步核对控制器名义几何</td></tr>
+<tr><td>控制器中的名义液压或力学公式</td><td><code>loader_control/src/loader_command_controller.cpp</code></td><td>构建，再做控制回归</td></tr>
+<tr><td>整车铲土受力和材料转移</td><td><code>loader_soil/src/loader_soil_slice_system.cpp</code> 及 Xacro 中的插件参数</td><td>构建、检查铲装和守恒</td></tr>
+<tr><td>雷达分辨率、频率、距离噪声；IMU 噪声</td><td>车辆 Xacro 中的传感器定义</td><td>重启，再检查传感器数据</td></tr>
+<tr><td>雷达额外丢点和旋转畸变</td><td><code>loader_sensor_effects/config/nominal.yaml</code></td><td>重启 perception，运行效应检查</td></tr>
+<tr><td>当前定位参数和平地裁剪</td><td><code>simulation/config/localization/kiss_icp.yaml</code></td><td>重跑定位评测，与旧报告对比</td></tr>
+<tr><td>新的车辆命令或状态字段</td><td><code>loader_sim_msgs/msg/</code>，以及所有读写它的代码</td><td>构建，并同步改发布、接收和布局</td></tr>
+</tbody></table></div>
+<p>表中省略 <code>ros_ws/src/</code> 的包路径，都位于该目录下；完整可点击路径见 <a href="code_map.html">代码地图</a>。</p>
+<h3 id="heading-8-1">为什么改了 YAML 有时不生效</h3>
+<p>配置文件只有被程序实际读取才会生效。目前 <code>profiles/</code> 中有整体运行方案，<code>materials/</code> 中有原型材料参数，但正式启动器并不会自动把所有 YAML 合成一份全局配置。某些数值还写在 C++ 或 Xacro 里。</p>
+<p>例如，三维砂土 YAML 供独立 Python 原型使用；改它不会自动把 Gazebo 中的二维土料模型改成三维。确认配置生效，需要找到启动脚本中的参数加载位置，再看实际输出是否改变。</p>
+<h3 id="heading-8-2">需要构建时用这一条</h3>
+<p>先停止当前演示，在 PowerShell 执行：</p>
+<div class="code-box"><div class="code-label">PowerShell · 复制完整命令</div><pre><code>wsl -d Ubuntu-24.04 -u lyc -- bash &#x27;/mnt/c/Users/Liyangchuan/Documents/ChatGPT/New project/scripts/wsl/build_workspace.sh&#x27;</code></pre></div>
+<p>C++ 源码和消息定义修改后需要构建。Python、配置和模型有些通过链接安装，有些通过安装步骤复制；拿不准时也运行这条构建命令，再启动新进程。只改本说明书无需构建仿真。</p>
+</section>
+<section id="section-9">
+<h2>9. 测试文件在干什么，怎样看结果</h2>
+<p>很多文件以 <code>test_</code>、<code>smoke_test_</code> 开头，所以容易让人以为有很多套独立软件。它们多数是验收人员：搭好一个场景，执行检查，然后给出结果。</p>
+<div class="table-scroll"><table><thead><tr>
+<th scope="col">名称习惯</th>
+<th scope="col">通常负责什么</th>
+</tr></thead><tbody>
+<tr><td><code>bootstrap_*</code>、<code>install_*</code></td><td>安装依赖、取得第三方源码、构建或安装基础软件</td></tr>
+<tr><td><code>build_*</code></td><td>构建我们自己的代码</td></tr>
+<tr><td><code>run_*</code></td><td>启动或执行一段流程；具体是否是测试要看文件用途</td></tr>
+<tr><td><code>smoke_test_*</code></td><td>跑一轮最小实际场景，检查基础功能有没有接通</td></tr>
+<tr><td><code>test_*</code></td><td>对收到的数据或计算结果作判断，有的也会发仿真命令</td></tr>
+<tr><td><code>verify_*</code>、<code>validate_*</code></td><td>核查环境、安装或模型是否满足预期</td></tr>
+<tr><td><code>benchmark_*</code></td><td>测速度、频率、实时系数和资源占用</td></tr>
+</tbody></table></div>
+<p>特别注意：<code>test_loader_soil_coupling.py</code> 同时被默认自动演示用来发动作命令，因此这个带 <code>test</code> 的文件也会影响你看到的演示流程。</p>
+<h3 id="heading-9-1">三种验收，不要混为一谈</h3>
+<p><strong>构建成功</strong>表示代码可以被加工成程序。<strong>链路通过</strong>表示命令、数据和计算流程能运行。<strong>精度通过</strong>表示计算结果达到规定的误差门槛。它们检查的是不同事情。</p>
+<p>终端中的 <code>PASS</code> 对应一项检查通过，<code>FAIL</code> 对应失败。定位冒烟还会打印 <code>OPEN</code>，表示链路已跑通，但名义精度目标仍未通过；报告中的 <code>nominal_accuracy_pass: false</code> 也表达同一件事。</p>
+<h3 id="heading-9-2">当前常用的三个检查入口</h3>
+<p>下面命令都会启动测试。只在需要验证时选择一条，并先结束正在运行的演示，不需要每次使用软件都运行全部检查。</p>
+<p>检查带传感器的 Foxglove 数据和控制回路：</p>
+<div class="code-box"><div class="code-label">PowerShell · 复制完整命令</div><pre><code>wsl -d Ubuntu-24.04 -u lyc -- bash &#x27;/mnt/c/Users/Liyangchuan/Documents/ChatGPT/New project/scripts/wsl/smoke_test_foxglove_bridge.sh&#x27; perception</code></pre></div>
+<p>检查雷达效应和 IMU 噪声：</p>
+<div class="code-box"><div class="code-label">PowerShell · 复制完整命令</div><pre><code>wsl -d Ubuntu-24.04 -u lyc -- bash &#x27;/mnt/c/Users/Liyangchuan/Documents/ChatGPT/New project/scripts/wsl/smoke_test_sensor_effects.sh&#x27;</code></pre></div>
+<p>执行无界面的定位行驶评测：</p>
+<div class="code-box"><div class="code-label">PowerShell · 复制完整命令</div><pre><code>wsl -d Ubuntu-24.04 -u lyc -- bash &#x27;/mnt/c/Users/Liyangchuan/Documents/ChatGPT/New project/scripts/wsl/smoke_test_localization.sh&#x27;</code></pre></div>
+<h3 id="heading-9-3">日志和报告去哪里找</h3>
+<div class="table-scroll"><table><thead><tr>
+<th scope="col">要看什么</th>
+<th scope="col">WSL 运行目录中的位置</th>
+</tr></thead><tbody>
+<tr><td>基础演示中 Gazebo 为什么没起来</td><td><code>log/loader_soil_demo_gazebo.log</code></td></tr>
+<tr><td>基础演示中 Foxglove 桥为什么没连接</td><td><code>log/loader_soil_demo_foxglove.log</code></td></tr>
+<tr><td>手动网关运行记录</td><td><code>log/loader_soil_demo_manual_gateway.log</code></td></tr>
+<tr><td>perception 演示日志</td><td>上述 <code>loader_soil_demo</code> 后加 <code>_perception</code>，例如 <code>loader_soil_demo_perception_gazebo.log</code></td></tr>
+<tr><td>KISS-ICP 与裁剪程序日志</td><td><code>log/loader_localization.log</code>、<code>log/loader_localization_crop.log</code></td></tr>
+<tr><td>定位统计指标</td><td><code>results/localization/metrics.json</code></td></tr>
+<tr><td>定位逐帧误差表</td><td><code>results/localization/trajectory.csv</code></td></tr>
+<tr><td>原始估计与真值记录</td><td><code>results/localization/poses.json</code></td></tr>
+<tr><td>Foxglove 感知验收报告</td><td><code>results/foxglove_bridge_perception_smoke.txt</code></td></tr>
+<tr><td>传感器效应验收报告</td><td><code>results/sensor_effects_smoke.txt</code></td></tr>
+</tbody></table></div>
+<p>这些路径的前面都是 <code>/home/lyc/loader_sim_runtime/</code>。运行目录中同名结果可能被下一次测试覆盖，重要试验应另存一份。项目已保存 <a href="baselines/2026-09-06/README.md">2026-09-06 的基线快照</a>。</p>
+</section>
+<section id="section-10">
+<h2>10. 当前做到哪了，哪些还不能当作完成</h2>
+<p>本文的阶段编号沿用项目路线图；M1、M2 是第四阶段内部的小里程碑。开发存在交叉推进，进入第四阶段不表示前三阶段的所有精细化工作都结束了。</p>
+<div class="table-scroll"><table><thead><tr>
+<th scope="col">范围</th>
+<th scope="col">当前实际状态</th>
+<th scope="col">还缺什么</th>
+</tr></thead><tbody>
+<tr><td>第一阶段：基础环境</td><td>ROS、Gazebo、GPU 和通信基础已跑通</td><td>持续关注本机运行稳定性</td></tr>
+<tr><td>第二阶段：装载机</td><td>简化模型、正式力级控制、基本保护已跑通</td><td>厂家几何与实车参数标定，轮胎和液压细化</td></tr>
+<tr><td>第三阶段：砂土</td><td>二维土料已接入整车；独立三维高度场原型已验证</td><td>三维内核迁入整车、溢料、载荷惯量和材料标定</td></tr>
+<tr><td>Foxglove 可视化</td><td>六页布局已准备；14 个感知模式实时通道和控制回路通过</td><td>登录后对六页布局做目视确认</td></tr>
+<tr><td>第四阶段 M1：传感器效应</td><td>原始/效应点云逐帧对应，实测均为 10 Hz；IMU 噪声检查通过</td><td>平移畸变、更多误差来源、目标传感器标定</td></tr>
+<tr><td>第四阶段 M2：定位</td><td>KISS-ICP、独立真值和自动误差报告已接通</td><td>0.15 m 精度门槛、IMU 融合、多工况重复评测</td></tr>
+<tr><td>后续自主作业</td><td>已有路线和部分配置骨架</td><td>完整规划控制、地图重定位、鱼眼/BEV 等继续开发</td></tr>
+</tbody></table></div>
+<p><strong><code>nominal</code> 表示目前采用估算或简化参数。</strong> <code>validated</code> 才表示经过所规定的对照和验收。文件里写了一个配置项或安装了某个库，不等于对应功能已经验收。</p>
+<p>Chrono DEM 已完成小规模颗粒运行和链接验证。它是未来离线标定砂土模型的工具，当前 Gazebo 演示中的砂堆没有使用 Chrono 逐颗粒计算。</p>
+<p><code>tools/soil_heightfield_3d/</code> 中的三维原型也是单独运行的；它没有因为文件存在，就自动替换整车里的二维插件。<code>bev_capture.yaml</code> 描述的是目标数据采集配置，不表示四路鱼眼和 BEV 已经接好。</p>
+</section>
+<section id="section-11">
+<h2>11. 看不懂或出问题时，先从现象判断</h2>
+<div class="table-scroll"><table><thead><tr>
+<th scope="col">现象</th>
+<th scope="col">先判断什么</th>
+<th scope="col">可以先做什么</th>
+</tr></thead><tbody>
+<tr><td>Foxglove 是登录页面</td><td>还没有进入工作台</td><td>登录，连接本机数据源，导入布局</td></tr>
+<tr><td>基础演示的点云面板为空</td><td>是否使用了 <code>physics</code></td><td>需要点云时改用完整的 perception 启动命令</td></tr>
+<tr><td>定位页没有里程计</td><td>是否启用了 <code>kiss_icp</code></td><td>使用第 4.4 节的完整命令</td></tr>
+<tr><td>Gazebo 在动，Foxglove 没数据</td><td>桥连接、数据源、话题或布局有问题</td><td>检查终端错误和 Foxglove 桥日志</td></tr>
+<tr><td>收到点云，但车和点云对不上</td><td>坐标系和 TF 换算可能有问题</td><td>记录面板固定坐标系和错误提示，查看 TF 链路</td></tr>
+<tr><td>手动前进时车推不动</td><td>铲刃是否顶住地面，是否仍在急停或禁用状态</td><td>先举升收斗，再核对手动使能状态</td></tr>
+<tr><td>提示 8765 已被占用</td><td>前一次仿真或桥可能还开着</td><td>回原启动窗口正常结束，再启动</td></tr>
+<tr><td><code>Package not found</code> 或找不到插件</td><td>构建结果或运行环境未加载</td><td>从正式启动器启动；必要时重新构建</td></tr>
+<tr><td><code>[WARN:COPY MODE]</code>、窗口不出现</td><td>WSLg 图形显示异常</td><td>当前启动器会尝试修复；此修复会重启 WSL 并停止其进程</td></tr>
+<tr><td>整台 Windows 蓝屏重启</td><td>需要主机故障证据，不能只看项目日志</td><td>保留时间、错误码和转储信息，参考已有主机故障记录</td></tr>
+</tbody></table></div>
+<p>如果需要我继续排查，提供“用的哪条启动命令、在哪个窗口、做到哪一步、最后的错误文字”就足够开始。比如：“用 perception 启动，Gazebo 的车会动，但 Foxglove 的整车总览没有车速曲线。”</p>
+<h3 id="heading-11-1">常见缩写，用到时再查</h3>
+<div class="table-scroll"><table><thead><tr>
+<th scope="col">名称</th>
+<th scope="col">在本项目里怎么理解</th>
+</tr></thead><tbody>
+<tr><td>WSL / WSLg</td><td>Windows 里的 Linux 环境 / 让 Linux 图形窗口显示出来的组件</td></tr>
+<tr><td>ROS 2 / Node</td><td>程序通信和组织框架 / 其中一个有名称、可收发消息的工作单元</td></tr>
+<tr><td>Topic / Message</td><td>数据通道名称 / 通道中一条数据的规定格式；Topic 名不是文件路径</td></tr>
+<tr><td>Plugin</td><td>被宿主程序加载的一块扩展功能；例如 Gazebo 土料插件</td></tr>
+<tr><td>Bridge / WebSocket</td><td>连接两种通信方式的程序 / 浏览器与本机桥使用的连接方式</td></tr>
+<tr><td>URDF / Xacro / SDF</td><td>机器人描述 / 带参数的机器人描述模板 / Gazebo 场景与模型描述</td></tr>
+<tr><td>PointCloud2 / IMU</td><td>三维点云消息 / 测量角速度和加速度等信息的惯性传感器</td></tr>
+<tr><td>TF / Odometry</td><td>坐标系之间的换算 / 根据连续测量估计的运动与位置</td></tr>
+<tr><td>Hz / RTF</td><td>每秒发生多少次 / 仿真时间与现实时间推进速度的比值</td></tr>
+<tr><td><code>/clock</code></td><td>仿真自己的时钟，暂停或变慢时不一定与现实秒表相同</td></tr>
+<tr><td>m/s、rad、Pa、N·m</td><td>米/秒、弧度、帕斯卡、牛顿米，分别常用于速度、角度、压力、扭矩</td></tr>
+<tr><td>DEM / BEV</td><td>逐颗粒计算的离散元方法 / 从上往下看的鸟瞰表达</td></tr>
+<tr><td>NaN / RMSE</td><td>没有有效数值 / 衡量一段结果总体误差的指标</td></tr>
+</tbody></table></div>
+<p>单位小例子：1 m/s = 3.6 km/h；约 1.57 rad = 90°；1,000,000 Pa = 1 MPa。500 Hz 控制与 10 Hz 雷达表示它们按不同节奏工作，不要求所有消息数量一样。</p>
+</section>
+<section id="section-12">
+<h2>12. 想继续深入，按问题选文档</h2>
+<div class="table-scroll"><table><thead><tr>
+<th scope="col">你现在的问题</th>
+<th scope="col">下一份文档</th>
+</tr></thead><tbody>
+<tr><td>某个文件到底干什么</td><td><a href="code_map.html">代码地图</a></td></tr>
+<tr><td>日常如何启动、操作按钮</td><td><a href="user_guide.md">使用简介</a></td></tr>
+<tr><td>哪些功能已经验收</td><td><a href="deployment_status.md">开发状态</a></td></tr>
+<tr><td>Foxglove 的面板、话题和验证</td><td><a href="observability.md">可观测工作台</a></td></tr>
+<tr><td>命令怎样变成关节受力</td><td><a href="ros2_control.md">正式控制链</a></td></tr>
+<tr><td>程序之间的数据字段</td><td><a href="ros_interfaces.md">ROS 接口</a></td></tr>
+<tr><td>砂土体积与受力怎么计算</td><td><a href="soil_slice.md">二维土料</a>、<a href="soil_heightfield_3d.md">三维高度场</a></td></tr>
+<tr><td>雷达和 IMU 的误差</td><td><a href="lidar_imu.md">传感器链路</a></td></tr>
+<tr><td>定位如何接入、如何评分</td><td><a href="localization.md">定位基线</a></td></tr>
+<tr><td>整个项目将来准备做什么</td><td><a href="../windows_loader_simulation_plan.md">总体路线图</a></td></tr>
+</tbody></table></div>
+<p>路线图表达目标，本说明书解释当前软件，开发状态和测试报告说明已经得到的证据。阅读时先确认自己正在看哪一种文档。</p>
+</section><footer class="page-footer">本页由 beginner_guide.md 生成。修改 Markdown 后运行 tools/docs/build_beginner_docs.py 更新阅读版。模型与算法仍在开发，具体数值以最新代码和实测报告为准。</footer></main></div>
+<script>
+const links=[...document.querySelectorAll('.toc a')];
+if('IntersectionObserver' in window){
+  const observer=new IntersectionObserver(entries=>{
+    const item=entries.find(e=>e.isIntersecting);
+    if(item)links.forEach(a=>a.classList.toggle('active',a.hash==='#'+item.target.id));
+  },{rootMargin:'-10% 0px -65% 0px'});
+  document.querySelectorAll('main section').forEach(s=>observer.observe(s));
+}
+</script></body></html>
