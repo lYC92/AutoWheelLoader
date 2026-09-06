@@ -14,6 +14,7 @@ import rclpy
 from loader_sim_msgs.msg import BucketInteraction, TerrainState, VehicleCommand, VehicleState
 from rclpy.node import Node
 from rclpy.parameter import Parameter
+from rclpy.executors import ExternalShutdownException
 from sensor_msgs.msg import PointCloud2
 
 
@@ -174,12 +175,16 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--proxy-expectation", type=Path)
     parser.add_argument("--observer-topic")
+    parser.add_argument("--startup-settle-s", type=float, default=0.0,
+                        help="regression: let the unpowered tool settle before preparing the cutting pose")
     parser.add_argument(
         "--use-sim-time-for-phases",
         action="store_true",
         help="measure command phases in simulation time for an interactive GUI run",
     )
     args = parser.parse_args()
+    if not math.isfinite(args.startup_settle_s) or args.startup_settle_s < 0:
+        parser.error("--startup-settle-s must be finite and non-negative")
     rclpy.init()
     node = SoilCouplingHarness(args.observer_topic, args.use_sim_time_for_phases)
     try:
@@ -217,6 +222,12 @@ def main() -> int:
         require(len(initial_profile) == 280, "terrain height profile has the wrong size")
         require(initial_terrain.cell_size_m == 0.05, "terrain cell size is incorrect")
         require(initial_terrain.slice_width_m == 2.7, "terrain slice width is incorrect")
+        if args.startup_settle_s:
+            run_phase(node, args.startup_settle_s, gear=VehicleCommand.GEAR_NEUTRAL,
+                      torque=0.0, brake=1.0)
+            print("INFO  delayed start: "
+                  f"lift={joint_position(node.vehicle_states[-1], 'lift_joint'):.3f}, "
+                  f"tilt={joint_position(node.vehicle_states[-1], 'bucket_tilt_joint'):.3f} rad", flush=True)
         prepare_cutting_pose(node)
         first_interaction_index = len(node.interactions)
         first_state_index = len(node.vehicle_states)
@@ -369,12 +380,11 @@ def main() -> int:
         ]
         post_dump_interaction = dumping[-1]
         post_dump_terrain = node.terrain_states[-1]
-        if not args.use_sim_time_for_phases:
-            require(
-                maximum_outflow > 0.1,
-                "tilting the bucket did not start material outflow "
-                f"(tilt range {min(tilt_positions):.3f}..{max(tilt_positions):.3f} rad)",
-            )
+        require(
+            maximum_outflow > 0.1,
+            "tilting the bucket did not start material outflow "
+            f"(tilt range {min(tilt_positions):.3f}..{max(tilt_positions):.3f} rad)",
+        )
         require(
             post_dump_interaction.bucket_material_volume_m3 < 0.05 * loaded_volume,
             "bucket retained too much material after unloading "
@@ -490,15 +500,19 @@ def main() -> int:
     except RuntimeError as error:
         print(f"FAIL loader-soil coupled smoke: {error}", file=sys.stderr)
         return 1
+    except (KeyboardInterrupt, ExternalShutdownException):
+        return 130
     finally:
         # Explicitly stop on failure too, rather than waiting for command timeout.
         for _ in range(5):
+            if not rclpy.ok():
+                break
             node.publish_command(gear=VehicleCommand.GEAR_NEUTRAL,
                                  traction_torque_nm=0.0, brake_command=1.0,
                                  emergency_stop=True)
             rclpy.spin_once(node, timeout_sec=0.02)
         node.destroy_node()
-        rclpy.shutdown()
+        rclpy.try_shutdown()
 
 
 if __name__ == "__main__":

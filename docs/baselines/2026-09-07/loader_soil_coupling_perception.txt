@@ -1,0 +1,3 @@
+INFO  delayed start: lift=-0.200, tilt=-0.228 rad
+PASS  cutting pose ready: lift=-0.012, tilt=0.001 rad
+PASS loader-soil coupled smoke: wheel_speed=3.689rad/s vehicle_speed=2.767m/s penetration=0.884m peak_force=70.80kN payload=1.701523m3/2722.44kg unloaded=1.701523m3 terrain_delta=0.668m balance=8.218e-16 lidar_changed_rays=5321 terrain_rays=13 lidar_max_delta=13.749m

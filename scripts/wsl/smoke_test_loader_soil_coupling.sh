@@ -52,7 +52,9 @@ cleanup() {
 trap cleanup EXIT INT TERM
 
 bridge_arguments=('/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock')
-test_arguments=(--proxy-expectation "${proxy_expectation_log}")
+# Reproduce slow GUI/sensor initialization: gravity must not determine whether
+# the driving test can start. Phases always use simulation time on slow hosts.
+test_arguments=(--proxy-expectation "${proxy_expectation_log}" --use-sim-time-for-phases --startup-settle-s 8)
 if [[ ${mode} == perception ]]; then
   bridge_arguments+=(
     '/loader_soil/observer/scan/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked'
@@ -102,7 +104,7 @@ ros2 run controller_manager spawner loader_command_controller \
   --controller-manager /controller_manager --controller-manager-timeout 30 >/dev/null
 
 python3 "${project_root}/tools/ros/test_loader_soil_coupling.py" \
-  "${test_arguments[@]}" | tee "${test_log}"
+  "${test_arguments[@]}" 2>&1 | tee "${test_log}"
 gz model -m soil_loader -p >"${pose_log}"
 : >"${proxy_pose_log}"
 read -r proxy_index _ <"${proxy_expectation_log}"

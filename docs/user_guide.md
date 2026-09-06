@@ -25,6 +25,10 @@ cd "C:\Users\Liyangchuan\Documents\ChatGPT\New project"
 启动后会自动打开两个窗口：Gazebo 三维界面和浏览器中的 Foxglove 数据工作台。
 结束仿真：关闭 Gazebo 窗口，或在 PowerShell 中按 `Ctrl+C`。
 
+自动演示会先制动并调整动臂、铲斗，打印 `PASS cutting pose ready` 后才前进。
+这是为了避免窗口加载期间铲斗在重力作用下落地、把车顶住。行驶和转运期间会保持工作装置姿态。
+如果姿态未就绪，程序会停止并报告关节角，而不是继续施加牵引扭矩。报错与正常输出均保存到演示日志。
+
 如果启动器提示 `[WARN:COPY MODE]`，说明 WSLg 图形异常，运行
 `.\scripts\windows\repair_wslg_gui.ps1` 自动修复并继续（会重启 WSL）。
 

@@ -1,0 +1,8 @@
+
+Requesting state for world [loader_soil_slice]...
+
+Model: [614]
+  - Name: soil_column_202
+  - Pose [ XYZ (m) ] [ RPY (rad) ]:
+    [10.125000 0.000000 -0.232135]
+    [0.000000 -0.000000 0.000000]

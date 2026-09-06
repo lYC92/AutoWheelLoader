@@ -122,6 +122,8 @@ powershell -ExecutionPolicy Bypass -File .\scripts\windows\run_loader_soil_demo.
 
 启动成功后，会出现 Gazebo 窗口和 Foxglove 浏览器页面。终端会记录启动过程。车辆自动执行铲取、举升、倒车转运、制动和卸料，你先观察即可。动作结束后，Gazebo 会继续开着。
 
+前进前，程序会先制动并调整动臂、铲斗，显示 `PASS cutting pose ready` 后才开车。这一步避免窗口加载较慢时铲斗落地，把车辆顶住；行驶时也会保持工作装置姿态。若准备失败，会报告关节角并停止。
+
 如果镜头没有对准车，在 Gazebo 的 `Entity tree`（物体列表）中选中 `soil_loader`，按 `F` 聚焦。刚启动时需要等待场景和控制器就绪。
 
 **结束方法：**关闭 Gazebo 窗口，或者回启动它的 PowerShell 按 `Ctrl+C`。只关闭 Foxglove 浏览器页面，不会停止仿真。

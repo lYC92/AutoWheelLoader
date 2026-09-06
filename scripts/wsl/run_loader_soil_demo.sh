@@ -341,10 +341,10 @@ if [[ ${control_mode} == auto ]]; then
   printf 'Loader is ready. Starting %s scenario.\n' "${scenario}"
   set +e
   if [[ ${scenario} == localization ]]; then
-    python3 "${project_root}/tools/ros/run_localization_scenario.py" | tee "${scenario_log}"
+    python3 "${project_root}/tools/ros/run_localization_scenario.py" 2>&1 | tee "${scenario_log}"
   else
     python3 "${project_root}/tools/ros/test_loader_soil_coupling.py" \
-      "${test_arguments[@]}" | tee "${scenario_log}"
+      "${test_arguments[@]}" 2>&1 | tee "${scenario_log}"
   fi
   scenario_status=${PIPESTATUS[0]}
   set -e
