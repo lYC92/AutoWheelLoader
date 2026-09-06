@@ -17,6 +17,9 @@ set -u
 mkdir -p "$(dirname "${generated_urdf}")"
 xacro "${xacro_file}" model_fidelity:=nominal >"${generated_urdf}"
 check_urdf "${generated_urdf}"
+xacro "${xacro_file}" model_fidelity:=nominal mesh_visuals:=false >"${runtime_root}/results/loader.primitive.urdf"
+python3 "${project_root}/tools/model/check_loader_model.py" \
+  "${generated_urdf}" "${runtime_root}/results/loader.primitive.urdf"
 
 for joint in \
   articulation_joint \

@@ -61,7 +61,9 @@
 | 文件 | 用途 |
 | --- | --- |
 | [loader.urdf.xacro](../ros_ws/src/loader_description/urdf/loader.urdf.xacro) | 正式模型模板：部件、质量、关节、传感器及插件开关。模型更新重点入口 |
-| `ros_ws/src/loader_description/meshes/` | 正在更新的模型网格资产目录；网格用于外观、碰撞还是传感器几何，取决于模型文件怎样引用它 |
+| [meshes/l580/README.md](../ros_ws/src/loader_description/meshes/l580/README.md) | L580 原始网格、修复部件和来源。用于外观和 GPU 雷达可见几何，物理碰撞仍采用名义几何体 |
+| [prepare_loader_meshes.py](../tools/model/prepare_loader_meshes.py) | 修复轮胎跨轴残片与居中、分开前后车架、拆分玻璃和轮毂材质；通过 Blender 离线运行 |
+| [render_loader.py](../tools/model/render_loader.py) | 从展开后的正式模型生成外观预览，可调整举升、翻斗和转向角 |
 | [nominal_linkage.yaml](../ros_ws/src/loader_description/config/nominal_linkage.yaml) | 名义连杆几何与采样范围，供运动学验证工具读取 |
 | [model_data_requirements.yaml](../ros_ws/src/loader_description/config/model_data_requirements.yaml) | 从简化模型走向实车模型所需数据的清单 |
 | [display.launch.py](../ros_ws/src/loader_description/launch/display.launch.py) | 启动 RViz、模型发布和关节滑块，检查模型显示；区别于整车力级演示 |
@@ -109,7 +111,9 @@
 | [test_loader_soil_coupling.py](../tools/ros/test_loader_soil_coupling.py) | 既是整车土料验收，也是默认自动演示的动作脚本，包含铲取、举升、转运与卸料 |
 | [run_localization_scenario.py](../tools/ros/run_localization_scenario.py) | 专用定位行驶动作，先通过液压控制收斗举升，再倒车和前进 |
 | [generate_localization_world.py](../tools/ros/generate_localization_world.py) | 从既有感知世界生成带固定标志物的测试世界，输出到运行目录 |
-| [filter_localization_cloud.py](../tools/ros/filter_localization_cloud.py) | 效应流下游的名义平地裁剪，压紧为有限 XYZ 点，供 KISS-ICP 配准 |
+| [filter_localization_cloud.py](../tools/ros/filter_localization_cloud.py) | 按扫描时刻 TF 过滤车体、识别地面，压紧为有限 XYZ 点；TF 缺失时有界等待后丢帧 |
+| [localization_geometry.py](../tools/ros/localization_geometry.py) | 地面平面拟合、网格包围盒和坐标变换，纯几何计算，不消费真值 |
+| [test_localization_geometry.py](../tools/ros/test_localization_geometry.py) | 不同高度、坡面、墙面、无效点以及运动铲斗的解析测试 |
 | [evaluate_localization.py](../tools/ros/evaluate_localization.py) | 接收里程计和独立真值，按时间插值、初始对齐并输出 JSON/CSV 报告 |
 | [test_localization_metrics.py](../tools/ros/test_localization_metrics.py) | 检查裁剪、初始对齐、插值和漂移统计是否符合已知答案 |
 | [test_loader_dynamics.py](../tools/ros/test_loader_dynamics.py) | 检查车辆动力学响应、命令限幅、急停和超时；可被不同控制链测试调用 |
@@ -151,7 +155,7 @@
 | [soil_slice_collision_masks.sdf](../simulation/worlds/soil_slice_collision_masks.sdf) | 专门验证刚性地面和松散料代理的碰撞分层 |
 | [loader_smoke.sdf](../simulation/smoke/loader_smoke.sdf) | 最小 Gazebo/GPU 相机启动与性能检查场景 |
 | [loader_demo.config](../simulation/config/gui/loader_demo.config) | Gazebo 演示窗口和初始视图设置 |
-| [kiss_icp.yaml](../simulation/config/localization/kiss_icp.yaml) | 当前定位算法和名义平地裁剪参数，正式定位启动器会加载 |
+| [kiss_icp.yaml](../simulation/config/localization/kiss_icp.yaml) | 当前定位算法、地面识别和车体过滤参数；固定高度裁剪保留为历史对照模式 |
 | [dry_sand_nominal.yaml](../simulation/config/materials/dry_sand_nominal.yaml) | 二维砂土原型的材料与几何参数；不自动覆盖 C++ 土料插件 |
 | [dry_sand_3d_nominal.yaml](../simulation/config/materials/dry_sand_3d_nominal.yaml) | 独立三维砂土原型配置 |
 | [dem_smoke.json](../simulation/config/chrono/dem_smoke.json) | Chrono 小规模颗粒冒烟场景参数 |

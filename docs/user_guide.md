@@ -32,7 +32,7 @@ cd "C:\Users\Liyangchuan\Documents\ChatGPT\New project"
 
 1. 浏览器自动打开 `app.foxglove.dev`，首次使用需要登录或注册免费账号。
    ROS 数据走本机 WebSocket 直连，不会上传到云端。
-2. 数据源选择 **Foxglove WebSocket**，地址 `ws://localhost:8765`（自动打开的链接已带此参数）。
+2. 数据源选择 **Foxglove WebSocket**，地址 `ws://localhost:18765`（自动打开的链接已带此参数）。
 3. 左上角 **Layouts → Import from file...**，选择
    `C:\Users\Liyangchuan\Documents\ChatGPT\New project\foxglove\loader_simulation_layout.json`。
 
@@ -102,7 +102,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\windows\run_loader_soil_demo.
 页面没有数据时，保持仿真窗口运行，在 PowerShell 执行：
 
 ```powershell
-Test-NetConnection localhost -Port 8765
+Test-NetConnection localhost -Port 18765
 wsl -d Ubuntu-24.04 -- bash -lc "source /opt/ros/jazzy/setup.bash; ros2 node list; ros2 topic list"
 ```
 

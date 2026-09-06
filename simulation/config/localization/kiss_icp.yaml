@@ -9,7 +9,7 @@ kiss_icp_node:
     # Organized Gazebo clouds have no per-return timestamps. Do not invent deskew.
     data:
       deskew: false
-      # Basic near-field crop; a full articulated-body mask is still pending.
+      # Near-field crop complements scan-time articulated visual bounds.
       min_range: 3.0
       max_range: 50.0
     mapping:
@@ -22,8 +22,11 @@ kiss_icp_node:
 loader_localization_crop:
   ros__parameters:
     use_sim_time: true
-    # Nominal roof lidar is about 3.15 m above this level test ground.
-    # Exclude its repetitive plane samples, retain raised static landmarks.
+    ground_mode: adaptive
+    ground_threshold: 0.18
+    self_filter: true
+    body_margin: 0.10
+    # Used only for ground_mode=fixed (historical baseline).
     min_z: -2.7
     min_range: 3.0
     max_range: 50.0

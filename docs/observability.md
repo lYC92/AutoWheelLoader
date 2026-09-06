@@ -40,7 +40,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\windows\run_loader_soil_demo.
 完成后数据源会通过下列本机地址连接：
 
 ```text
-ws://localhost:8765
+ws://localhost:18765
 ```
 
 随后只需导入一次布局：
@@ -52,7 +52,7 @@ ws://localhost:8765
 4. 导入后选择“整车总览”或其他标签页。
 
 浏览器会保存当前个人布局。若自动打开的页面没有连接数据，可在 Foxglove 的数据源菜单中
-手动选择 **Foxglove WebSocket**，地址仍填写 `ws://localhost:8765`。
+手动选择 **Foxglove WebSocket**，地址仍填写 `ws://localhost:18765`。
 
 ## 三种启动方式
 
@@ -124,7 +124,7 @@ Plot 面板支持直接输入消息路径，例如
 
 ## 运行边界与安全
 
-- Bridge 只监听 WSL2 的 `127.0.0.1:8765`，用于本机 Windows 浏览器，不对局域网开放。
+- Bridge 只监听 WSL2 的 `127.0.0.1:18765`，用于本机 Windows 浏览器，不对局域网开放。
 - Foxglove 的 Publish 与 Teleop 能向 ROS 回写消息，只在仿真模式使用；接真实 VCU 前必须增加
   独立的模式仲裁、鉴权和硬件急停，不能把网页按钮当作安全功能。
 - 当前预制 3D 页需要 perception 模式的数据。physics 模式下点云 Topic 不存在属于正常现象。
@@ -154,10 +154,16 @@ wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ proj
 
 ## 故障检查
 
+日常启动器使用 `18765`，以避开本机 Windows 系统保留的 `8679–8778` 端口范围。
+旧 Foxglove 页面如果仍连接 `ws://localhost:8765`，请改为 `ws://localhost:18765`。
+保留端口可能没有任何监听进程，但仍禁止程序绑定，表现为 WSL 内服务正常、Windows
+连接被拒绝。可用 `netsh interface ipv4 show excludedportrange protocol=tcp` 查看范围。
+独立 WSL 冒烟测试仍使用 `8765`，不经过 Windows 转发。
+
 如果页面没有数据，保持仿真 PowerShell 窗口运行，并执行：
 
 ```powershell
-Test-NetConnection localhost -Port 8765
+Test-NetConnection localhost -Port 18765
 wsl -d Ubuntu-24.04 -- bash -lc "source /opt/ros/jazzy/setup.bash; ros2 node list; ros2 topic list"
 ```
 

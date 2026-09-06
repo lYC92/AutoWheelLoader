@@ -30,7 +30,7 @@ Windows 10 / WSLg 中 Qt 与服务器共享 D3D12 上下文时的窗口崩溃。
 powershell -ExecutionPolicy Bypass -File .\scripts\windows\run_loader_soil_demo.ps1 -Mode perception
 ```
 
-启动器还会打开 Foxglove 数据工作台并连接 `ws://localhost:8765`。首次使用需要在浏览器中
+启动器还会打开 Foxglove 数据工作台并连接 `ws://localhost:18765`。首次使用需要在浏览器中
 登录 Foxglove，然后从 **Layouts → Import from file...** 导入
 [`foxglove/loader_simulation_layout.json`](foxglove/loader_simulation_layout.json)。预制布局包含
 整车/液压/土体曲线、仪表、原始消息、ROS Topic 拓扑、激光点云、手动操作，以及第四阶段

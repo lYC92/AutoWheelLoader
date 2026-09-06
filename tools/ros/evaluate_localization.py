@@ -7,12 +7,14 @@ Reports initial-pose-aligned translation/rotation error without trajectory fitti
 import argparse
 import csv
 import json
+import hashlib
 import signal
 import time
 from pathlib import Path
 
 import numpy as np
 import rclpy
+import yaml
 from nav_msgs.msg import Odometry
 from rclpy.node import Node
 from rclpy.parameter import Parameter
@@ -84,9 +86,21 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", required=True)
     parser.add_argument("--duration", type=float, default=120.)
+    parser.add_argument("--configuration", required=True)
+    parser.add_argument("--model-urdf", required=True)
     args = parser.parse_args()
     output = Path(args.output)
     output.mkdir(parents=True, exist_ok=True)
+    configuration = yaml.safe_load(Path(args.configuration).read_text())
+    preprocessing = configuration['loader_localization_crop']['ros__parameters']
+    # A failed/interrupted new run must not leave a previous passing report.
+    archive = output / 'previous' / str(time.time_ns())
+    for name in ('metrics.json', 'trajectory.csv', 'poses.json'):
+        previous = output / name
+        if previous.exists():
+            archive.mkdir(parents=True, exist_ok=True)
+            previous.rename(archive / name)
+    (output/'status.json').write_text(json.dumps({'status': 'recording', 'started_unix_s': time.time()}))
     rclpy.init()
     node = Recorder()
     running = True
@@ -105,19 +119,26 @@ def main():
     raw = {"odometry": [[t, p.tolist(), lag] for t, p, lag in node.odometry],
            "ground_truth": [[t, p.tolist()] for t, p in node.truth]}
     (output/"poses.json").write_text(json.dumps(raw))
+    def fail(message):
+        (output/'status.json').write_text(json.dumps({'status': 'failed', 'reason': message}))
+        raise RuntimeError(message)
+    if len(node.truth) < 2:
+        fail('missing Gazebo model truth')
     rows = compare(node.odometry, node.truth)
     if len(rows) < 50 or rows[-1, 0]-rows[0, 0] < 5:
-        raise RuntimeError(f"insufficient matched trajectory: {len(rows)} poses")
+        fail(f"insufficient matched trajectory: {len(rows)} poses")
     if not np.isfinite(rows).all():
-        raise RuntimeError("non-finite pose/error")
+        fail("non-finite pose/error")
     travel = float(np.linalg.norm(np.diff(rows[:, 1:4], axis=0), axis=1).sum())
     if travel < 0.5:
-        raise RuntimeError(f"stationary test cannot validate odometry: {travel:.3f} m")
+        fail(f"stationary test cannot validate odometry: {travel:.3f} m")
     metrics = {
         "algorithm": "KISS-ICP 1ffa7d7512f10bfc8b1185095011fa31184019e3",
         "input": "/loader/localization/points",
         "sensor_source": "/loader/sensors/lidar/scan/points_effect",
-        "preprocessing": "nominal level-ground crop: lidar z >= -2.7 m, 3 < range < 50 m",
+        "preprocessing": preprocessing,
+        "configuration_sha256": hashlib.sha256(Path(args.configuration).read_bytes()).hexdigest(),
+        "model_urdf_sha256": hashlib.sha256(Path(args.model_urdf).read_bytes()).hexdigest(),
         "alignment": "initial pose only; interpolated Gazebo truth; no trajectory fitting",
         "matched_poses": len(rows), "truth_samples": len(node.truth),
         "duration_sim_s": float(rows[-1, 0]-rows[0, 0]), "travel_m": travel,
@@ -135,6 +156,7 @@ def main():
                          "position_error_m", "rotation_error_deg", "sim_latency_s"])
         writer.writerows(rows)
     (output/"metrics.json").write_text(json.dumps(metrics, indent=2)+"\n")
+    (output/'status.json').write_text(json.dumps({'status': 'complete', 'nominal_accuracy_pass': metrics['nominal_accuracy_pass']}))
     print(json.dumps(metrics, indent=2))
     print("PASS  moving localization pipeline and independent truth evaluation")
     print("PASS  nominal accuracy target" if metrics["nominal_accuracy_pass"] else

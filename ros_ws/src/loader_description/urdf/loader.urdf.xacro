@@ -7,7 +7,7 @@
   -->
   <xacro:arg name="model_fidelity" default="nominal"/>
   <!-- Visual-only: replace primitive visuals with the L580 wheel-loader meshes.
-       Collisions, inertia, and joints are unchanged, so dynamics are unaffected. -->
+       Collision/inertia remain nominal; rendered geometry affects GPU lidar. -->
   <xacro:arg name="mesh_visuals" default="true"/>
   <xacro:arg name="enable_dynamics" default="false"/>
   <xacro:arg name="enable_lidar_imu" default="false"/>
@@ -39,8 +39,10 @@
   <material name="loader_yellow"><color rgba="0.95 0.58 0.03 1"/></material>
   <material name="loader_dark"><color rgba="0.08 0.09 0.10 1"/></material>
   <material name="bucket_gray"><color rgba="0.28 0.30 0.32 1"/></material>
+  <material name="cab_glass"><color rgba="0.035 0.10 0.14 1"/></material>
+  <material name="wheel_rim"><color rgba="0.54 0.57 0.60 1"/></material>
 
-  <xacro:macro name="box_link" params="name mass size_x size_y size_z geometry_xyz material mesh:=''">
+  <xacro:macro name="box_link" params="name mass size_x size_y size_z geometry_xyz material mesh:='' glass:=false">
     <link name="${name}">
       <inertial>
         <origin xyz="${geometry_xyz}" rpy="0 0 0"/>
@@ -62,6 +64,12 @@
         </xacro:unless>
         <material name="${material}"/>
       </visual>
+      <xacro:if value="${glass and '$(arg mesh_visuals)' == 'true'}">
+        <visual>
+          <geometry><mesh filename="${loader_mesh_dir}/visual/cab_glass.STL"/></geometry>
+          <material name="cab_glass"/>
+        </visual>
+      </xacro:if>
       <collision>
         <origin xyz="${geometry_xyz}" rpy="0 0 0"/>
         <geometry><box size="${size_x} ${size_y} ${size_z}"/></geometry>
@@ -69,7 +77,7 @@
     </link>
   </xacro:macro>
 
-  <xacro:macro name="wheel_link" params="name mass">
+  <xacro:macro name="wheel_link" params="name mass flip:=0">
     <link name="${name}">
       <inertial>
         <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -82,17 +90,24 @@
           izz="${mass * (3 * nominal_wheel_radius * nominal_wheel_radius + nominal_wheel_width * nominal_wheel_width) / 12.0}"/>
       </inertial>
       <visual>
-        <xacro:if value="'$(arg mesh_visuals)' == 'true'">
+        <xacro:if value="$(arg mesh_visuals)">
           <!-- Mesh is centered on the link frame with the axle along +y. -->
-          <origin xyz="0 0 0" rpy="0 0 0"/>
-          <geometry><mesh filename="${loader_mesh_dir}/wheel.STL"/></geometry>
+          <origin xyz="0 0 0" rpy="${flip} 0 0"/>
+          <geometry><mesh filename="${loader_mesh_dir}/visual/wheel_tire.STL"/></geometry>
         </xacro:if>
-        <xacro:unless value="'$(arg mesh_visuals)' == 'true'">
+        <xacro:unless value="$(arg mesh_visuals)">
           <origin xyz="0 0 0" rpy="${pi / 2.0} 0 0"/>
           <geometry><cylinder radius="${nominal_wheel_radius}" length="${nominal_wheel_width}"/></geometry>
         </xacro:unless>
         <material name="loader_dark"/>
       </visual>
+      <xacro:if value="$(arg mesh_visuals)">
+        <visual>
+          <origin xyz="0 0 0" rpy="${flip} 0 0"/>
+          <geometry><mesh filename="${loader_mesh_dir}/visual/wheel_rim.STL"/></geometry>
+          <material name="wheel_rim"/>
+        </visual>
+      </xacro:if>
       <collision>
         <origin xyz="0 0 0" rpy="${pi / 2.0} 0 0"/>
         <geometry><cylinder radius="${nominal_wheel_radius}" length="${nominal_wheel_width}"/></geometry>
@@ -105,7 +120,7 @@
   <xacro:box_link
     name="rear_frame" mass="7200" size_x="2.8" size_y="2.2" size_z="0.8"
     geometry_xyz="-1.4 0 0.15" material="loader_yellow"
-    mesh="${loader_mesh_dir}/rear_body.STL"/>
+    mesh="${loader_mesh_dir}/visual/rear_body.STL" glass="${True}"/>
   <joint name="base_to_rear_frame" type="fixed">
     <parent link="base_link"/>
     <child link="rear_frame"/>
@@ -115,7 +130,7 @@
   <xacro:box_link
     name="front_frame" mass="6200" size_x="3.0" size_y="2.2" size_z="0.75"
     geometry_xyz="1.5 0 0.15" material="loader_yellow"
-    mesh="${loader_mesh_dir}/front_body.STL"/>
+    mesh="${loader_mesh_dir}/visual/front_body.STL"/>
   <joint name="articulation_joint" type="revolute">
     <parent link="rear_frame"/>
     <child link="front_frame"/>
@@ -137,7 +152,7 @@
     <dynamics damping="8000" friction="2000"/>
   </joint>
 
-  <xacro:wheel_link name="rear_left_wheel" mass="650"/>
+  <xacro:wheel_link name="rear_left_wheel" mass="650" flip="${pi}"/>
   <joint name="rear_left_wheel_joint" type="continuous">
     <parent link="rear_axle"/><child link="rear_left_wheel"/>
     <origin xyz="0 ${nominal_track / 2.0} 0" rpy="0 0 0"/>
@@ -151,7 +166,7 @@
     <axis xyz="0 1 0"/><dynamics damping="50" friction="10"/>
   </joint>
 
-  <xacro:wheel_link name="front_left_wheel" mass="650"/>
+  <xacro:wheel_link name="front_left_wheel" mass="650" flip="${pi}"/>
   <joint name="front_left_wheel_joint" type="continuous">
     <parent link="front_frame"/><child link="front_left_wheel"/>
     <origin xyz="1.65 ${nominal_track / 2.0} -0.15" rpy="0 0 0"/>
@@ -190,6 +205,10 @@
   </joint>
 
   <link name="lidar_link">
+    <visual>
+      <geometry><cylinder radius="0.10" length="0.16"/></geometry>
+      <material name="loader_dark"/>
+    </visual>
     <inertial>
       <mass value="2.0"/>
       <inertia ixx="0.008" ixy="0" ixz="0" iyy="0.008" iyz="0" izz="0.008"/>
@@ -197,7 +216,8 @@
   </link>
   <joint name="lidar_mount_joint" type="fixed">
     <parent link="rear_frame"/><child link="lidar_link"/>
-    <origin xyz="${-0.85 + lidar_off_xyz[0]} ${lidar_off_xyz[1]} ${2.25 + lidar_off_xyz[2]}"
+    <!-- Clear the L580 roof (maximum z=2.674 m in rear_frame). -->
+    <origin xyz="${-0.85 + lidar_off_xyz[0]} ${lidar_off_xyz[1]} ${2.85 + lidar_off_xyz[2]}"
       rpy="${lidar_off_rpy[0]} ${lidar_off_rpy[1]} ${lidar_off_rpy[2]}"/>
   </joint>
   <gazebo reference="lidar_mount_joint">

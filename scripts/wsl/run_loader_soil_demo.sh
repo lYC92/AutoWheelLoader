@@ -47,7 +47,8 @@ if [[ ${mode} == perception ]]; then
 fi
 
 gui_config="${project_root}/simulation/config/gui/loader_demo.config"
-urdf_file="${runtime_root}/results/loader.soil_demo.urdf"
+run_dir="${runtime_root}/results/runs/${mode}_${scenario}_$(date +%Y%m%d_%H%M%S)_${$}"
+urdf_file="${run_dir}/loader.urdf"
 server_log="${runtime_root}/log/loader_soil_demo${suffix}_gazebo.log"
 gui_log="${runtime_root}/log/loader_soil_demo${suffix}_gui.log"
 rsp_log="${runtime_root}/log/loader_soil_demo${suffix}_robot_state_publisher.log"
@@ -76,9 +77,9 @@ set -u
 export GZ_SIM_SYSTEM_PLUGIN_PATH="${soil_plugin_dir}:/opt/ros/jazzy/lib:${GZ_SIM_SYSTEM_PLUGIN_PATH:-}"
 export LD_LIBRARY_PATH="${soil_plugin_dir}:${LD_LIBRARY_PATH:-}"
 
-mkdir -p "${runtime_root}/results" "${runtime_root}/log"
+mkdir -p "${runtime_root}/results" "${runtime_root}/log" "${run_dir}"
 if [[ ${scenario} == localization ]]; then
-  world_file="${runtime_root}/results/loader_localization.world.sdf"
+  world_file="${run_dir}/loader_localization.world.sdf"
   python3 "${project_root}/tools/ros/generate_localization_world.py" "${world_file}"
 fi
 enable_lidar_imu=false
@@ -95,8 +96,8 @@ if gz service -l 2>/dev/null | grep -q '^/world/loader_soil_slice/'; then
   printf '%s\n' 'Close the existing Gazebo window, then run this launcher again.' >&2
   exit 3
 fi
-if (exec 9<>/dev/tcp/127.0.0.1/8765) 2>/dev/null; then
-  printf 'ERROR: Foxglove port 8765 is already in use. Close the existing demo first.\n' >&2
+if (exec 9<>/dev/tcp/127.0.0.1/18765) 2>/dev/null; then
+  printf 'ERROR: Foxglove port 18765 is already in use. Close the existing demo first.\n' >&2
   exit 3
 fi
 
@@ -185,7 +186,7 @@ if [[ ${mode} == perception ]]; then
     >"${effects_log}" 2>&1 &
   effects_pid=$!
   if [[ ${localization} == kiss_icp ]]; then
-    python3 "${project_root}/tools/ros/filter_localization_cloud.py" --ros-args \
+    python3 "${project_root}/tools/ros/filter_localization_cloud.py" --model-urdf "${urdf_file}" --ros-args \
       --params-file "${project_root}/simulation/config/localization/kiss_icp.yaml" \
       >"${runtime_root}/log/loader_localization_crop.log" 2>&1 &
     localization_crop_pid=$!
@@ -199,13 +200,13 @@ if [[ ${mode} == perception ]]; then
 fi
 
 ros2 launch foxglove_bridge foxglove_bridge_launch.xml \
-  address:=127.0.0.1 port:=8765 use_sim_time:=true \
+  address:=127.0.0.1 port:=18765 use_sim_time:=true \
   >"${foxglove_log}" 2>&1 &
 foxglove_pid=$!
 
 foxglove_ready=false
 for _ in $(seq 1 40); do
-  if (exec 9<>/dev/tcp/127.0.0.1/8765) 2>/dev/null; then
+  if (exec 9<>/dev/tcp/127.0.0.1/18765) 2>/dev/null; then
     exec 9>&-
     exec 9<&-
     foxglove_ready=true
@@ -219,17 +220,17 @@ for _ in $(seq 1 40); do
   sleep 0.25
 done
 if [[ ${foxglove_ready} != true ]]; then
-  printf '%s\n' 'ERROR: timed out waiting for Foxglove Bridge on port 8765.' >&2
+  printf '%s\n' 'ERROR: timed out waiting for Foxglove Bridge on port 18765.' >&2
   tail -n 120 "${foxglove_log}" >&2
   exit 1
 fi
 
-foxglove_url='https://app.foxglove.dev/~/view?ds=foxglove-websocket&ds.url=ws%3A%2F%2Flocalhost%3A8765'
+foxglove_url='https://app.foxglove.dev/~/view?ds=foxglove-websocket&ds.url=ws%3A%2F%2Flocalhost%3A18765'
 if [[ ${headless} != 1 && ${LOADER_OPEN_FOXGLOVE:-1} != 0 ]] && command -v powershell.exe >/dev/null 2>&1; then
   powershell.exe -NoProfile -NonInteractive -Command \
     "Start-Process '${foxglove_url}'" >/dev/null 2>&1 || true
 fi
-printf '%s\n' 'Foxglove telemetry: ws://localhost:8765'
+printf '%s\n' 'Foxglove telemetry: ws://localhost:18765'
 printf 'Import this layout once: %s\n' \
   "${project_root}/foxglove/loader_simulation_layout.json"
 
@@ -328,6 +329,8 @@ fi
 if [[ ${scenario} == localization ]]; then
   python3 "${project_root}/tools/ros/evaluate_localization.py" \
     --output "${runtime_root}/results/localization" \
+    --configuration "${project_root}/simulation/config/localization/kiss_icp.yaml" \
+    --model-urdf "${urdf_file}" \
     >"${runtime_root}/log/localization_evaluation.log" 2>&1 &
   evaluation_pid=$!
   sleep 3

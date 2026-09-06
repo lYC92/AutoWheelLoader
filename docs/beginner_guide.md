@@ -177,7 +177,7 @@ wsl -d Ubuntu-24.04 -u lyc -- bash '/mnt/c/Users/Liyangchuan/Documents/ChatGPT/N
 
 ### 4.6 Foxglove 第一次需要做什么
 
-浏览器可能先显示登录页。登录后连接 **Foxglove WebSocket** 数据源，地址为 `ws://localhost:8765`。`localhost` 表示当前电脑，`8765` 是这条连接使用的端口编号。
+浏览器可能先显示登录页。登录后连接 **Foxglove WebSocket** 数据源，地址为 `ws://localhost:18765`。`localhost` 表示当前电脑，`18765` 是这条连接使用的端口编号。
 
 在布局菜单寻找 `Layouts → Import from file...`，选择：
 
@@ -242,6 +242,12 @@ ROS 包可以理解为按功能整理的一组文件，集中放在 `ros_ws/src/
 
 核心文件是 `ros_ws/src/loader_description/urdf/loader.urdf.xacro`。里面描述车架、车轮、动臂、铲斗、质量、惯量、关节限制，以及雷达和 IMU 的安装位置。Xacro 可以看作带参数开关的车辆模型模板。
 
+现在默认使用 L580 装载机外观，能看到驾驶室、发动机罩、轮胎花纹、轮毂、动臂和铲斗。已修正轮胎安装偏位，并让完整驾驶室留在后车架，避免转向时驾驶室被拉开。车顶小圆柱表示雷达。
+
+![L580 外观，转向约 20 度的离线模型预览](assets/loader_l580.png)
+
+这张图由正式车辆模型生成。外观变精细，不表示质量、碰撞和液压参数已经完成实车标定；目前这些计算仍使用名义参数。雷达会看到新外观，所以已把雷达移到车顶上方，并重新验证定位输入。[模型来源与修复说明](../ros_ws/src/loader_description/meshes/l580/README.md)记录了具体修改。
+
 启动时，它被展开为 Gazebo 可以使用的车辆描述。`enable_ros2_control` 等参数决定启用哪些插件；`enable_lidar_imu` 决定是否加入传感器；`enable_ground_truth` 决定是否输出评测真值。
 
 `config/nominal_linkage.yaml` 与 `tools/kinematics/generate_linkage_table.py` 用于检查举升、翻斗的几何关系。当前控制器中仍有直接写在 C++ 里的名义几何公式，不能认为改了这份 YAML 就自动改好了整个动力学模型。
@@ -295,7 +301,7 @@ Gazebo 雷达
   → 原始点云 /loader/sensors/lidar/scan/points
   → 效应处理：丢点、旋转畸变
   → /loader/sensors/lidar/scan/points_effect
-  → 平地裁剪 filter_localization_cloud.py
+  → 车体过滤和地面识别 filter_localization_cloud.py
   → /loader/localization/points
   → KISS-ICP
   → 估计位置 /loader/localization/odometry
@@ -310,16 +316,19 @@ KISS-ICP 使用前后点云的重合关系估计运动。这个算法来自第�
 | 文件 | 为什么需要它 |
 | --- | --- |
 | `bootstrap_localization.sh` | 下载固定版本并构建 KISS-ICP，便于复现 |
-| `simulation/config/localization/kiss_icp.yaml` | 指定量程、裁剪高度、算法参数和线程数 |
+| `simulation/config/localization/kiss_icp.yaml` | 指定量程、地面识别、车体过滤、算法参数和线程数 |
 | `generate_localization_world.py` | 在现有感知世界周围加入 8 个固定标志物 |
 | `run_localization_scenario.py` | 用控制命令完成可重复的举升、倒车、前进行驶流程 |
-| `filter_localization_cloud.py` | 从效应点云中排除近场、远场、无效点和当前平地回波 |
+| `filter_localization_cloud.py` | 按扫描时刻的关节位置过滤车体，再识别并去除地面回波 |
+| `localization_geometry.py` | 实现地面平面拟合和车体包围盒计算，不读取车辆真实位置 |
 | `evaluate_localization.py` | 按时间匹配算法估计和真实位置，输出误差报告 |
 | `test_localization_metrics.py` | 用可手算的轨迹检查评分代码，防止错误对齐掩盖漂移 |
 
 ### 为什么要裁掉部分地面点
 
-第一轮扫描中，大面积平地的重复采样让配准几乎以为车辆没动。对当前平地试验做高度裁剪后，结果有明显改善。这个阈值根据当前雷达安装高度设置，不适合直接搬到坡地或剧烈颠簸场景；后续需要更完整的地面分割和车体滤除。
+第一轮扫描中，大面积平地的重复采样让配准几乎以为车辆没动。最初用固定高度裁剪改善了结果；现在改成从每帧点云中寻找地面平面，因此不再依赖写死的雷达离地高度。程序还会根据扫描时刻的关节位置排除车架、轮胎、动臂和铲斗附近的点，避免把自身运动当作环境变化。
+
+这仍有适用范围：地面识别只接受倾斜不超过 30 度、传感器下方有足够面积支持的平面；识别不到时保留非车体点并记录警告。车体过滤使用网格包围盒，可能连同紧贴车体的外部物体点一起排除。坡地和动态铲装仍需要实测，不能只凭代码支持就算通过。
 
 ### 真值、坐标系和误差怎么理解
 
@@ -346,7 +355,7 @@ KISS-ICP 使用前后点云的重合关系估计运动。这个算法来自第�
 | 整车铲土受力和材料转移 | `loader_soil/src/loader_soil_slice_system.cpp` 及 Xacro 中的插件参数 | 构建、检查铲装和守恒 |
 | 雷达分辨率、频率、距离噪声；IMU 噪声 | 车辆 Xacro 中的传感器定义 | 重启，再检查传感器数据 |
 | 雷达额外丢点和旋转畸变 | `loader_sensor_effects/config/nominal.yaml` | 重启 perception，运行效应检查 |
-| 当前定位参数和平地裁剪 | `simulation/config/localization/kiss_icp.yaml` | 重跑定位评测，与旧报告对比 |
+| 当前定位参数、地面识别和车体过滤 | `simulation/config/localization/kiss_icp.yaml` | 重跑定位评测，与同模型配置的报告对比 |
 | 新的车辆命令或状态字段 | `loader_sim_msgs/msg/`，以及所有读写它的代码 | 构建，并同步改发布、接收和布局 |
 
 表中省略 `ros_ws/src/` 的包路径，都位于该目录下；完整可点击路径见 [代码地图](code_map.md)。
@@ -458,7 +467,7 @@ Chrono DEM 已完成小规模颗粒运行和链接验证。它是未来离线标
 | Gazebo 在动，Foxglove 没数据 | 桥连接、数据源、话题或布局有问题 | 检查终端错误和 Foxglove 桥日志 |
 | 收到点云，但车和点云对不上 | 坐标系和 TF 换算可能有问题 | 记录面板固定坐标系和错误提示，查看 TF 链路 |
 | 手动前进时车推不动 | 铲刃是否顶住地面，是否仍在急停或禁用状态 | 先举升收斗，再核对手动使能状态 |
-| 提示 8765 已被占用 | 前一次仿真或桥可能还开着 | 回原启动窗口正常结束，再启动 |
+| 提示 18765 已被占用 | 前一次仿真或桥可能还开着 | 回原启动窗口正常结束，再启动 |
 | `Package not found` 或找不到插件 | 构建结果或运行环境未加载 | 从正式启动器启动；必要时重新构建 |
 | `[WARN:COPY MODE]`、窗口不出现 | WSLg 图形显示异常 | 当前启动器会尝试修复；此修复会重启 WSL 并停止其进程 |
 | 整台 Windows 蓝屏重启 | 需要主机故障证据，不能只看项目日志 | 保留时间、错误码和转储信息，参考已有主机故障记录 |
