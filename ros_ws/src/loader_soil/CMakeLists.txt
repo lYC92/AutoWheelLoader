@@ -21,4 +21,12 @@ install(TARGETS loader_soil_slice_system
   RUNTIME DESTINATION bin
 )
 
+if(BUILD_TESTING)
+  enable_testing()
+  add_executable(test_heightfield ../../../tools/soil_heightfield_3d/test_heightfield.cpp)
+  target_compile_features(test_heightfield PRIVATE cxx_std_17)
+  target_compile_options(test_heightfield PRIVATE -Wall -Wextra -Wpedantic)
+  add_test(NAME oriented_heightfield COMMAND test_heightfield)
+endif()
+
 ament_package()

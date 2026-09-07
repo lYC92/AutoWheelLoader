@@ -16,8 +16,8 @@ code{font-family:Consolas,'Microsoft YaHei',monospace;font-size:.91em;background
 @media(max-width:780px){.topbar{position:static;align-items:flex-start;flex-direction:column;padding:16px}.layout{display:block;padding:16px}aside{position:static;max-height:none;padding:0 0 20px}.toc{display:grid;grid-template-columns:1fr 1fr;gap:2px}.aside-note{display:none}main{padding:25px 20px}h1{font-size:25px}h2{font-size:22px}table{min-width:530px}td:first-child{min-width:130px}figure{overflow:auto}figure svg{min-width:690px}section{scroll-margin-top:20px}html{scroll-padding-top:20px}.topnav a,.topnav button{font-size:13px}}
 @media print{@page{size:A4;margin:16mm}body{background:#fff;font-size:10pt;line-height:1.65}.topbar,aside,.page-footer{display:none}.layout{display:block;padding:0;max-width:none}main{border:0;box-shadow:none;padding:0}.eyebrow{font-size:9pt}h1{font-size:23pt}h2{font-size:16pt}h3{font-size:12pt}h1,h2,h3{break-after:avoid}section{padding-top:18px;margin-top:22px}table{font-size:9pt;min-width:0!important}th,td{padding:7px 9px}thead{display:table-header-group}tr,figure,.code-box{break-inside:avoid}.table-scroll{overflow:visible;border-radius:0}figure svg{min-width:0!important}a{color:inherit;text-decoration:none}.code-box{background:#f1f5f7;border:1px solid #ccc}.code-label{background:#e8eef1;color:#333}pre code{color:#222}pre{padding:10px;line-height:1.5}pre code{font-size:9pt}p{orphans:3;widows:3}}
 </style></head>
-<body><header class="topbar"><div class="brand">装载机仿真软件 · 学习与查阅</div><nav class="topnav" aria-label="文档切换"><a href="beginner_guide.html" aria-current="page">零基础说明书</a><a href="code_map.html">代码地图</a><button type="button" onclick="window.print()">打印 / 保存 PDF</button></nav></header>
-<div class="layout"><aside aria-label="章节目录"><h2>本页目录</h2><ol class="toc"><li><a href="#section-1">1. 先弄清楚：这到底是一套什么软件</a></li><li><a href="#section-2">2. 六个部分分别在做什么</a></li><li><a href="#section-3">3. 文件在哪里，程序又在哪里运行</a></li><li><a href="#section-4">4. 第一次怎么用：只选一种模式启动</a></li><li><a href="#section-5">5. 跟着一次“举升”看懂代码如何合作</a></li><li><a href="#section-6">6. 六个 ROS 包：核心代码分别负责什么</a></li><li><a href="#section-7">7. 定位为什么又多了好几个程序</a></li><li><a href="#section-8">8. 想改某个效果，应该找哪里</a></li><li><a href="#section-9">9. 测试文件在干什么，怎样看结果</a></li><li><a href="#section-10">10. 当前做到哪了，哪些还不能当作完成</a></li><li><a href="#section-11">11. 看不懂或出问题时，先从现象判断</a></li><li><a href="#section-12">12. 想继续深入，按问题选文档</a></li></ol><p class="aside-note">初次阅读先看整体和启动方法。<br>用 Ctrl+F 搜索文件名或关键词。<br><br>离线阅读 · 无需启动仿真<br>文档快照：2026-09-06</p></aside>
+<body><header class="topbar"><div class="brand">装载机仿真软件 · 学习与查阅</div><nav class="topnav" aria-label="文档切换"><a href="beginner_guide.html" aria-current="page">零基础说明书</a><a href="code_map.html">代码地图</a><a href="next_stage_3d_ab.html">开发计划与进度</a><button type="button" onclick="window.print()">打印 / 保存 PDF</button></nav></header>
+<div class="layout"><aside aria-label="章节目录"><h2>本页目录</h2><ol class="toc"><li><a href="#section-1">1. 先弄清楚：这到底是一套什么软件</a></li><li><a href="#section-2">2. 六个部分分别在做什么</a></li><li><a href="#section-3">3. 文件在哪里，程序又在哪里运行</a></li><li><a href="#section-4">4. 第一次怎么用：只选一种模式启动</a></li><li><a href="#section-5">5. 跟着一次“举升”看懂代码如何合作</a></li><li><a href="#section-6">6. 六个 ROS 包：核心代码分别负责什么</a></li><li><a href="#section-7">7. 定位为什么又多了好几个程序</a></li><li><a href="#section-8">8. 想改某个效果，应该找哪里</a></li><li><a href="#section-9">9. 测试文件在干什么，怎样看结果</a></li><li><a href="#section-10">10. 当前做到哪了，哪些还不能当作完成</a></li><li><a href="#section-11">11. 看不懂或出问题时，先从现象判断</a></li><li><a href="#section-12">12. 想继续深入，按问题选文档</a></li><li><a href="#section-13">最新开发进度入口</a></li></ol><p class="aside-note">初次阅读先看整体和启动方法。<br>用 Ctrl+F 搜索文件名或关键词。<br><br>离线阅读 · 无需启动仿真<br>文档快照：2026-09-07</p></aside>
 <main><div class="eyebrow">从使用方法，到代码职责</div><h1 id="heading-0-1">无人装载机仿真软件：零基础说明书</h1>
 <p>适用对象：想知道这套软件在做什么、怎样使用、每块代码负责什么，但还不会读 ROS 或 C++ 的项目使用者。</p>
 <p>文档版本：2026-09-06。内容以当前项目代码和已保存的测试结果为依据。后续开发状态请看 <a href="deployment_status.md">开发状态</a>。</p>
@@ -378,6 +378,7 @@ Gazebo 独立真实位置 /loader/ground_truth/odometry
 <section id="section-10">
 <h2>10. 当前做到哪了，哪些还不能当作完成</h2>
 <p>本文的阶段编号沿用项目路线图；M1、M2 是第四阶段内部的小里程碑。开发存在交叉推进，进入第四阶段不表示前三阶段的所有精细化工作都结束了。</p>
+<p><strong>2026-09-07 新增目标：</strong>先让料堆在前后、左右方向都能变化，再让装载机从 A 点铲料，沿含转弯的路线到 B 点卸料并返回。接下来的定位、IMU、地图与鱼眼/BEV 工作都放在这个三维场景里验收。具体顺序见 <a href="next_stage_3d_ab.html">三维 A→B 开发计划</a>。当前只是更新了计划，这些新功能还没有完成。</p>
 <div class="table-scroll"><table><thead><tr>
 <th scope="col">范围</th>
 <th scope="col">当前实际状态</th>
@@ -453,6 +454,12 @@ Gazebo 独立真实位置 /loader/ground_truth/odometry
 <tr><td>整个项目将来准备做什么</td><td><a href="../windows_loader_simulation_plan.md">总体路线图</a></td></tr>
 </tbody></table></div>
 <p>路线图表达目标，本说明书解释当前软件，开发状态和测试报告说明已经得到的证据。阅读时先确认自己正在看哪一种文档。</p>
+</section>
+<section id="section-13">
+<h2>最新开发进度入口</h2>
+<p>后续开发的完成项、待办和验证数据统一记录在 <a href="next_stage_3d_ab.html">下一阶段开发台账</a>。 三维料堆已接入整车，可在 Windows 运行：</p>
+<div class="code-box"><div class="code-label">PowerShell · 复制完整命令</div><pre><code>.\scripts\windows\run_loader_soil_demo.ps1 -Mode perception -ControlMode auto -Scenario soil3d</code></pre></div>
+<p>这会运行三维料堆上的挖卸演示。目前仍是直线挖卸动作，A 点到 B 点的自动转向运输还在开发。</p>
 </section><footer class="page-footer">本页由 beginner_guide.md 生成。修改 Markdown 后运行 tools/docs/build_beginner_docs.py 更新阅读版。模型与算法仍在开发，具体数值以最新代码和实测报告为准。</footer></main></div>
 <script>
 const links=[...document.querySelectorAll('.toc a')];

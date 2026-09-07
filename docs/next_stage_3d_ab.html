@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="面向零基础使用者的装载机仿真软件说明与代码地图。"><title>开发计划与进度 · 装载机仿真软件</title><style>
+:root{color-scheme:light;--ink:#233846;--muted:#536977;--accent:#146452;--line:#dce5e9;--paper:#fff;--bg:#f3f6f8}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:100px}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 'Microsoft YaHei','Noto Sans CJK SC',system-ui,sans-serif}
+a{color:#146452;text-underline-offset:3px}a:hover{color:#083e32}a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #c98013;outline-offset:4px}
+.topbar{position:sticky;top:0;z-index:5;background:#193849;color:#fff;border-bottom:1px solid #304f60;padding:13px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{font-size:17px;font-weight:700}.topnav{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.topnav a,.topnav button{font:inherit;font-size:14px;color:#fff;text-decoration:none;padding:5px 13px;border:1px solid #55717f;border-radius:7px;background:transparent;cursor:pointer}.topnav a[aria-current=page]{background:#dceee9;color:#174f43;border-color:#dceee9}
+.layout{max-width:1500px;margin:auto;display:grid;grid-template-columns:270px minmax(0,1fr);gap:30px;padding:30px}
+aside{align-self:start;position:sticky;top:99px;max-height:calc(100vh - 125px);overflow:auto;padding:8px 12px 16px 0;font-size:14px}aside h2{margin:0 0 12px;font-size:16px;border:0;padding:0}.toc{list-style:none;padding:0;margin:0}.toc a{display:block;padding:7px 11px;border-radius:6px;color:#48606e;text-decoration:none;line-height:1.65}.toc a:hover,.toc a.active{background:#dceee9;color:#174f43}.aside-note{color:var(--muted);border-top:1px solid var(--line);padding-top:15px;margin-top:18px;font-size:13px}
+main{min-width:0;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:38px 46px 48px;box-shadow:0 5px 24px #19384905}.eyebrow{color:var(--accent);font-size:13px;font-weight:700;letter-spacing:.1em}h1{font-size:32px;line-height:1.5;margin:12px 0 22px;letter-spacing:-.02em}h2{font-size:25px;line-height:1.5;margin:0 0 22px;padding-top:8px}h3{font-size:19px;line-height:1.65;margin:28px 0 12px;color:#195446}p{margin:14px 0}strong{font-weight:700;color:#163a47}section{border-top:1px solid var(--line);padding-top:30px;margin-top:36px;scroll-margin-top:95px}li{padding-left:4px;margin-bottom:12px}ol,ul{padding-left:25px}
+code{font-family:Consolas,'Microsoft YaHei',monospace;font-size:.91em;background:#edf3f5;border-radius:4px;padding:2px 5px;overflow-wrap:anywhere}pre{margin:0;padding:16px 20px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.75}pre code{padding:0;background:none;font-size:14px;color:#e9f3f7}.code-box{background:#203a49;border-radius:9px;margin:18px 0;overflow:hidden}.code-label{font-size:12px;color:#c7dde8;padding:7px 20px;border-bottom:1px solid #486371;background:#2a4656}
+.table-scroll{overflow:auto;margin:20px 0;border:1px solid var(--line);border-radius:8px}table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.8;table-layout:auto}th,td{padding:12px 14px;text-align:left;vertical-align:top;overflow-wrap:anywhere;border-bottom:1px solid var(--line)}th{background:#edf4f6;font-weight:700;color:#264d60}td:first-child{min-width:140px;width:30%;color:#243f4e}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#fbfcfd}td code{font-size:13px}figure{margin:24px 0}figure svg,figure img{width:100%;height:auto;display:block}.page-footer{margin-top:35px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}.mobile-toc{display:none}
+@media(min-width:1400px){main{padding-left:60px;padding-right:60px}}
+@media(max-width:1050px){.layout{grid-template-columns:220px minmax(0,1fr);gap:20px;padding:22px}main{padding:28px}h1{font-size:28px}.topbar{padding:12px 22px}}
+@media(max-width:780px){.topbar{position:static;align-items:flex-start;flex-direction:column;padding:16px}.layout{display:block;padding:16px}aside{position:static;max-height:none;padding:0 0 20px}.toc{display:grid;grid-template-columns:1fr 1fr;gap:2px}.aside-note{display:none}main{padding:25px 20px}h1{font-size:25px}h2{font-size:22px}table{min-width:530px}td:first-child{min-width:130px}figure{overflow:auto}figure svg{min-width:690px}section{scroll-margin-top:20px}html{scroll-padding-top:20px}.topnav a,.topnav button{font-size:13px}}
+@media print{@page{size:A4;margin:16mm}body{background:#fff;font-size:10pt;line-height:1.65}.topbar,aside,.page-footer{display:none}.layout{display:block;padding:0;max-width:none}main{border:0;box-shadow:none;padding:0}.eyebrow{font-size:9pt}h1{font-size:23pt}h2{font-size:16pt}h3{font-size:12pt}h1,h2,h3{break-after:avoid}section{padding-top:18px;margin-top:22px}table{font-size:9pt;min-width:0!important}th,td{padding:7px 9px}thead{display:table-header-group}tr,figure,.code-box{break-inside:avoid}.table-scroll{overflow:visible;border-radius:0}figure svg{min-width:0!important}a{color:inherit;text-decoration:none}.code-box{background:#f1f5f7;border:1px solid #ccc}.code-label{background:#e8eef1;color:#333}pre code{color:#222}pre{padding:10px;line-height:1.5}pre code{font-size:9pt}p{orphans:3;widows:3}}
+</style></head>
+<body><header class="topbar"><div class="brand">装载机仿真软件 · 学习与查阅</div><nav class="topnav" aria-label="文档切换"><a href="beginner_guide.html">零基础说明书</a><a href="code_map.html">代码地图</a><a href="next_stage_3d_ab.html" aria-current="page">开发计划与进度</a><button type="button" onclick="window.print()">打印 / 保存 PDF</button></nav></header>
+<div class="layout"><aside aria-label="章节目录"><h2>本页目录</h2><ol class="toc"><li><a href="#section-1">1. 最终要看到什么</a></li><li><a href="#section-2">2. “从一维到三维”的具体含义</a></li><li><a href="#section-3">3. 按顺序实施的四个里程碑</a></li><li><a href="#section-4">4. 开发台账（每个完成项验证后更新）</a></li><li><a href="#section-5">5. 总体验收状态</a></li></ol><p class="aside-note">初次阅读先看整体和启动方法。<br>用 Ctrl+F 搜索文件名或关键词。<br><br>离线阅读 · 无需启动仿真<br>文档快照：2026-09-07</p></aside>
+<main><div class="eyebrow">从使用方法，到代码职责</div><h1 id="heading-0-1">下一阶段：三维料堆、A→B 转向作业与第四阶段完整验收</h1>
+<p>更新日期：2026-09-07。根据本轮需求调整执行顺序；本文件是开发目标，不是已完成报告。</p>
+<section id="section-1">
+<h2>1. 最终要看到什么</h2>
+<p>装载机在三维场地中驶向 A 点料堆，对正并铲取，收斗举升，倒车退出，沿含转弯的路线 驶向 B 点，调整停车方向后卸料，返回 A 点继续作业。A 处出现局部挖痕，B 处形成新的料堆。 雷达和相机看到的料堆必须与实际材料账本一致；定位估计驱动最终闭环，真值单独评分。</p>
+<p>保持原路线图阶段编号：先补完第三阶段的三维整车土料，再在这个环境完成第四阶段。 现有直线定位三轮通过仅是历史基线，不代替新场景验收。</p>
+</section>
+<section id="section-2">
+<h2>2. “从一维到三维”的具体含义</h2>
+<p>车辆、关节和传感器已经处于三维 Gazebo 世界；当前整车土料保存的是沿 x 的一条高度曲线， 再沿 y 方向拉伸为固定宽度，所以从侧面接近、转向铲取和任意卸料点受到限制。</p>
+<p>下一版使用 x-y 地面网格，每格独立保存高度 h(x,y)，在三维空间显示和交互。 这在技术上叫 <strong>2.5D 高度场</strong>：能形成真正有横向变化的料堆、斜坡、挖痕和异地沉积， 能够承载本轮 A→B 作业；每根竖直网格柱只有一个表面高度，不能表示悬空土洞或逐颗粒流动。 实时逐颗粒 DEM 不属于本轮范围，继续保留 Chrono 作为离线标定工具。</p>
+<p>已有 <code>tools/soil_heightfield_3d/</code> 是可复用的独立原型，但不能直接视为整车功能： 2026-09-07 已在独立内核补上斗刃朝向、旋转扫掠、重叠去重与转向阻力矩； Gazebo C++ 首版已接入并完成三方向挖卸；综合验收仍未完成，见第 4 节。</p>
+</section>
+<section id="section-3">
+<h2>3. 按顺序实施的四个里程碑</h2>
+<h3 id="heading-3-1">里程碑一：三维土料接入整车</h3>
+<ul>
+<li>从原型提炼可测试的三维土料内核，迁入 Gazebo C++ 插件，保留二维版本作回归对照。</li>
+<li>根据实际铲斗位姿计算完整斗宽的扫掠，支持斜向铲取和扫掠过程中的朝向变化。</li>
+<li>将切削力分解到实际运动方向，在实际作用点施加力与力矩，并反馈斗内质量和质心。</li>
+<li>在任意 x-y 卸料位置沉积，保持材料守恒、斗容和休止角约束；网格边界不能静默丢料。</li>
+<li>发布带原点、分辨率、行列数、坐标系与版本的地形数据，替换只能描述一维剖面的通道契约。</li>
+<li>只更新改变的地形区域；Gazebo、雷达和后续相机使用同一更新后的表面。</li>
+<li>料堆接触仍由土料模型计算，保留刚性底面接触，避免同一区域重复计算接触力。</li>
+</ul>
+<p>验收：从至少三个方向铲取；A 处只有实际扫过区域减少；在侧向偏移的 B 处生成料堆； 材料相对守恒误差目标不超过 1e-6；验证边界、满斗和重复铲取；雷达可检测对应几何变化。 数值目标是名义软件验收，不能解释为实车土力精度。</p>
+<h3 id="heading-3-2">里程碑二：带转向的 A→B 作业闭环</h3>
+<ul>
+<li>场景配置分别描述车辆起点、A 料堆区域、接近姿态、B 卸料区域和卸料停车姿态。</li>
+</ul>
+<p>  卸料区定义的是材料落点，不能简单把车辆中心开到 B 坐标就算到位。</p>
+<ul>
+<li>首版先沿给定航点生成满足铰接角、转弯半径和车体包络约束的路线，再按反馈跟踪；</li>
+</ul>
+<p>  支持前进、倒车、换挡制动、限速、停车和偏离路线时的安全停止。</p>
+<ul>
+<li>控制通过 <code>VehicleCommand</code> 发送牵引、制动、目标铰接角及液压阀命令，不能瞬移车体或直写关节位置。</li>
+<li>作业状态机：准备 → 接近 A → 对正 → 插入 → 收斗 → 举升 → 后退 → 转运 →</li>
+</ul>
+<p>  对正 B → 卸料 → 返回。状态转换依据位置、朝向、关节状态和载荷，时间只用于超时保护。</p>
+<ul>
+<li>初期允许使用明确标注的真值姿态调试轨迹控制；最终验收必须切换到定位输出，</li>
+</ul>
+<p>  并证明真值话题只被评测器消费。定位失效时不能暗中切回真值继续驾驶。</p>
+<ul>
+<li>Foxglove 显示 A/B 区域、规划路线、实际轨迹、当前作业状态、跟踪误差和材料流向。</li>
+</ul>
+<p>首轮名义场景目标：A/B 间距至少 10 m，横向位置不同，转运路线累计转向至少 45°， 包含倒车退出和前进转运；连续运行 10 个循环，至少 9 个成功且无越界或非预期碰撞。 初定轨迹横向 RMSE ≤ 0.30 m，停车位置误差 ≤ 0.30 m、朝向误差 ≤ 5°； 每次至少 90% 卸出材料体积落入 B 区，至少卸出装入量的 95%。这些是待实测的目标， 任何调整都应记录原因，不能为通过测试而事后悄悄放宽门槛。</p>
+<h3 id="heading-3-3">里程碑三：在三维作业环境完成激光/IMU 定位</h3>
+<ul>
+<li>保留 KISS-ICP 为对照，接入激光与 IMU 融合，完成点云运动畸变、时间戳和真实/估计外参契约。</li>
+<li>自身回波过滤跟随铰接、举升、翻斗；地面识别覆盖倾斜地面，评估动态料堆对定位的干扰。</li>
+<li>对直线、转弯、倒车、斜坡、装载/空载和 A→B 全周期分别评分；准备慢启动与传感器丢帧场景。</li>
+<li>补地图建立和已有地图重定位。定位丢失、过期或置信不足时受控停车，恢复后才能继续。</li>
+<li>闭环使用估计位置；独立 Gazebo 真值做初始对齐与逐帧误差评分，禁止用整段轨迹拟合抹去漂移。</li>
+</ul>
+<p>验收：保留名义位置 RMSE ≤ 0.15 m 目标，同时报告最大误差、姿态误差、频率、延迟、 定位中断与恢复时间。按原路线图执行至少 10 次统计复现，并加入不同随机种子的压力测试； 不能只挑最好的一次，也不能用平均结果掩盖某种工况持续失败。</p>
+<h3 id="heading-3-4">里程碑四：完成第四阶段剩余视觉与联合验收</h3>
+<p>原路线图的“四路鱼眼/BEV”仍属于第四阶段，不能在只有激光定位通过时宣布整阶段完成。</p>
+<ul>
+<li>在同一个三维 A/B 场景完成四路鱼眼 RGB、深度、语义、内外参和同时间戳帧组采集。</li>
+<li>验证几何更新后相机与雷达看到同一料堆；严格对齐输出，必要时采用原计划中的统一重投影方案。</li>
+<li>使用录制数据离线回放验证 BEV 与可行驶区域，避免 RTX 2070 同时承担全部渲染和推理。</li>
+<li>重新测试三维动态土料、控制、定位、雷达和可视化的联合性能；控制实时配置目标仍为 RTF ≥ 0.9。</li>
+</ul>
+<p>  视觉离线回放单列吞吐与精度，不与在线控制性能混为一项。</p>
+<ul>
+<li>最终保留原路线图的完整门槛：固定种子 10 次均完成状态机，装料质量变异系数 ≤ 1%、</li>
+</ul>
+<p>  峰值力变异系数 ≤ 2%、停车位置最大离散 ≤ 5 cm、航向最大离散 ≤ 0.5°；   另外完成连续 100 次作业的稳定性检查。里程碑二的 9/10 只是开发中间门槛，不能替代最终验收。   停车绝对误差与重复运行的离散度分别报告，不能混用。</p>
+</section>
+<section id="section-4">
+<h2>4. 开发台账（每个完成项验证后更新）</h2>
+<p>更新时间：2026-09-07。本文件作为持续开发的进度入口；不以聊天中的简短回复代替验收记录。</p>
+<h3 id="heading-4-1">已完成并验证</h3>
+<ul>
+<li>[x] Python 有朝向斗刃扫掠：四个方向、旋转、重走、交叉、更深二次挖掘、容量和域边界。</li>
+</ul>
+<p>  5 组解析测试通过，原 150×100 高度场装卸 3 m³ 回归通过。</p>
+<ul>
+<li>[x] 将保留格内切削深度的多边形内核迁入 C++：<code>ros_ws/src/loader_soil/src/heightfield.hpp</code>。</li>
+</ul>
+<p>  C++ 三方向、重复扫掠、XY 卸料、越界保留载荷及体积守恒测试通过。</p>
+<ul>
+<li>[x] Gazebo 插件增加可选三维高度场：按实际斗刃端点运动扫掠，分段施加阻力及三轴力矩，</li>
+</ul>
+<p>  XY 锥形沉积；仅更新脏地形单元。整车首版网格 56×48，分辨率 0.25 m。</p>
+<ul>
+<li>[x] <code>TerrainState</code> 增加版本、原点 y、行列数及行优先高度数组；旧版剖面仍为版本 1。</li>
+</ul>
+<p>  六个 ROS 包全部重新编译成功。</p>
+<ul>
+<li>[x] 三维显示由 2688 个独立模型改为一个模型内的 2688 个 visual。</li>
+</ul>
+<p>  实测进程内存约 7 GB 降至约 1 GB（后者含观察雷达），解决启动内存过高问题。</p>
+<ul>
+<li>[x] 整车三维感知挖卸回归：延迟启动 8 秒后自动恢复切削姿态；装入/卸出 1.166950 m³，</li>
+</ul>
+<p>  峰值车速 3.382 m/s、阻力 28.59 kN、地形最大变化 0.853 m，体积相对误差 9.270e-16。   雷达改变射线 4611 条；后续更严格 XY 表面一致性检查也已通过，见下方记录。</p>
+<ul>
+<li>[x] 增加 Windows/WSL 演示入口 <code>-Scenario soil3d</code>，保留原 <code>soil</code> 和 <code>localization</code>。</li>
+</ul>
+<p>  启动脚本语法检查通过；图形窗口操作仍待单独体验检查。</p>
+<ul>
+<li>[x] 旧一维整车回归通过：装卸 1.697781 m³、车速 2.777 m/s、守恒相对误差 9.588e-16，</li>
+</ul>
+<p>  显示柱高度误差 0；消息升级未破坏原回归。</p>
+<ul>
+<li>[x] 加强三维雷达验收：425 条变化回波匹配发生变化的 XY 单元及表面高度（误差 &lt; 3 cm）；</li>
+</ul>
+<p>  本次装卸 1.168010 m³、体积相对误差 -1.324e-16。</p>
+<ul>
+<li>[x] 三方向整车铲卸通过：0°（感知）、+45°（装卸 1.175783 m³）、−45°（装卸 1.168717 m³）。</li>
+</ul>
+<p>  结果保存在 <code>docs/baselines/2026-09-07/heightfield_integration/</code>。</p>
+<ul>
+<li>[x] 场景与插件统一读取 <code>loader_description/config/soil_heightfield.yaml</code>；</li>
+</ul>
+<p>  新旧 xacro 展开和场景生成通过。</p>
+<ul>
+<li>[x] 首版局部路径连接器和后轴参考轨迹跟踪内核；前进/倒车左右 90° 转弯的无侧滑模型测试通过，</li>
+</ul>
+<p>  包含铰接变化导致的后车架反向摆动，检查 0.30 m 跟踪/停车门槛和转向角速度上限。   初版 1.8 m 前视距离出现失稳，调整为 4.0 m 后通过；这不是 Gazebo 或实车验收。</p>
+<h3 id="heading-4-2">正在进行 / 待办（按执行顺序）</h3>
+<ul>
+<li>[ ] 侧向 B 区沉积，满斗/越界/重复铲取与长时间碎片增长验证。</li>
+<li>[ ] 处理有明显横滚时斗刃不同高度的精确扫掠；当前子步采用斗刃平均高度。</li>
+<li>[ ] 完整载荷惯性/质心反馈。目前保留名义固定质心重力加载，不等于动态惯性更新。</li>
+<li>[ ] 验证三维图形演示与 Foxglove 网格显示，并记录控制/感知各自 RTF。</li>
+<li>[ ] ROS 力级轨迹控制器整车验证（运行中，显式真值调试，无估计失效回退）。</li>
+</ul>
+<p>  联调修复：启动等待安全状态解除；液压保持增加速度阻尼及积分消除误差；ROS 浮点命令显式转换，   避免饱和到整数端点后触发消息序列化断言。尚未取得完整转运通过结果。</p>
+<ul>
+<li>[ ] A/B 场景配置、车体包络和障碍约束、完整前进/倒车转运路径。</li>
+<li>[ ] 实现依据状态反馈转换的“铲取→收斗→举升→倒车→转运→对正 B→卸料→返回”状态机。</li>
+<li>[ ] 先在明确标注的真值调试模式完成 A→B 整车运行，再切换估计定位驱动。</li>
+<li>[ ] 在三维环境完成激光/IMU 融合、地图重定位、曲线/倒车/坡面/动态土堆定位验证。</li>
+<li>[ ] 四鱼眼同步 RGB/深度/语义及标定输出，离线 BEV、可行驶区域验证。</li>
+<li>[ ] 完成里程碑二 10 次中至少 9 次成功的中间门槛，以及最终 10/10、100 循环和性能验收。</li>
+</ul>
+<h3 id="heading-4-3">使用与验证入口</h3>
+<p>Windows 三维演示（图形模式，原直线挖卸循环，尚非 A→B）：</p>
+<div class="code-box"><div class="code-label">PowerShell · 复制完整命令</div><pre><code>.\scripts\windows\run_loader_soil_demo.ps1 -Mode perception -ControlMode auto -Scenario soil3d</code></pre></div>
+<p>WSL 三维整车感知测试（自动退出）：</p>
+<div class="code-box"><div class="code-label">路径 / 流程</div><pre><code>LOADER_SOIL_3D=true bash scripts/wsl/smoke_test_loader_soil_coupling.sh perception</code></pre></div>
+<p>首版 0.25 m 网格是接入开发配置，不能作为 0.10 m 独立原型同分辨率验收。 域外卸料保留在斗内，边界沉积会截断在域内；尚未模拟域外流失和横向颗粒流动。 C++ 的完整力矩来自分段实际作用点，切削高度和阻力模型仍为名义近似，未标定实车精度。</p>
+</section>
+<section id="section-5">
+<h2>5. 总体验收状态</h2>
+<ul>
+<li>[ ] 三维土料、旋转扫掠、任意 A/B 点及传感器几何一致性（首版已接入，综合验收未完成）。</li>
+<li>[ ] 受动力学约束的转向轨迹、倒车退出、A→B 作业状态机。</li>
+<li>[ ] 三维环境激光/IMU 融合、地图重定位与估计位姿闭环。</li>
+<li>[ ] 四鱼眼同步采集、离线 BEV 与完整第四阶段统计/性能验收。</li>
+</ul>
+<p>下一步执行第 4 节第一条未完成项。每项记录实际验证证据后才勾选，失败项保留失败原因。</p>
+</section><footer class="page-footer">本页由 next_stage_3d_ab.md 生成。修改 Markdown 后运行 tools/docs/build_beginner_docs.py 更新阅读版。模型与算法仍在开发，具体数值以最新代码和实测报告为准。</footer></main></div>
+<script>
+const links=[...document.querySelectorAll('.toc a')];
+if('IntersectionObserver' in window){
+  const observer=new IntersectionObserver(entries=>{
+    const item=entries.find(e=>e.isIntersecting);
+    if(item)links.forEach(a=>a.classList.toggle('active',a.hash==='#'+item.target.id));
+  },{rootMargin:'-10% 0px -65% 0px'});
+  document.querySelectorAll('main section').forEach(s=>observer.observe(s));
+}
+</script></body></html>

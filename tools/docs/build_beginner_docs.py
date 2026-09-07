@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build two offline readers from the project's beginner Markdown documents.
+"""Build offline readers from the project's beginner Markdown documents.
 
 Uses only the Python standard library. This intentionally supports the small
 Markdown subset used here: headings, paragraphs, tables, lists, fences, inline
@@ -11,7 +11,7 @@ import re
 
 ROOT = Path(__file__).resolve().parents[2]
 DOCS = ROOT / "docs"
-PAGES = {"beginner_guide": "零基础说明书", "code_map": "代码地图"}
+PAGES = {"beginner_guide": "零基础说明书", "code_map": "代码地图", "next_stage_3d_ab": "开发计划与进度"}
 INLINE = re.compile(r"`([^`]+)`|!\[([^\]]*)\]\(([^)]+)\)|\[([^\]]+)\]\(([^)]+)\)|\*\*(.+?)\*\*")
 
 
@@ -147,7 +147,7 @@ def build():
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="面向零基础使用者的装载机仿真软件说明与代码地图。"><title>{label} · 装载机仿真软件</title><style>{CSS}</style></head>
 <body><header class="topbar"><div class="brand">装载机仿真软件 · 学习与查阅</div><nav class="topnav" aria-label="文档切换">{navigation}<button type="button" onclick="window.print()">打印 / 保存 PDF</button></nav></header>
-<div class="layout"><aside aria-label="章节目录"><h2>本页目录</h2><ol class="toc">{contents}</ol><p class="aside-note">初次阅读先看整体和启动方法。<br>用 Ctrl+F 搜索文件名或关键词。<br><br>离线阅读 · 无需启动仿真<br>文档快照：2026-09-06</p></aside>
+<div class="layout"><aside aria-label="章节目录"><h2>本页目录</h2><ol class="toc">{contents}</ol><p class="aside-note">初次阅读先看整体和启动方法。<br>用 Ctrl+F 搜索文件名或关键词。<br><br>离线阅读 · 无需启动仿真<br>文档快照：2026-09-07</p></aside>
 <main><div class="eyebrow">从使用方法，到代码职责</div>{body}<footer class="page-footer">本页由 {slug}.md 生成。修改 Markdown 后运行 tools/docs/build_beginner_docs.py 更新阅读版。模型与算法仍在开发，具体数值以最新代码和实测报告为准。</footer></main></div>
 <script>
 const links=[...document.querySelectorAll('.toc a')];

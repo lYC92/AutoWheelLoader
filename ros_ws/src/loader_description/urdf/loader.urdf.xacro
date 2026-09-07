@@ -12,6 +12,7 @@
   <xacro:arg name="enable_dynamics" default="false"/>
   <xacro:arg name="enable_lidar_imu" default="false"/>
   <xacro:arg name="enable_ros2_control" default="false"/>
+  <xacro:arg name="enable_soil_3d" default="false"/>
   <xacro:arg name="enable_soil_slice" default="false"/>
   <xacro:arg name="enable_ground_truth" default="false"/>
 
@@ -354,6 +355,7 @@
     </gazebo>
   </xacro:if>
 
+  <xacro:property name="soil_grid_config" value="${xacro.load_yaml('$(find loader_description)/config/soil_heightfield.yaml')}"/>
   <xacro:if value="$(arg enable_soil_slice)">
     <gazebo reference="bucket">
       <collision name="bucket_collision">
@@ -364,17 +366,26 @@
     </gazebo>
     <gazebo>
       <plugin filename="libloader_soil_slice_system.so" name="loader_soil::LoaderSoilSliceSystem">
-        <domain_min_m>0.0</domain_min_m>
-        <domain_max_m>14.0</domain_max_m>
-        <cell_size_m>0.05</cell_size_m>
+        <domain_min_m>${soil_grid_config['domain_min_x_m'] if '$(arg enable_soil_3d)' == 'true' else 0.0}</domain_min_m>
+        <domain_max_m>${soil_grid_config['domain_max_x_m'] if '$(arg enable_soil_3d)' == 'true' else 14.0}</domain_max_m>
+        <xacro:if value="$(arg enable_soil_3d)">
+          <heightfield_3d>true</heightfield_3d>
+          <cell_size_m>${soil_grid_config['cell_size_m']}</cell_size_m>
+          <domain_min_y_m>${soil_grid_config['domain_min_y_m']}</domain_min_y_m>
+          <domain_max_y_m>${soil_grid_config['domain_max_y_m']}</domain_max_y_m>
+          <pile_center_y_m>${soil_grid_config['pile_center_y_m']}</pile_center_y_m>
+        </xacro:if>
+        <xacro:unless value="$(arg enable_soil_3d)">
+          <cell_size_m>0.05</cell_size_m>
+        </xacro:unless>
         <slice_width_m>2.7</slice_width_m>
-        <pile_center_m>7.0</pile_center_m>
-        <pile_height_m>1.8</pile_height_m>
-        <angle_of_repose_deg>34.0</angle_of_repose_deg>
+        <pile_center_m>${soil_grid_config['pile_center_x_m'] if '$(arg enable_soil_3d)' == 'true' else 7.0}</pile_center_m>
+        <pile_height_m>${soil_grid_config['pile_height_m'] if '$(arg enable_soil_3d)' == 'true' else 1.8}</pile_height_m>
+        <angle_of_repose_deg>${soil_grid_config['angle_of_repose_deg'] if '$(arg enable_soil_3d)' == 'true' else 34.0}</angle_of_repose_deg>
         <bucket_capacity_m3>3.0</bucket_capacity_m3>
         <bulk_density_kg_m3>1600.0</bulk_density_kg_m3>
         <visualization_update_hz>10.0</visualization_update_hz>
-        <visualization_column_height_m>1.8</visualization_column_height_m>
+        <visualization_column_height_m>${soil_grid_config['column_height_m'] if '$(arg enable_soil_3d)' == 'true' else 1.8}</visualization_column_height_m>
         <unload_tilt_threshold_rad>-0.35</unload_tilt_threshold_rad>
         <maximum_unload_rate_m3ps>3.0</maximum_unload_rate_m3ps>
       </plugin>

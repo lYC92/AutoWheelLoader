@@ -9,7 +9,7 @@ param(
     [ValidateSet('none', 'kiss_icp')]
     [string]$Localization = 'none',
 
-    [ValidateSet('soil', 'localization')]
+    [ValidateSet('soil', 'soil3d', 'localization')]
     [string]$Scenario = 'soil'
 )
 

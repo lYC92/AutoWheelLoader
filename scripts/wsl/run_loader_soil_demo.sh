@@ -8,8 +8,8 @@ mode="${1:-physics}"
 control_mode="${2:-auto}"
 localization="${3:-none}"
 scenario="${4:-soil}"
-if [[ ${scenario} != soil && ${scenario} != localization ]]; then
-  printf 'ERROR: scenario must be soil or localization.\n' >&2
+if [[ ${scenario} != soil && ${scenario} != soil3d && ${scenario} != localization ]]; then
+  printf 'ERROR: scenario must be soil, soil3d or localization.\n' >&2
   exit 2
 fi
 if [[ ${scenario} == localization && ( ${localization} != kiss_icp || ${control_mode} != auto ) ]]; then
@@ -82,12 +82,21 @@ if [[ ${scenario} == localization ]]; then
   world_file="${run_dir}/loader_localization.world.sdf"
   python3 "${project_root}/tools/ros/generate_localization_world.py" "${world_file}"
 fi
+enable_soil_3d=false
+if [[ ${scenario} == soil3d ]]; then
+  enable_soil_3d=true
+  world_file="${run_dir}/loader_soil_3d.sdf"
+  generator_args=()
+  [[ ${mode} == perception ]] && generator_args+=(--observer-lidar)
+  python3 "${project_root}/tools/soil_heightfield_3d/generate_gazebo_world.py" "${world_file}" "${generator_args[@]}"
+fi
+
 enable_lidar_imu=false
 if [[ ${mode} == perception ]]; then
   enable_lidar_imu=true
 fi
 xacro "${project_root}/ros_ws/src/loader_description/urdf/loader.urdf.xacro" \
-  enable_ros2_control:=true enable_soil_slice:=true \
+  enable_ros2_control:=true enable_soil_slice:=true enable_soil_3d:="${enable_soil_3d}" \
   enable_lidar_imu:="${enable_lidar_imu}" \
   enable_ground_truth:="${enable_lidar_imu}" >"${urdf_file}"
 
@@ -150,6 +159,7 @@ trap cleanup EXIT INT TERM
 
 bridge_arguments=('/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock')
 test_arguments=(--use-sim-time-for-phases)
+[[ ${scenario} == soil3d ]] && test_arguments+=(--heightfield-3d)
 if [[ ${mode} == perception ]]; then
   bridge_arguments+=(
     '/loader_soil/observer/scan/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked'

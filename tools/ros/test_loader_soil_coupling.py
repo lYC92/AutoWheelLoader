@@ -70,6 +70,14 @@ class SoilCouplingHarness(Node):
         self.command_publisher.publish(command)
 
 
+def terrain_heights(message):
+    if message.schema_version == 2:
+        require(message.rows > 1 and message.columns > 1, "invalid grid dimensions")
+        require(len(message.height_grid_m) == message.rows*message.columns, "invalid grid buffer")
+        return list(message.height_grid_m)
+    return list(message.height_profile_m)
+
+
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise RuntimeError(message)
@@ -173,6 +181,7 @@ def prepare_cutting_pose(node: SoilCouplingHarness) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--heightfield-3d", action="store_true")
     parser.add_argument("--proxy-expectation", type=Path)
     parser.add_argument("--observer-topic")
     parser.add_argument("--startup-settle-s", type=float, default=0.0,
@@ -217,10 +226,15 @@ def main() -> int:
             initial_observer_cloud = None
 
         initial_terrain = node.terrain_states[-1]
+        require(initial_terrain.schema_version == (2 if args.heightfield_3d else 1), "wrong terrain schema")
         require(initial_terrain.initial_volume_m3 > 1.0, "initial terrain volume is invalid")
-        initial_profile = list(initial_terrain.height_profile_m)
-        require(len(initial_profile) == 280, "terrain height profile has the wrong size")
-        require(initial_terrain.cell_size_m == 0.05, "terrain cell size is incorrect")
+        initial_profile = terrain_heights(initial_terrain)
+        if initial_terrain.schema_version == 2:
+            require(initial_terrain.rows == 48 and initial_terrain.columns == 56, "unexpected XY grid")
+            require(initial_terrain.cell_size_m == 0.25, "incorrect XY resolution")
+        else:
+            require(len(initial_profile) == 280, "terrain height profile has the wrong size")
+            require(initial_terrain.cell_size_m == 0.05, "terrain cell size is incorrect")
         require(initial_terrain.slice_width_m == 2.7, "terrain slice width is incorrect")
         if args.startup_settle_s:
             run_phase(node, args.startup_settle_s, gear=VehicleCommand.GEAR_NEUTRAL,
@@ -291,7 +305,7 @@ def main() -> int:
         require(
             max(
                 abs(current - initial)
-                for current, initial in zip(final_terrain.height_profile_m, initial_profile)
+                for current, initial in zip(terrain_heights(final_terrain), initial_profile)
             )
             > 0.01,
             "terrain height profile did not change during excavation",
@@ -401,12 +415,13 @@ def main() -> int:
             abs(post_dump_terrain.relative_volume_conservation_error) <= 1.0e-9,
             "terrain/bucket volume ledger failed during unloading",
         )
-        final_profile = list(post_dump_terrain.height_profile_m)
+        final_profile = terrain_heights(post_dump_terrain)
         require(len(final_profile) == len(initial_profile), "final height profile size changed")
         profile_volume = (
             sum(final_profile)
             * post_dump_terrain.cell_size_m
-            * post_dump_terrain.slice_width_m
+            * (post_dump_terrain.cell_size_m if post_dump_terrain.schema_version == 2
+               else post_dump_terrain.slice_width_m)
         )
         require(
             abs(profile_volume - post_dump_terrain.remaining_volume_m3) <= 1.0e-9,
@@ -462,7 +477,7 @@ def main() -> int:
             require(changed_rays >= 5, "observer lidar did not detect terrain geometry changes")
             changed_cell_x = (
                 post_dump_terrain.domain_min_m
-                + (changed_index + 0.5) * post_dump_terrain.cell_size_m
+                + (changed_index % post_dump_terrain.columns + 0.5) * post_dump_terrain.cell_size_m
             )
             terrain_changed_rays = sum(
                 abs(math.dist((0.0, 0.0, 0.0), final) - math.dist((0.0, 0.0, 0.0), initial))
@@ -473,6 +488,38 @@ def main() -> int:
                 )
                 for initial, final in paired_points
             )
+            if post_dump_terrain.schema_version == 2:
+                # Observer pose is (5.3,-7,2.5), yaw=pi/2. Match a measured
+                # horizontal top surface to its actual changed XY grid cell.
+                def changed_surface(point, heights, new_deposit=False):
+                    x, y, z = 5.3-point[1], -7.0+point[0], 2.5+point[2]
+                    ix = math.floor((x-post_dump_terrain.domain_min_m)/post_dump_terrain.cell_size_m)
+                    iy = math.floor((y-post_dump_terrain.origin_y_m)/post_dump_terrain.cell_size_m)
+                    if not (0 <= ix < post_dump_terrain.columns and 0 <= iy < post_dump_terrain.rows):
+                        return False
+                    index = iy*post_dump_terrain.columns+ix
+                    if new_deposit and not (initial_profile[index] <= 1e-9 and final_profile[index] > 0.05):
+                        return False
+                    return (abs(final_profile[index]-initial_profile[index]) > 0.05
+                            and abs(z-heights[index]) < 0.03)
+                terrain_changed_rays = sum(
+                    abs(math.dist((0,0,0), final)-math.dist((0,0,0), initial)) > 0.05
+                    and (changed_surface(initial, initial_profile) or changed_surface(final, final_profile))
+                    for initial, final in paired_points)
+                new_deposit_rays=sum(changed_surface(final, final_profile, True)
+                                     for _,final in paired_points)
+                if new_deposit_rays < 3:
+                    import json
+                    new_cells=[i for i,(a,b) in enumerate(zip(initial_profile,final_profile)) if a<=1e-9 and b>0.05]
+                    debug={"columns":post_dump_terrain.columns,"rows":post_dump_terrain.rows,
+                           "origin_x":post_dump_terrain.domain_min_m,"origin_y":post_dump_terrain.origin_y_m,
+                           "resolution":post_dump_terrain.cell_size_m,"new_cells":new_cells,
+                           "initial":initial_profile,"final":final_profile,
+                           "final_points":[p for p in final_points if all(math.isfinite(v) for v in p)]}
+                    debug_path=Path.home()/"loader_sim_runtime/results/new_surface_debug.json"
+                    debug_path.write_text(json.dumps(debug),encoding="utf-8")
+                    raise RuntimeError(f"lidar observed {new_deposit_rays} new deposit rays; {len(new_cells)} new cells; diagnostics={debug_path}")
+                print(f"PASS sparse surface creation: {new_deposit_rays} rays match new deposit tops",flush=True)
             require(
                 terrain_changed_rays >= 3,
                 "observer lidar changes did not intersect the changed terrain columns",

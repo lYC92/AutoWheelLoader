@@ -14,3 +14,12 @@ float64 dumped_volume_m3  # Cumulative bucket-to-terrain transfer; not a separat
 float64 relative_volume_conservation_error
 float64 relative_mass_conservation_error
 uint64 update_sequence
+
+# Version 1 uses the legacy extruded profile above. Version 2 uses the XY grid
+# below (row-major: index = row * columns + column), cell_size_m on both axes.
+# Grid corner origin is (domain_min_m, origin_y_m), height is above world z=0.
+uint32 schema_version
+float64 origin_y_m
+uint32 rows
+uint32 columns
+float64[] height_grid_m

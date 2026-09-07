@@ -9,13 +9,24 @@ if [[ ${mode} != physics && ${mode} != perception ]]; then
   printf 'Usage: %s [physics|perception]\n' "$0" >&2
   exit 2
 fi
+grid_mode="${LOADER_SOIL_3D:-false}"
+approach_yaw="${LOADER_APPROACH_YAW:-0}"
+transfer_test="${LOADER_TRANSFER_TEST:-false}"
 suffix=""
 world_file="${project_root}/simulation/worlds/loader_soil_slice.sdf"
 if [[ ${mode} == perception ]]; then
   suffix="_perception"
   world_file="${project_root}/simulation/worlds/loader_soil_perception.sdf"
 fi
-urdf_file="${runtime_root}/results/loader.soil_coupling.urdf"
+if [[ ${grid_mode} == true ]]; then
+  suffix="${suffix}_3d"
+  world_file="${runtime_root}/results/loader_soil_3d${suffix}.sdf"
+  mkdir -p "${runtime_root}/results"
+  generator_args=()
+  [[ ${mode} == perception ]] && generator_args+=(--observer-lidar)
+  python3 "${project_root}/tools/soil_heightfield_3d/generate_gazebo_world.py" "${world_file}" "${generator_args[@]}"
+fi
+urdf_file="${runtime_root}/results/loader.soil_coupling${suffix}.urdf"
 server_log="${runtime_root}/log/loader_soil_coupling${suffix}_gazebo.log"
 rsp_log="${runtime_root}/log/loader_soil_coupling${suffix}_robot_state_publisher.log"
 bridge_log="${runtime_root}/log/loader_soil_coupling${suffix}_bridge.log"
@@ -34,9 +45,14 @@ set -u
 export GZ_SIM_SYSTEM_PLUGIN_PATH="${soil_plugin_dir}:/opt/ros/jazzy/lib:${GZ_SIM_SYSTEM_PLUGIN_PATH:-}"
 export LD_LIBRARY_PATH="${soil_plugin_dir}:${LD_LIBRARY_PATH:-}"
 
+if gz service -l 2>/dev/null | grep -q '^/world/loader_soil_slice/'; then
+  printf 'ERROR: an existing loader_soil_slice world is running; close it before this test.\n' >&2
+  exit 3
+fi
+
 mkdir -p "${runtime_root}/results" "${runtime_root}/log"
 xacro "${project_root}/ros_ws/src/loader_description/urdf/loader.urdf.xacro" \
-  enable_ros2_control:=true enable_soil_slice:=true >"${urdf_file}"
+  enable_ros2_control:=true enable_soil_slice:=true enable_soil_3d:="${grid_mode}" enable_ground_truth:="${transfer_test}" >"${urdf_file}"
 
 server_pid=''
 rsp_pid=''
@@ -52,9 +68,13 @@ cleanup() {
 trap cleanup EXIT INT TERM
 
 bridge_arguments=('/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock')
+if [[ ${transfer_test} == true ]]; then
+  bridge_arguments+=('/loader/ground_truth/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry')
+fi
 # Reproduce slow GUI/sensor initialization: gravity must not determine whether
 # the driving test can start. Phases always use simulation time on slow hosts.
 test_arguments=(--proxy-expectation "${proxy_expectation_log}" --use-sim-time-for-phases --startup-settle-s 8)
+[[ ${grid_mode} == true ]] && test_arguments+=(--heightfield-3d)
 if [[ ${mode} == perception ]]; then
   bridge_arguments+=(
     '/loader_soil/observer/scan/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked'
@@ -83,11 +103,12 @@ for _ in $(seq 1 30); do
   sleep 1
 done
 
+read -r spawn_x spawn_y < <(python3 -c 'import math,sys; a=float(sys.argv[1]); print(7-7*math.cos(a), -7*math.sin(a))' "${approach_yaw}")
 spawn_output="$(ros2 run ros_gz_sim create \
   -world loader_soil_slice \
   -file "${urdf_file}" \
   -name soil_loader \
-  -z 0.20 2>&1)"
+  -x "${spawn_x}" -y "${spawn_y}" -Y "${approach_yaw}" -z 0.20 2>&1)"
 printf '%s\n' "${spawn_output}"
 if ! grep -qi 'success' <<<"${spawn_output}"; then
   printf 'FAIL  Soil loader entity creation did not report success.\n' >&2
@@ -103,15 +124,29 @@ done
 ros2 run controller_manager spawner loader_command_controller \
   --controller-manager /controller_manager --controller-manager-timeout 30 >/dev/null
 
+if [[ ${transfer_test} == true ]]; then
+  python3 "${project_root}/tools/ros/run_transfer_scenario.py" --pose-source ground_truth \
+    --output "${runtime_root}/results/transfer_validation.json" 2>&1 | tee "${runtime_root}/results/transfer_validation.txt"
+  exit "${PIPESTATUS[0]}"
+fi
+
 python3 "${project_root}/tools/ros/test_loader_soil_coupling.py" \
   "${test_arguments[@]}" 2>&1 | tee "${test_log}"
 gz model -m soil_loader -p >"${pose_log}"
 : >"${proxy_pose_log}"
 read -r proxy_index _ <"${proxy_expectation_log}"
 printf -v proxy_name 'soil_column_%03d' "${proxy_index}"
-gz model -m "${proxy_name}" -p >"${proxy_pose_log}"
-python3 "${project_root}/tools/soil_slice/verify_soil_proxy_pose.py" \
-  "${proxy_pose_log}" "${proxy_expectation_log}"
+if [[ ${grid_mode} == true ]]; then
+  # Visual-only XY cells are verified by the observer lidar in perception mode.
+  # They are no longer independent models addressable with gz model.
+  gz model -m soil_grid -p >"${proxy_pose_log}"
+else
+  gz model -m "${proxy_name}" -p >"${proxy_pose_log}"
+fi
+if [[ ${grid_mode} != true ]]; then
+  python3 "${project_root}/tools/soil_slice/verify_soil_proxy_pose.py" \
+    "${proxy_pose_log}" "${proxy_expectation_log}"
+fi
 
 if grep -Eqi 'Failed to load|Could not load|exception|Segmentation fault|terminate called' \
     "${server_log}"; then

@@ -1,0 +1,11 @@
+# Shared Gazebo/plugin geometry for the first 3D integration scene (SI).
+domain_min_x_m: 0.0
+domain_max_x_m: 14.0
+domain_min_y_m: -6.0
+domain_max_y_m: 6.0
+cell_size_m: 0.25
+pile_center_x_m: 7.0
+pile_center_y_m: 0.0
+pile_height_m: 1.8
+angle_of_repose_deg: 34.0
+column_height_m: 1.8
