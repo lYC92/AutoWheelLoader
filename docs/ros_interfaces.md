@@ -34,3 +34,12 @@
 `/loader/task_state` 是 A/B 当前作业阶段与定位来源（`std_msgs/String` 内含 JSON）。
 当前 `ab` 演示明确使用 `/loader/ground_truth/odometry` 调试；估计定位入口不会在反馈失效后切回真值。
 A/B 的装料阈值、卸料区域和中间姿态在 `simulation/config/ab_task.yaml`。
+
+
+### 2026-09-08 三维扩展
+
+- `BucketInteraction.payload_inertia`：铲斗坐标系下的载料质量、质心及惯性矩；实际载料刚体以 20 Hz 离散更新。`dynamic_payload_body_active` 表示当前正在使用动态载料刚体。
+- `VehicleState.bucket_payload_center_of_mass_m` 从土料模块接收，不再重复计算或固定为常量。旧的重力载荷模式仍报告实际施力点。
+- `/loader/localization/odometry`：融合估计，`world -> base_link`，同时发布对应 TF。`/loader/localization/health` 给出时间、定位有效性、接受/拒绝计数和重定位次数。
+- `/loader/navigation/obstacles`：JSON `{frame: "world", stamp: 仿真秒, polygons: [[[x,y],...],...]}`；只接受有序凸多边形、当前时间和明确世界坐标。过期或非法观察导致停止。静态障碍来自任务 YAML，与 Gazebo 障碍共用配置。
+- 四相机原始话题 `/loader/cameras/{front,left,rear,right}/raw/{image,depth_image,camera_info}` 及 `semantic/labels_map`。后者使用 Gazebo panoptic 编码：第 2 字节为类别，第 1/0 字节为实例高/低位；实例编号只在当前帧有效。统一重投影后输出等距鱼眼 RGB、径向深度、类别、实例和可见框。

@@ -11,6 +11,7 @@
   <depend>gz_plugin_vendor</depend>
   <depend>loader_sim_msgs</depend>
   <depend>rclcpp</depend>
+  <depend>std_srvs</depend>
 
   <export><build_type>ament_cmake</build_type></export>
 </package>

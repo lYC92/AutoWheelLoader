@@ -198,6 +198,12 @@ public:
               message->bucket_material_mass_kg >= 0.0)
           {
             payloadMassKg_.store(message->bucket_material_mass_kg, std::memory_order_relaxed);
+            const auto &center=message->payload_inertia.com;
+            if (std::isfinite(center.x) && std::isfinite(center.y) && std::isfinite(center.z)) {
+              payloadCenterX_.store(center.x,std::memory_order_relaxed);
+              payloadCenterY_.store(center.y,std::memory_order_relaxed);
+              payloadCenterZ_.store(center.z,std::memory_order_relaxed);
+            }
           }
         });
     return controller_interface::CallbackReturn::SUCCESS;
@@ -206,6 +212,7 @@ public:
   controller_interface::CallbackReturn on_activate(
       const rclcpp_lifecycle::State &) override
   {
+    articulationIntegralNm_=0.0;
     statePublisher_->on_activate();
     liftPressurePa_ = 0.0;
     tiltPressurePa_ = 0.0;
@@ -281,12 +288,18 @@ public:
 
     const double articulationTarget = Clamp(
         activeCommand_.target_articulation_angle_rad, -0.698132, 0.698132, saturated);
+    const double articulationError=articulationTarget-positions[kArticulation];
+    const double steeringRaw=articulationKp_*articulationError-
+        articulationKd_*velocities[kArticulation]+articulationIntegralNm_;
+    if (!emergencyStop && (std::abs(steeringRaw)<maximumArticulationTorqueNm_ || steeringRaw*articulationError<0))
+      articulationIntegralNm_=std::clamp(articulationIntegralNm_+45000.0*articulationError*dt,-30000.0,30000.0);
     efforts_[kArticulation] = std::clamp(
-        articulationKp_ * (articulationTarget - positions[kArticulation]) -
-            articulationKd_ * velocities[kArticulation],
+        articulationKp_ * articulationError -
+            articulationKd_ * velocities[kArticulation]+articulationIntegralNm_,
         -maximumArticulationTorqueNm_, maximumArticulationTorqueNm_);
     if (emergencyStop)
     {
+      articulationIntegralNm_=0.0;
       efforts_[kArticulation] = std::clamp(
           -articulationKd_ * velocities[kArticulation],
           -maximumArticulationTorqueNm_, maximumArticulationTorqueNm_);
@@ -357,9 +370,9 @@ public:
       state.lift_cylinder_pressure_pa = liftPressurePa_;
       state.tilt_cylinder_pressure_pa = tiltPressurePa_;
       state.bucket_payload_mass_kg = payloadMassKg_.load(std::memory_order_relaxed);
-      state.bucket_payload_center_of_mass_m.x = state.bucket_payload_mass_kg > 0.0 ? 0.35 : 0.0;
-      state.bucket_payload_center_of_mass_m.y = 0.0;
-      state.bucket_payload_center_of_mass_m.z = state.bucket_payload_mass_kg > 0.0 ? -0.05 : 0.0;
+      state.bucket_payload_center_of_mass_m.x = state.bucket_payload_mass_kg > 0.0 ? payloadCenterX_.load(std::memory_order_relaxed) : 0.0;
+      state.bucket_payload_center_of_mass_m.y = state.bucket_payload_mass_kg > 0.0 ? payloadCenterY_.load(std::memory_order_relaxed) : 0.0;
+      state.bucket_payload_center_of_mass_m.z = state.bucket_payload_mass_kg > 0.0 ? payloadCenterZ_.load(std::memory_order_relaxed) : 0.0;
       state.fault_flags = activeFaultFlags;
       state.emergency_stop_active = emergencyStop;
       statePublisher_->publish(state);
@@ -379,7 +392,8 @@ private:
   rclcpp::Subscription<loader_sim_msgs::msg::VehicleCommand>::SharedPtr commandSubscription_;
   rclcpp::Subscription<loader_sim_msgs::msg::BucketInteraction>::SharedPtr payloadSubscription_;
   rclcpp_lifecycle::LifecyclePublisher<loader_sim_msgs::msg::VehicleState>::SharedPtr statePublisher_;
-  std::atomic<double> payloadMassKg_{0.0};
+  std::atomic<double> payloadMassKg_{0.0},payloadCenterX_{0.0},payloadCenterY_{0.0},payloadCenterZ_{0.0};
+  double articulationIntegralNm_{0.0};
 
   std::array<double, 8> efforts_{};
   rclcpp::Time lastCommandTime_{0, 0, RCL_ROS_TIME};

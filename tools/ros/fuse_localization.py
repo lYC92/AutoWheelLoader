@@ -6,6 +6,8 @@ import time
 import numpy as np
 import rclpy
 from nav_msgs.msg import Odometry
+from geometry_msgs.msg import TransformStamped
+from tf2_ros import TransformBroadcaster
 from loader_sim_msgs.msg import VehicleState
 from sensor_msgs.msg import Imu
 from std_msgs.msg import String
@@ -36,6 +38,7 @@ class FusionNode(Node):
         self.create_subscription(Imu,'/loader/sensors/imu',self.imu,qos_profile_sensor_data)
         self.create_subscription(Odometry,'/loader/localization/lidar_odometry',self.lidar,qos_profile_sensor_data)
         self.publisher=self.create_publisher(Odometry,'/loader/localization/odometry',10)
+        self.broadcaster=TransformBroadcaster(self)
         self.health=self.create_publisher(String,'/loader/localization/health',10)
         self.create_timer(.05,self.report)
 
@@ -58,7 +61,7 @@ class FusionNode(Node):
                 self.filter.P+=np.diag([.1**2]*3+[.2**2]*3+[.03**2]*3+[0.]*6)
             return
         self.last_imu_wall=time.monotonic()
-        if t-self.last_publish<.01: return
+        if t-self.last_publish<.01-1e-9: return
         self.last_publish=t
         f=self.filter
         out=Odometry();out.header=message.header;out.header.frame_id='world';out.child_frame_id='base_link'
@@ -70,6 +73,9 @@ class FusionNode(Node):
         out.twist.twist.linear.x,out.twist.twist.linear.y,out.twist.twist.linear.z=map(float,velocity)
         out.twist.twist.angular.x,out.twist.twist.angular.y,out.twist.twist.angular.z=map(float,w-f.bg)
         self.publisher.publish(out)
+        tf=TransformStamped();tf.header=out.header;tf.child_frame_id=out.child_frame_id
+        tf.transform.translation.x,tf.transform.translation.y,tf.transform.translation.z=map(float,f.p)
+        tf.transform.rotation=out.pose.pose.orientation;self.broadcaster.sendTransform(tf)
 
     def lidar(self,message):
         if message.header.frame_id not in ('odom','world') or message.child_frame_id!='base_link':

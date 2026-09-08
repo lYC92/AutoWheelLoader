@@ -1,0 +1,9 @@
+PASS  foxglove_bridge accepts TCP connections on 127.0.0.1:18765
+PASS  /foxglove_bridge node is running
+PASS  17 layout topics exist in the ROS graph (skipped 2 topics for inactive modes)
+PASS  21 layout field paths resolve against live message types
+PASS  WebSocket handshake, CDR schemas and live samples for 13 topics
+INFO  maximum source timestamp reordering: 8.000 ms
+PASS  raw/effect point clouds and IMU connect to base_link through wire TF
+PASS  world-frame terrain triangles and vehicle TF on Foxglove wire
+PASS  Foxglove monitoring verified.

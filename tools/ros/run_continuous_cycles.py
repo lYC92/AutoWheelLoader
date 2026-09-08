@@ -30,14 +30,17 @@ def main():
         connect(node);prepare_pose(node,.35,.25);initial=node.pose();direction='A_to_B'
         while len(runs)<args.cycles:
             selected='A_to_B' if (len(runs)//args.batch_size)%2==0 else 'B_to_A'
-            approach=initial if selected=='A_to_B' else Pose(4.,10.,1.5707963267948966)
+            approach=initial if selected=='A_to_B' else Pose(4.,9.,1.5707963267948966)
             if selected!=direction:
                 prepare_pose(node,.35,.25)
                 drive_leg(node,Pose(-8.,0.,0.),-1,transitions)
                 drive_leg(node,approach,1,transitions)
                 direction=selected
             task=copy.deepcopy(config);task['return_pose']=[approach.x,approach.y,approach.yaw]
-            task['maximum_dig_advance_m']=5.5 if selected=='A_to_B' else 4.
+            # Returned material forms a low pile. The old zero-joint pose
+            # leaves the blade about 0.95 m above ground and skims over it.
+            task.update(dig_lift_rad=-.18,dig_tilt_rad=-.18)
+            task['maximum_dig_advance_m']=5.5 if selected=='A_to_B' else 6.
             if selected=='B_to_A':
                 task.update(source_center=config['unload_center'],unload_center=config['source_center'],
                             unload_pose=[1.2,0.,0.],staging_pose=[-8.,0.,0.])

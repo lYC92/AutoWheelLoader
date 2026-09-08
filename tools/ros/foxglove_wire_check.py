@@ -10,7 +10,7 @@ from rosidl_runtime_py.utilities import get_message
 from websockets.sync.client import connect
 
 
-def check_wire(perception=False):
+def check_wire(perception=False, port=8765, read_only=False, yard=False):
     required = {
         "/clock", "/loader/state", "/loader/command", "/joint_states",
         "/loader/bucket_interaction", "/loader/terrain_state",
@@ -20,9 +20,13 @@ def check_wire(perception=False):
         required.update({"/loader/sensors/lidar/scan/points",
                          "/loader/sensors/lidar/scan/points_effect",
                          "/loader/sensors/imu", "/loader_soil/observer/scan/points"})
+    if read_only:required.discard('/loader/manual/status')
+    if yard:
+        required.add('/loader/visualization/terrain')
+        required.discard('/loader_soil/observer/scan/points')
     channels, samples, stamps, transforms = {}, {}, {}, {}
     reorder_ns = {}
-    with connect("ws://127.0.0.1:8765", subprotocols=["foxglove.sdk.v1", "foxglove.websocket.v1"],
+    with connect(f"ws://127.0.0.1:{port}", subprotocols=["foxglove.sdk.v1", "foxglove.websocket.v1"],
                  max_size=16*1024*1024, proxy=None, compression=None) as ws:
         assert ws.subprotocol in {"foxglove.sdk.v1", "foxglove.websocket.v1"}, "wrong WebSocket subprotocol"
         deadline = time.monotonic() + 30
@@ -103,6 +107,12 @@ def check_wire(perception=False):
         print(f"INFO  maximum source timestamp reordering: {max(reorder_ns.values(), default=0)/1e6:.3f} ms")
         if perception:
             print("PASS  raw/effect point clouds and IMU connect to base_link through wire TF")
+        if yard:
+            assert transforms.get('base_link')=='world', 'vehicle has no world transform'
+            surface=samples['/loader/visualization/terrain'].markers[0]
+            assert surface.header.frame_id=='world' and surface.type==surface.TRIANGLE_LIST and len(surface.points)>0
+            print('PASS  world-frame terrain triangles and vehicle TF on Foxglove wire')
+        if read_only:return
 
         # This input travels through the bridge, unlike the separate ROS gateway checks.
         ws.send(json.dumps({"op": "advertise", "channels": [{

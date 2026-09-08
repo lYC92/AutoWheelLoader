@@ -1,0 +1,87 @@
+[INFO] [1788849970.403373549] [gz_ros_control]: [gz_ros2_control] Fixed joint ['imu_mount_joint'] (Entity='1675') is skipped.
+[INFO] [1788849970.403543962] [gz_ros_control]: [gz_ros2_control] Fixed joint ['lidar_mount_joint'] (Entity='1676') is skipped.
+[INFO] [1788849970.408476411] [gz_ros_control]: Loading controller_manager
+[INFO] [1788849970.473251244] [controller_manager]: Using ROS clock for triggering controller manager cycles.
+[INFO] [1788849970.483414088] [controller_manager]: Subscribing to '/robot_description' topic for robot description.
+[WARN] [1788849970.489775258] [gz_ros_control]: Waiting RM to load and initialize hardware...
+[INFO] [1788849971.365541271] [controller_manager]: Received robot description from topic.
+[INFO] [1788849971.365608378] [controller_manager]: Enforcing command limits is disabled. Command limits from URDF will be ignored.
+[INFO] [1788849971.378601988] [gz_ros_control]: The position_proportional_gain has been set to: 0.1
+[INFO] [1788849971.378707457] [gz_ros_control]: Loading joint: front_left_wheel_joint
+[INFO] [1788849971.378723583] [gz_ros_control]: 	State:
+[INFO] [1788849971.378735602] [gz_ros_control]: 		 position
+[INFO] [1788849971.378744817] [gz_ros_control]: 		 velocity
+[INFO] [1788849971.378754132] [gz_ros_control]: 	Command:
+[INFO] [1788849971.378761844] [gz_ros_control]: 		 effort
+[INFO] [1788849971.378812625] [gz_ros_control]: Loading joint: front_right_wheel_joint
+[INFO] [1788849971.378823042] [gz_ros_control]: 	State:
+[INFO] [1788849971.378831756] [gz_ros_control]: 		 position
+[INFO] [1788849971.378838166] [gz_ros_control]: 		 velocity
+[INFO] [1788849971.378845879] [gz_ros_control]: 	Command:
+[INFO] [1788849971.378853891] [gz_ros_control]: 		 effort
+[INFO] [1788849971.378885843] [gz_ros_control]: Loading joint: rear_left_wheel_joint
+[INFO] [1788849971.378897762] [gz_ros_control]: 	State:
+[INFO] [1788849971.378902870] [gz_ros_control]: 		 position
+[INFO] [1788849971.378908279] [gz_ros_control]: 		 velocity
+[INFO] [1788849971.378912886] [gz_ros_control]: 	Command:
+[INFO] [1788849971.378917393] [gz_ros_control]: 		 effort
+[INFO] [1788849971.378944737] [gz_ros_control]: Loading joint: rear_right_wheel_joint
+[INFO] [1788849971.378951548] [gz_ros_control]: 	State:
+[INFO] [1788849971.378956456] [gz_ros_control]: 		 position
+[INFO] [1788849971.378961063] [gz_ros_control]: 		 velocity
+[INFO] [1788849971.378965570] [gz_ros_control]: 	Command:
+[INFO] [1788849971.378969977] [gz_ros_control]: 		 effort
+[INFO] [1788849971.378994016] [gz_ros_control]: Loading joint: articulation_joint
+[INFO] [1788849971.378999925] [gz_ros_control]: 	State:
+[INFO] [1788849971.379004933] [gz_ros_control]: 		 position
+[INFO] [1788849971.379010743] [gz_ros_control]: 		 velocity
+[INFO] [1788849971.379015450] [gz_ros_control]: 	Command:
+[INFO] [1788849971.379019857] [gz_ros_control]: 		 effort
+[INFO] [1788849971.379043796] [gz_ros_control]: Loading joint: rear_axle_oscillation_joint
+[INFO] [1788849971.379050206] [gz_ros_control]: 	State:
+[INFO] [1788849971.379054713] [gz_ros_control]: 		 position
+[INFO] [1788849971.379059220] [gz_ros_control]: 		 velocity
+[INFO] [1788849971.379063728] [gz_ros_control]: 	Command:
+[INFO] [1788849971.379082858] [gz_ros_control]: Loading joint: lift_joint
+[INFO] [1788849971.379092874] [gz_ros_control]: 	State:
+[INFO] [1788849971.379099084] [gz_ros_control]: 		 position
+[INFO] [1788849971.379103992] [gz_ros_control]: 		 velocity
+[INFO] [1788849971.379113507] [gz_ros_control]: 	Command:
+[INFO] [1788849971.379118215] [gz_ros_control]: 		 effort
+[INFO] [1788849971.379142454] [gz_ros_control]: Loading joint: bucket_tilt_joint
+[INFO] [1788849971.379148764] [gz_ros_control]: 	State:
+[INFO] [1788849971.379153471] [gz_ros_control]: 		 position
+[INFO] [1788849971.379158079] [gz_ros_control]: 		 velocity
+[INFO] [1788849971.379162586] [gz_ros_control]: 	Command:
+[INFO] [1788849971.379167193] [gz_ros_control]: 		 effort
+[INFO] [1788849971.380000328] [gz_ros_control]: Loading sensor: loader_imu
+[INFO] [1788849971.380096682] [gz_ros_control]: 	State:
+[WARN] [1788849971.380113008] [gz_ros_control]: IMU sensor 'loader_imu' not found in hardware_info, skipping.
+[INFO] [1788849971.381009344] [controller_manager]: Initialize hardware 'LoaderGazeboSystem' 
+[WARN] [1788849971.381042396] [controller_manager.hardware_component.system.LoaderGazeboSystem]: Executor is not available during hardware component initialization for 'LoaderGazeboSystem'. Skipping node creation!
+[INFO] [1788849971.381125630] [controller_manager]: Successful initialization of hardware 'LoaderGazeboSystem'
+[INFO] [1788849971.381281279] [controller_manager]: Activating component 'LoaderGazeboSystem'.
+[INFO] [1788849971.381298907] [resource_manager]: 'configure' hardware 'LoaderGazeboSystem' 
+[INFO] [1788849971.381306720] [gz_ros_control]: System Successfully configured!
+[INFO] [1788849971.381313831] [resource_manager]: Successful 'configure' of hardware 'LoaderGazeboSystem'
+[INFO] [1788849971.381336768] [resource_manager]: 'activate' hardware 'LoaderGazeboSystem' 
+[INFO] [1788849971.381385947] [resource_manager]: Successful 'activate' of hardware 'LoaderGazeboSystem'
+[WARN] [1788849971.381518058] [controller_manager]: Component 'LoaderGazeboSystem' does not have read or write statistics initialized, skipping registration.
+[INFO] [1788849971.381535686] [controller_manager]: Resource Manager has been successfully initialized. Starting Controller Manager services...
+[WARN] [1788849972.642796249] [rclcpp]: logging was initialized more than once
+[INFO] [1788849974.969779742] [controller_manager]: Loading controller : 'loader_command_controller' of type 'loader_control/LoaderCommandController'
+[INFO] [1788849974.969833673] [controller_manager]: Loading controller 'loader_command_controller'
+[INFO] [1788849974.985717611] [controller_manager]: Controller 'loader_command_controller' node arguments: --ros-args --params-file /home/lyc/loader_sim_runtime/install/loader_control/share/loader_control/config/loader_controllers.yaml -p use_sim_time:=true --param use_sim_time:=true 
+[INFO] [1788849975.359671686] [controller_manager]: Configuring controller: 'loader_command_controller'
+[INFO] [1788849975.376225047] [controller_manager]: Activating controllers: [ loader_command_controller ]
+[INFO] [1788849975.376882939] [controller_manager]: Successfully switched controllers!
+[INFO] [1788849977.657874828] [controller_manager]: Loading controller : 'joint_state_broadcaster' of type 'joint_state_broadcaster/JointStateBroadcaster'
+[INFO] [1788849977.657943543] [controller_manager]: Loading controller 'joint_state_broadcaster'
+[INFO] [1788849977.676176454] [controller_manager]: Controller 'joint_state_broadcaster' node arguments: --ros-args --params-file /home/lyc/loader_sim_runtime/install/loader_control/share/loader_control/config/loader_controllers.yaml -p use_sim_time:=true --param use_sim_time:=true 
+[INFO] [1788849977.715537811] [controller_manager]: Configuring controller: 'joint_state_broadcaster'
+[INFO] [1788849977.715672941] [joint_state_broadcaster]: 'joints' or 'interfaces' parameter is empty. All available state interfaces will be published
+[INFO] [1788849977.821766376] [controller_manager]: Activating controllers: [ joint_state_broadcaster ]
+[INFO] [1788849977.824055079] [controller_manager]: Successfully switched controllers!
+NodeShared::Publish() Error: Interrupted system call
+NodeShared::Publish() Error: Interrupted system call
+NodeShared::Publish() Error: Interrupted system call

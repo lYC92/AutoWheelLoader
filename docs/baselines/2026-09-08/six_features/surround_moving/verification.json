@@ -1,0 +1,6925 @@
+{
+  "status": "passed",
+  "frames": [
+    {
+      "frame": "frame_0000.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 143797,
+          "ground_height_p95_m": 0.04981074271021111,
+          "soil_surface_points": 454,
+          "soil_surface_height_p95_m": 0.07458188071485436,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 102514,
+          "ground_height_p95_m": 0.06126495055825711,
+          "soil_surface_points": 6295,
+          "soil_surface_height_p95_m": 0.06766171531920243,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156917,
+          "ground_height_p95_m": 0.049939521042036895,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 100144,
+          "ground_height_p95_m": 0.06922930162668435,
+          "soil_surface_points": 6766,
+          "soil_surface_height_p95_m": 0.048860930115952994,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0001.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 144009,
+          "ground_height_p95_m": 0.049812360683351375,
+          "soil_surface_points": 282,
+          "soil_surface_height_p95_m": 0.06567869089445269,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 102515,
+          "ground_height_p95_m": 0.06126511889818711,
+          "soil_surface_points": 6292,
+          "soil_surface_height_p95_m": 0.06750018439320611,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156917,
+          "ground_height_p95_m": 0.049941077869358266,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 100146,
+          "ground_height_p95_m": 0.06921906146108237,
+          "soil_surface_points": 6763,
+          "soil_surface_height_p95_m": 0.04880828461748409,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0002.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 143617,
+          "ground_height_p95_m": 0.04999808382790762,
+          "soil_surface_points": 544,
+          "soil_surface_height_p95_m": 0.08924113379484268,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 99581,
+          "ground_height_p95_m": 0.06370177710901492,
+          "soil_surface_points": 9251,
+          "soil_surface_height_p95_m": 0.06760897219977258,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156973,
+          "ground_height_p95_m": 0.04982991196541864,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 97294,
+          "ground_height_p95_m": 0.06922269291685182,
+          "soil_surface_points": 9581,
+          "soil_surface_height_p95_m": 0.049539707738189165,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0003.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 142125,
+          "ground_height_p95_m": 0.04999359634590848,
+          "soil_surface_points": 1785,
+          "soil_surface_height_p95_m": 0.08729445945500287,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 97341,
+          "ground_height_p95_m": 0.06373516860871487,
+          "soil_surface_points": 11072,
+          "soil_surface_height_p95_m": 0.05809987267033191,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 157034,
+          "ground_height_p95_m": 0.049852851314697764,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 95526,
+          "ground_height_p95_m": 0.07221254931253362,
+          "soil_surface_points": 11341,
+          "soil_surface_height_p95_m": 0.04287618763127754,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0004.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 142406,
+          "ground_height_p95_m": 0.0497300342383441,
+          "soil_surface_points": 1529,
+          "soil_surface_height_p95_m": 0.06581221446675231,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 97683,
+          "ground_height_p95_m": 0.0637050746023271,
+          "soil_surface_points": 10847,
+          "soil_surface_height_p95_m": 0.061107223798498936,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 157014,
+          "ground_height_p95_m": 0.049910443334951184,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 95768,
+          "ground_height_p95_m": 0.07235145115826207,
+          "soil_surface_points": 11102,
+          "soil_surface_height_p95_m": 0.04418979978151347,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0005.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 143525,
+          "ground_height_p95_m": 0.04994579913942321,
+          "soil_surface_points": 501,
+          "soil_surface_height_p95_m": 0.07595000242163108,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 100149,
+          "ground_height_p95_m": 0.06370206069482034,
+          "soil_surface_points": 8721,
+          "soil_surface_height_p95_m": 0.0682070506193273,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156960,
+          "ground_height_p95_m": 0.04985426021316923,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 97821,
+          "ground_height_p95_m": 0.06922168499495651,
+          "soil_surface_points": 9076,
+          "soil_surface_height_p95_m": 0.05000412481721045,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0006.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 143700,
+          "ground_height_p95_m": 0.04974096883850474,
+          "soil_surface_points": 361,
+          "soil_surface_height_p95_m": 0.07512872458821573,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 104997,
+          "ground_height_p95_m": 0.06126155023079312,
+          "soil_surface_points": 4009,
+          "soil_surface_height_p95_m": 0.06393404977804033,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156853,
+          "ground_height_p95_m": 0.04998017685150957,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 102807,
+          "ground_height_p95_m": 0.06921607130793181,
+          "soil_surface_points": 4401,
+          "soil_surface_height_p95_m": 0.044337463886471085,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0007.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 143854,
+          "ground_height_p95_m": 0.049762305596174006,
+          "soil_surface_points": 157,
+          "soil_surface_height_p95_m": 0.060310253317826044,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 107625,
+          "ground_height_p95_m": 0.06125800428807819,
+          "soil_surface_points": 1705,
+          "soil_surface_height_p95_m": 0.0593607439621623,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156771,
+          "ground_height_p95_m": 0.0500027518554238,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 105932,
+          "ground_height_p95_m": 0.0663434302233165,
+          "soil_surface_points": 1919,
+          "soil_surface_height_p95_m": 0.0407652783374218,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0008.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 143927,
+          "ground_height_p95_m": 0.04979911169372011,
+          "soil_surface_points": 20,
+          "soil_surface_height_p95_m": 0.0764993779904871,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 109306,
+          "ground_height_p95_m": 0.058999174813404665,
+          "soil_surface_points": 505,
+          "soil_surface_height_p95_m": 0.05226363376680111,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156871,
+          "ground_height_p95_m": 0.049731604145741404,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 107752,
+          "ground_height_p95_m": 0.06369998912966848,
+          "soil_surface_points": 593,
+          "soil_surface_height_p95_m": 0.025102211284910567,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0009.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 144062,
+          "ground_height_p95_m": 0.0499583353021575,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 110270,
+          "ground_height_p95_m": 0.05899854257804986,
+          "soil_surface_points": 6,
+          "soil_surface_height_p95_m": 0.03294566517554254,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156665,
+          "ground_height_p95_m": 0.04998945696625867,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 108674,
+          "ground_height_p95_m": 0.061263242860596256,
+          "soil_surface_points": 11,
+          "soil_surface_height_p95_m": 0.018161254179798636,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0010.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 144107,
+          "ground_height_p95_m": 0.0498959293646891,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 110335,
+          "ground_height_p95_m": 0.05899688376866661,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156344,
+          "ground_height_p95_m": 0.04819658298175082,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 108992,
+          "ground_height_p95_m": 0.0612664446974724,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0011.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 142774,
+          "ground_height_p95_m": 0.04978842954971854,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 107520,
+          "ground_height_p95_m": 0.059212245300769094,
+          "soil_surface_points": 262,
+          "soil_surface_height_p95_m": 0.055089033389809625,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156509,
+          "ground_height_p95_m": 0.04846441560942916,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 113406,
+          "ground_height_p95_m": 0.06110323916117988,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0012.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 131179,
+          "ground_height_p95_m": 0.05290857820307249,
+          "soil_surface_points": 5,
+          "soil_surface_height_p95_m": 0.06528787245915829,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 102460,
+          "ground_height_p95_m": 0.06136724851955446,
+          "soil_surface_points": 1175,
+          "soil_surface_height_p95_m": 0.07460011033460198,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156786,
+          "ground_height_p95_m": 0.049669387071721416,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 124584,
+          "ground_height_p95_m": 0.05925812970195763,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0013.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 128256,
+          "ground_height_p95_m": 0.051417129275798334,
+          "soil_surface_points": 154,
+          "soil_surface_height_p95_m": 0.07426933931194163,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 99981,
+          "ground_height_p95_m": 0.06154160716330237,
+          "soil_surface_points": 425,
+          "soil_surface_height_p95_m": 0.04842242818150071,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156905,
+          "ground_height_p95_m": 0.049797667904229105,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 126407,
+          "ground_height_p95_m": 0.059255219273852466,
+          "soil_surface_points": 1346,
+          "soil_surface_height_p95_m": 0.0376618019898588,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0014.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 126858,
+          "ground_height_p95_m": 0.04995284773327867,
+          "soil_surface_points": 411,
+          "soil_surface_height_p95_m": 0.08836809642550625,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 99506,
+          "ground_height_p95_m": 0.06380329657084571,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 157023,
+          "ground_height_p95_m": 0.05001280217291475,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 125587,
+          "ground_height_p95_m": 0.059263561199179415,
+          "soil_surface_points": 6876,
+          "soil_surface_height_p95_m": 0.05482986160842557,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0015.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 126063,
+          "ground_height_p95_m": 0.049983080961991534,
+          "soil_surface_points": 687,
+          "soil_surface_height_p95_m": 0.09588976104055368,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 99260,
+          "ground_height_p95_m": 0.06369138040655806,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 157174,
+          "ground_height_p95_m": 0.0500261066407087,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 121903,
+          "ground_height_p95_m": 0.0591219521409052,
+          "soil_surface_points": 13050,
+          "soil_surface_height_p95_m": 0.06681385648366357,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0016.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 125366,
+          "ground_height_p95_m": 0.05135960501192138,
+          "soil_surface_points": 1172,
+          "soil_surface_height_p95_m": 0.0932274781505241,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 99040,
+          "ground_height_p95_m": 0.06360923258256368,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 157379,
+          "ground_height_p95_m": 0.05154556090410601,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 115971,
+          "ground_height_p95_m": 0.0611184061532255,
+          "soil_surface_points": 18761,
+          "soil_surface_height_p95_m": 0.06933571949988737,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0017.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 123530,
+          "ground_height_p95_m": 0.05119755247562121,
+          "soil_surface_points": 2663,
+          "soil_surface_height_p95_m": 0.10287159649506276,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 98575,
+          "ground_height_p95_m": 0.0638929156499913,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 158362,
+          "ground_height_p95_m": 0.05332892491806938,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 116661,
+          "ground_height_p95_m": 0.06136985264155781,
+          "soil_surface_points": 18993,
+          "soil_surface_height_p95_m": 0.05645156915601762,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0018.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 113637,
+          "ground_height_p95_m": 0.05307652850210047,
+          "soil_surface_points": 11297,
+          "soil_surface_height_p95_m": 0.08801061089470735,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 97067,
+          "ground_height_p95_m": 0.06386542312414142,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 158774,
+          "ground_height_p95_m": 0.05335083255551185,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 126512,
+          "ground_height_p95_m": 0.05696678709147105,
+          "soil_surface_points": 8455,
+          "soil_surface_height_p95_m": 0.05781099984736853,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0019.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 81487,
+          "ground_height_p95_m": 0.05635840823917206,
+          "soil_surface_points": 40146,
+          "soil_surface_height_p95_m": 0.08133661179367863,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 96323,
+          "ground_height_p95_m": 0.06149180603685465,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 159029,
+          "ground_height_p95_m": 0.05490903967332868,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 131353,
+          "ground_height_p95_m": 0.054982459039912966,
+          "soil_surface_points": 4439,
+          "soil_surface_height_p95_m": 0.060976150336084924,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0020.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 89034,
+          "ground_height_p95_m": 0.053052565611714654,
+          "soil_surface_points": 31291,
+          "soil_surface_height_p95_m": 0.08360306398543726,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 96928,
+          "ground_height_p95_m": 0.06140409331770157,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 159328,
+          "ground_height_p95_m": 0.05518159513253802,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 132751,
+          "ground_height_p95_m": 0.05316856163523198,
+          "soil_surface_points": 3112,
+          "soil_surface_height_p95_m": 0.08239968501953011,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0021.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 123451,
+          "ground_height_p95_m": 0.04971102353387913,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 97905,
+          "ground_height_p95_m": 0.06132842817553543,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 124836,
+          "ground_height_p95_m": 0.0637542333722384,
+          "soil_surface_points": 33208,
+          "soil_surface_height_p95_m": 0.06905866016767065,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 132036,
+          "ground_height_p95_m": 0.05139910802104142,
+          "soil_surface_points": 3046,
+          "soil_surface_height_p95_m": 0.09687432413744523,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0022.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 125323,
+          "ground_height_p95_m": 0.05121113430589479,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 100479,
+          "ground_height_p95_m": 0.0613113269366804,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 123465,
+          "ground_height_p95_m": 0.06371071939840656,
+          "soil_surface_points": 31498,
+          "soil_surface_height_p95_m": 0.06695407233962805,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 124128,
+          "ground_height_p95_m": 0.05313808701945644,
+          "soil_surface_points": 4882,
+          "soil_surface_height_p95_m": 0.09517315211770577,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0023.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 131349,
+          "ground_height_p95_m": 0.052904987438970784,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 103524,
+          "ground_height_p95_m": 0.06137755318184272,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 152202,
+          "ground_height_p95_m": 0.05296432743197053,
+          "soil_surface_points": 3877,
+          "soil_surface_height_p95_m": 0.07032790406046265,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 109094,
+          "ground_height_p95_m": 0.056796318779778636,
+          "soil_surface_points": 10952,
+          "soil_surface_height_p95_m": 0.0857980154045974,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0024.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 139799,
+          "ground_height_p95_m": 0.053119787713387726,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 104685,
+          "ground_height_p95_m": 0.05921668601324468,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 154611,
+          "ground_height_p95_m": 0.05309229110391023,
+          "soil_surface_points": 1154,
+          "soil_surface_height_p95_m": 0.08798568947031507,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 99340,
+          "ground_height_p95_m": 0.05908380428197492,
+          "soil_surface_points": 13247,
+          "soil_surface_height_p95_m": 0.08952168247474644,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0025.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 141443,
+          "ground_height_p95_m": 0.051371263874096317,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 106092,
+          "ground_height_p95_m": 0.05914484102076154,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 154601,
+          "ground_height_p95_m": 0.05148913075375994,
+          "soil_surface_points": 586,
+          "soil_surface_height_p95_m": 0.09919762679300581,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 97912,
+          "ground_height_p95_m": 0.0588867916657547,
+          "soil_surface_points": 10545,
+          "soil_surface_height_p95_m": 0.09530259815265354,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0026.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 141564,
+          "ground_height_p95_m": 0.05141312142654853,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 106087,
+          "ground_height_p95_m": 0.0589431078670243,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 154039,
+          "ground_height_p95_m": 0.05127266748755419,
+          "soil_surface_points": 358,
+          "soil_surface_height_p95_m": 0.09595888706087269,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 98008,
+          "ground_height_p95_m": 0.05688074508245619,
+          "soil_surface_points": 8148,
+          "soil_surface_height_p95_m": 0.09867193591117335,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0027.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 140910,
+          "ground_height_p95_m": 0.049849776757974126,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 105573,
+          "ground_height_p95_m": 0.05888829368768951,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 154753,
+          "ground_height_p95_m": 0.051615632032739445,
+          "soil_surface_points": 251,
+          "soil_surface_height_p95_m": 0.1034884689503921,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 98816,
+          "ground_height_p95_m": 0.05681035292803871,
+          "soil_surface_points": 6353,
+          "soil_surface_height_p95_m": 0.10035795550374131,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0028.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 141188,
+          "ground_height_p95_m": 0.05135164300484387,
+          "soil_surface_points": 46,
+          "soil_surface_height_p95_m": 0.11234900411964248,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 105573,
+          "ground_height_p95_m": 0.05888832440520568,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 154753,
+          "ground_height_p95_m": 0.05161486430052538,
+          "soil_surface_points": 251,
+          "soil_surface_height_p95_m": 0.10349262165921647,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 98816,
+          "ground_height_p95_m": 0.05680762261642791,
+          "soil_surface_points": 6353,
+          "soil_surface_height_p95_m": 0.10036341629625642,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0029.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 141407,
+          "ground_height_p95_m": 0.05132732975375291,
+          "soil_surface_points": 86,
+          "soil_surface_height_p95_m": 0.12012306679900543,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 105919,
+          "ground_height_p95_m": 0.05883004707809003,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 154550,
+          "ground_height_p95_m": 0.05139965758083709,
+          "soil_surface_points": 290,
+          "soil_surface_height_p95_m": 0.10712208987574368,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 98451,
+          "ground_height_p95_m": 0.0568044548175175,
+          "soil_surface_points": 7017,
+          "soil_surface_height_p95_m": 0.0997441239375632,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0030.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 141904,
+          "ground_height_p95_m": 0.05132036685949861,
+          "soil_surface_points": 129,
+          "soil_surface_height_p95_m": 0.07922873060291048,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 106883,
+          "ground_height_p95_m": 0.05895240016384764,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 153413,
+          "ground_height_p95_m": 0.051463550706109015,
+          "soil_surface_points": 419,
+          "soil_surface_height_p95_m": 0.09575020750716162,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 96981,
+          "ground_height_p95_m": 0.05711190513415643,
+          "soil_surface_points": 9020,
+          "soil_surface_height_p95_m": 0.09825105929522289,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0031.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 142301,
+          "ground_height_p95_m": 0.05310871953438401,
+          "soil_surface_points": 89,
+          "soil_surface_height_p95_m": 0.11095178090922707,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 107738,
+          "ground_height_p95_m": 0.059203489764556604,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 154733,
+          "ground_height_p95_m": 0.05153134099081278,
+          "soil_surface_points": 696,
+          "soil_surface_height_p95_m": 0.09531277925260745,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 95249,
+          "ground_height_p95_m": 0.05921398852865838,
+          "soil_surface_points": 11682,
+          "soil_surface_height_p95_m": 0.09564776399219954,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0032.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 129882,
+          "ground_height_p95_m": 0.054709583703435,
+          "soil_surface_points": 47,
+          "soil_surface_height_p95_m": 0.10278188963037341,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 102060,
+          "ground_height_p95_m": 0.0610997948514629,
+          "soil_surface_points": 766,
+          "soil_surface_height_p95_m": 0.08342034484015912,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 153297,
+          "ground_height_p95_m": 0.05331058248257534,
+          "soil_surface_points": 2699,
+          "soil_surface_height_p95_m": 0.07789183606998658,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 108202,
+          "ground_height_p95_m": 0.05706431404726262,
+          "soil_surface_points": 13577,
+          "soil_surface_height_p95_m": 0.0845886817126412,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0033.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 124202,
+          "ground_height_p95_m": 0.05295722681149515,
+          "soil_surface_points": 22,
+          "soil_surface_height_p95_m": 0.0892933163825327,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 100332,
+          "ground_height_p95_m": 0.061379072206841266,
+          "soil_surface_points": 2007,
+          "soil_surface_height_p95_m": 0.09800602511784438,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 134764,
+          "ground_height_p95_m": 0.058855688025285936,
+          "soil_surface_points": 20777,
+          "soil_surface_height_p95_m": 0.0664524667498197,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 124400,
+          "ground_height_p95_m": 0.05336009583614689,
+          "soil_surface_points": 5612,
+          "soil_surface_height_p95_m": 0.09489296734551146,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0034.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 124448,
+          "ground_height_p95_m": 0.05155710084718863,
+          "soil_surface_points": 3,
+          "soil_surface_height_p95_m": 0.024106126393150427,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 101895,
+          "ground_height_p95_m": 0.061125635750128846,
+          "soil_surface_points": 555,
+          "soil_surface_height_p95_m": 0.11005481343040344,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 115020,
+          "ground_height_p95_m": 0.06622804471567682,
+          "soil_surface_points": 39235,
+          "soil_surface_height_p95_m": 0.061668841331158686,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 128823,
+          "ground_height_p95_m": 0.05146213512276123,
+          "soil_surface_points": 3668,
+          "soil_surface_height_p95_m": 0.09691848159660665,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0035.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 124329,
+          "ground_height_p95_m": 0.05131996304091935,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 101921,
+          "ground_height_p95_m": 0.06116053162355106,
+          "soil_surface_points": 244,
+          "soil_surface_height_p95_m": 0.12035959781420306,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 124361,
+          "ground_height_p95_m": 0.06374856226721981,
+          "soil_surface_points": 33499,
+          "soil_surface_height_p95_m": 0.06935733591672939,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 130094,
+          "ground_height_p95_m": 0.05147207684225931,
+          "soil_surface_points": 3097,
+          "soil_surface_height_p95_m": 0.09656957674941284,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0036.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 103932,
+          "ground_height_p95_m": 0.052795688641965974,
+          "soil_surface_points": 18277,
+          "soil_surface_height_p95_m": 0.08319121947407387,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 101635,
+          "ground_height_p95_m": 0.06129875013153819,
+          "soil_surface_points": 110,
+          "soil_surface_height_p95_m": 0.1154328169063816,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 147860,
+          "ground_height_p95_m": 0.05697274602233279,
+          "soil_surface_points": 10597,
+          "soil_surface_height_p95_m": 0.062427755039963964,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 131968,
+          "ground_height_p95_m": 0.052982210957053355,
+          "soil_surface_points": 3022,
+          "soil_surface_height_p95_m": 0.0923874783823673,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0037.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 81619,
+          "ground_height_p95_m": 0.056502466704764574,
+          "soil_surface_points": 38582,
+          "soil_surface_height_p95_m": 0.0782402968123341,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 100657,
+          "ground_height_p95_m": 0.06107643391715536,
+          "soil_surface_points": 56,
+          "soil_surface_height_p95_m": 0.11832717092022199,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 159188,
+          "ground_height_p95_m": 0.05515774318781516,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 132036,
+          "ground_height_p95_m": 0.05499137274751453,
+          "soil_surface_points": 3518,
+          "soil_surface_height_p95_m": 0.0736584705535764,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0038.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 94041,
+          "ground_height_p95_m": 0.056554136309936,
+          "soil_surface_points": 30887,
+          "soil_surface_height_p95_m": 0.08177957652005101,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 97910,
+          "ground_height_p95_m": 0.063839083841489,
+          "soil_surface_points": 18,
+          "soil_surface_height_p95_m": 0.12034460354451632,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 158880,
+          "ground_height_p95_m": 0.05323160018456996,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 129373,
+          "ground_height_p95_m": 0.05517640722483952,
+          "soil_surface_points": 6170,
+          "soil_surface_height_p95_m": 0.05836497306109311,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0039.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 122008,
+          "ground_height_p95_m": 0.05314684678931627,
+          "soil_surface_points": 4191,
+          "soil_surface_height_p95_m": 0.0963767648074122,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 99644,
+          "ground_height_p95_m": 0.06376356167557451,
+          "soil_surface_points": 11,
+          "soil_surface_height_p95_m": 0.12212118197745356,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 158554,
+          "ground_height_p95_m": 0.05332910453165276,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 118613,
+          "ground_height_p95_m": 0.05912946401272201,
+          "soil_surface_points": 16931,
+          "soil_surface_height_p95_m": 0.055245143639247485,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0040.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 124988,
+          "ground_height_p95_m": 0.05122535493321201,
+          "soil_surface_points": 1511,
+          "soil_surface_height_p95_m": 0.08280903948510465,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 99279,
+          "ground_height_p95_m": 0.06373012505623658,
+          "soil_surface_points": 12,
+          "soil_surface_height_p95_m": 0.10686807748748507,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 157420,
+          "ground_height_p95_m": 0.05155198355127987,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 115089,
+          "ground_height_p95_m": 0.0613697827340431,
+          "soil_surface_points": 20340,
+          "soil_surface_height_p95_m": 0.06831269197374606,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0041.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 126103,
+          "ground_height_p95_m": 0.05004369723832554,
+          "soil_surface_points": 717,
+          "soil_surface_height_p95_m": 0.09291509721702064,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 101914,
+          "ground_height_p95_m": 0.06141641052495801,
+          "soil_surface_points": 10,
+          "soil_surface_height_p95_m": 0.11723709612344699,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 157061,
+          "ground_height_p95_m": 0.04994930030809419,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 126729,
+          "ground_height_p95_m": 0.05917462381410843,
+          "soil_surface_points": 8826,
+          "soil_surface_height_p95_m": 0.05726096355427007,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0042.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 129100,
+          "ground_height_p95_m": 0.051499916673438936,
+          "soil_surface_points": 410,
+          "soil_surface_height_p95_m": 0.07187191691619357,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 103198,
+          "ground_height_p95_m": 0.06126140825920863,
+          "soil_surface_points": 18,
+          "soil_surface_height_p95_m": 0.11156605081908576,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156934,
+          "ground_height_p95_m": 0.049778989364579876,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 122318,
+          "ground_height_p95_m": 0.0613902518567637,
+          "soil_surface_points": 2649,
+          "soil_surface_height_p95_m": 0.043475814978336386,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0043.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 134323,
+          "ground_height_p95_m": 0.05137985299558023,
+          "soil_surface_points": 235,
+          "soil_surface_height_p95_m": 0.09691670592420591,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 104809,
+          "ground_height_p95_m": 0.06136812762371288,
+          "soil_surface_points": 319,
+          "soil_surface_height_p95_m": 0.052976703287523,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156806,
+          "ground_height_p95_m": 0.04968494195908457,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 119842,
+          "ground_height_p95_m": 0.05901356977053327,
+          "soil_surface_points": 123,
+          "soil_surface_height_p95_m": 0.017548594631385316,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0044.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 142821,
+          "ground_height_p95_m": 0.05123544133690672,
+          "soil_surface_points": 88,
+          "soil_surface_height_p95_m": 0.09292923983875478,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 107642,
+          "ground_height_p95_m": 0.059035782307476456,
+          "soil_surface_points": 62,
+          "soil_surface_height_p95_m": 0.08340890561612495,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156413,
+          "ground_height_p95_m": 0.04846079073360317,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 113301,
+          "ground_height_p95_m": 0.061437948563843214,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0045.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 144195,
+          "ground_height_p95_m": 0.051206205554559056,
+          "soil_surface_points": 121,
+          "soil_surface_height_p95_m": 0.08776573685751798,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 110365,
+          "ground_height_p95_m": 0.059258642909082226,
+          "soil_surface_points": 7,
+          "soil_surface_height_p95_m": 0.118792609370954,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156616,
+          "ground_height_p95_m": 0.04992522328834381,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 107735,
+          "ground_height_p95_m": 0.06372611890437999,
+          "soil_surface_points": 157,
+          "soil_surface_height_p95_m": 0.01959057209264268,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0046.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 143921,
+          "ground_height_p95_m": 0.050032487982697216,
+          "soil_surface_points": 250,
+          "soil_surface_height_p95_m": 0.0828962664008665,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 110841,
+          "ground_height_p95_m": 0.05919336504230799,
+          "soil_surface_points": 14,
+          "soil_surface_height_p95_m": 0.10053179640788681,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156829,
+          "ground_height_p95_m": 0.04979353373558668,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 105705,
+          "ground_height_p95_m": 0.06390319748046754,
+          "soil_surface_points": 1014,
+          "soil_surface_height_p95_m": 0.034278918972281865,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0047.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 143252,
+          "ground_height_p95_m": 0.04984549807865686,
+          "soil_surface_points": 478,
+          "soil_surface_height_p95_m": 0.08424805844757287,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 110514,
+          "ground_height_p95_m": 0.059004274384982756,
+          "soil_surface_points": 700,
+          "soil_surface_height_p95_m": 0.04769617647309207,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156946,
+          "ground_height_p95_m": 0.04992209629881206,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 103317,
+          "ground_height_p95_m": 0.06642045376257552,
+          "soil_surface_points": 2370,
+          "soil_surface_height_p95_m": 0.04318519414036829,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0048.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 142349,
+          "ground_height_p95_m": 0.049750373212142575,
+          "soil_surface_points": 1552,
+          "soil_surface_height_p95_m": 0.06881978640141294,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 100344,
+          "ground_height_p95_m": 0.06366036795599098,
+          "soil_surface_points": 7100,
+          "soil_surface_height_p95_m": 0.07387570638256935,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156939,
+          "ground_height_p95_m": 0.04991133671493797,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 105832,
+          "ground_height_p95_m": 0.06633686506512396,
+          "soil_surface_points": 4173,
+          "soil_surface_height_p95_m": 0.04322714112887345,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0049.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 142682,
+          "ground_height_p95_m": 0.05003836813876483,
+          "soil_surface_points": 1333,
+          "soil_surface_height_p95_m": 0.05678139330798022,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 99797,
+          "ground_height_p95_m": 0.06393194338545446,
+          "soil_surface_points": 7763,
+          "soil_surface_height_p95_m": 0.071534810678178,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156942,
+          "ground_height_p95_m": 0.04999795210982716,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 104161,
+          "ground_height_p95_m": 0.06647276389879275,
+          "soil_surface_points": 5292,
+          "soil_surface_height_p95_m": 0.04460607752572986,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0050.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 143138,
+          "ground_height_p95_m": 0.05003114638212269,
+          "soil_surface_points": 917,
+          "soil_surface_height_p95_m": 0.0891367172725746,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 97879,
+          "ground_height_p95_m": 0.06396846003769126,
+          "soil_surface_points": 10417,
+          "soil_surface_height_p95_m": 0.06828346764226736,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 157001,
+          "ground_height_p95_m": 0.05003282027376832,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 97319,
+          "ground_height_p95_m": 0.06928254732697985,
+          "soil_surface_points": 10137,
+          "soil_surface_height_p95_m": 0.04671585391601311,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0051.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 142095,
+          "ground_height_p95_m": 0.04978895495142803,
+          "soil_surface_points": 1723,
+          "soil_surface_height_p95_m": 0.10486430400841623,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 96558,
+          "ground_height_p95_m": 0.06369660103126644,
+          "soil_surface_points": 11477,
+          "soil_surface_height_p95_m": 0.059133151736623445,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 157045,
+          "ground_height_p95_m": 0.04998412117883486,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 95365,
+          "ground_height_p95_m": 0.06937772670795139,
+          "soil_surface_points": 11739,
+          "soil_surface_height_p95_m": 0.047275480950189436,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0052.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 142201,
+          "ground_height_p95_m": 0.04987273718469565,
+          "soil_surface_points": 1751,
+          "soil_surface_height_p95_m": 0.066843122694203,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 96612,
+          "ground_height_p95_m": 0.06386868998185999,
+          "soil_surface_points": 11462,
+          "soil_surface_height_p95_m": 0.056920772629861484,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 157044,
+          "ground_height_p95_m": 0.04973213378588959,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 95388,
+          "ground_height_p95_m": 0.06912225950742376,
+          "soil_surface_points": 11683,
+          "soil_surface_height_p95_m": 0.043805034947555894,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0053.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 142587,
+          "ground_height_p95_m": 0.049780100161047565,
+          "soil_surface_points": 1379,
+          "soil_surface_height_p95_m": 0.059356118041483316,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 97703,
+          "ground_height_p95_m": 0.06358817068392701,
+          "soil_surface_points": 10807,
+          "soil_surface_height_p95_m": 0.06262615987769098,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 157013,
+          "ground_height_p95_m": 0.05002179581789239,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 96178,
+          "ground_height_p95_m": 0.06933501229883059,
+          "soil_surface_points": 10866,
+          "soil_surface_height_p95_m": 0.04505970839537088,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0054.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 142472,
+          "ground_height_p95_m": 0.05002311450213086,
+          "soil_surface_points": 1548,
+          "soil_surface_height_p95_m": 0.0640255151456269,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 100326,
+          "ground_height_p95_m": 0.06360057740646674,
+          "soil_surface_points": 8155,
+          "soil_surface_height_p95_m": 0.06922109655742176,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156957,
+          "ground_height_p95_m": 0.04992149034676441,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 98882,
+          "ground_height_p95_m": 0.06931926354445836,
+          "soil_surface_points": 8194,
+          "soil_surface_height_p95_m": 0.050316585342786886,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0055.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 143278,
+          "ground_height_p95_m": 0.04994876647797601,
+          "soil_surface_points": 769,
+          "soil_surface_height_p95_m": 0.06613087734705497,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 105565,
+          "ground_height_p95_m": 0.06122843573259758,
+          "soil_surface_points": 3313,
+          "soil_surface_height_p95_m": 0.06720793363827403,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156811,
+          "ground_height_p95_m": 0.049723344964404115,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 104859,
+          "ground_height_p95_m": 0.06634456227999971,
+          "soil_surface_points": 2968,
+          "soil_surface_height_p95_m": 0.04699391838683673,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0056.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 143529,
+          "ground_height_p95_m": 0.04983234419836737,
+          "soil_surface_points": 333,
+          "soil_surface_height_p95_m": 0.07179936657255477,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 107873,
+          "ground_height_p95_m": 0.05910141344242774,
+          "soil_surface_points": 1383,
+          "soil_surface_height_p95_m": 0.06029193767512912,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156858,
+          "ground_height_p95_m": 0.05003758300381127,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 107728,
+          "ground_height_p95_m": 0.0639176322317605,
+          "soil_surface_points": 931,
+          "soil_surface_height_p95_m": 0.05644197483742963,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0057.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 143876,
+          "ground_height_p95_m": 0.0498359243370422,
+          "soil_surface_points": 126,
+          "soil_surface_height_p95_m": 0.09630480583978679,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 109581,
+          "ground_height_p95_m": 0.05888796914019512,
+          "soil_surface_points": 294,
+          "soil_surface_height_p95_m": 0.05061548858718622,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156765,
+          "ground_height_p95_m": 0.049730881789246964,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 109103,
+          "ground_height_p95_m": 0.06383333578446333,
+          "soil_surface_points": 7,
+          "soil_surface_height_p95_m": 0.01721175213466699,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0058.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 144022,
+          "ground_height_p95_m": 0.05003116152366081,
+          "soil_surface_points": 82,
+          "soil_surface_height_p95_m": 0.09814743234573335,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 110194,
+          "ground_height_p95_m": 0.058885532423516275,
+          "soil_surface_points": 7,
+          "soil_surface_height_p95_m": 0.10768395377290721,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156473,
+          "ground_height_p95_m": 0.04835575095617841,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 109287,
+          "ground_height_p95_m": 0.061538115971185726,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0059.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 143928,
+          "ground_height_p95_m": 0.049776682025705975,
+          "soil_surface_points": 82,
+          "soil_surface_height_p95_m": 0.08729652096962451,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 109612,
+          "ground_height_p95_m": 0.059082982987637055,
+          "soil_surface_points": 18,
+          "soil_surface_height_p95_m": 0.07270819801692982,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156423,
+          "ground_height_p95_m": 0.04851488331699927,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 110127,
+          "ground_height_p95_m": 0.061175516275709586,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0060.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 130671,
+          "ground_height_p95_m": 0.05146214466461063,
+          "soil_surface_points": 191,
+          "soil_surface_height_p95_m": 0.0698900353650791,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 101617,
+          "ground_height_p95_m": 0.0610913142307294,
+          "soil_surface_points": 1507,
+          "soil_surface_height_p95_m": 0.0811791297305267,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156803,
+          "ground_height_p95_m": 0.04987084076487713,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 125435,
+          "ground_height_p95_m": 0.05906506665296889,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0061.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 127657,
+          "ground_height_p95_m": 0.0514924287027565,
+          "soil_surface_points": 353,
+          "soil_surface_height_p95_m": 0.07458611777300908,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 99185,
+          "ground_height_p95_m": 0.06118312249019748,
+          "soil_surface_points": 787,
+          "soil_surface_height_p95_m": 0.0555304823548991,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156908,
+          "ground_height_p95_m": 0.04988355214209035,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 127847,
+          "ground_height_p95_m": 0.059193587977224606,
+          "soil_surface_points": 1066,
+          "soil_surface_height_p95_m": 0.03678945268674039,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0062.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 126392,
+          "ground_height_p95_m": 0.050013063790905886,
+          "soil_surface_points": 606,
+          "soil_surface_height_p95_m": 0.08228510274674788,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 99306,
+          "ground_height_p95_m": 0.06382702055114087,
+          "soil_surface_points": 7,
+          "soil_surface_height_p95_m": 0.12155604077127471,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 157035,
+          "ground_height_p95_m": 0.049858792981629874,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 126399,
+          "ground_height_p95_m": 0.05890692813752407,
+          "soil_surface_points": 7281,
+          "soil_surface_height_p95_m": 0.05513663329284002,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0063.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 125766,
+          "ground_height_p95_m": 0.04997936942873793,
+          "soil_surface_points": 863,
+          "soil_surface_height_p95_m": 0.08849408513312444,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 99100,
+          "ground_height_p95_m": 0.06366855835611045,
+          "soil_surface_points": 8,
+          "soil_surface_height_p95_m": 0.1154140649519263,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 157194,
+          "ground_height_p95_m": 0.050029292382783086,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 121899,
+          "ground_height_p95_m": 0.059126199964278606,
+          "soil_surface_points": 14143,
+          "soil_surface_height_p95_m": 0.06513865656233231,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0064.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 125148,
+          "ground_height_p95_m": 0.05129725424511735,
+          "soil_surface_points": 1338,
+          "soil_surface_height_p95_m": 0.07680512388626902,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 98840,
+          "ground_height_p95_m": 0.0636670272039642,
+          "soil_surface_points": 12,
+          "soil_surface_height_p95_m": 0.11801333220631706,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 157386,
+          "ground_height_p95_m": 0.05130436278699535,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 117041,
+          "ground_height_p95_m": 0.0610903411837187,
+          "soil_surface_points": 19362,
+          "soil_surface_height_p95_m": 0.06576361717867868,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0065.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 123700,
+          "ground_height_p95_m": 0.051471731579378385,
+          "soil_surface_points": 2589,
+          "soil_surface_height_p95_m": 0.0977254654500477,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 98338,
+          "ground_height_p95_m": 0.06377747273370402,
+          "soil_surface_points": 15,
+          "soil_surface_height_p95_m": 0.12423017584208869,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 158252,
+          "ground_height_p95_m": 0.05306803090073457,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 116242,
+          "ground_height_p95_m": 0.061359525698960485,
+          "soil_surface_points": 19969,
+          "soil_surface_height_p95_m": 0.05467376353659341,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0066.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 113772,
+          "ground_height_p95_m": 0.053038907247021136,
+          "soil_surface_points": 11411,
+          "soil_surface_height_p95_m": 0.08689723938417643,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 96669,
+          "ground_height_p95_m": 0.06368017240684454,
+          "soil_surface_points": 19,
+          "soil_surface_height_p95_m": 0.11432873455950296,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 158769,
+          "ground_height_p95_m": 0.05325415741068466,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 126094,
+          "ground_height_p95_m": 0.056964408742830444,
+          "soil_surface_points": 9016,
+          "soil_surface_height_p95_m": 0.055906075350710294,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0067.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 80806,
+          "ground_height_p95_m": 0.054810154255017784,
+          "soil_surface_points": 40794,
+          "soil_surface_height_p95_m": 0.07363369212226933,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 96538,
+          "ground_height_p95_m": 0.061368015124294815,
+          "soil_surface_points": 51,
+          "soil_surface_height_p95_m": 0.11890159607777995,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 159182,
+          "ground_height_p95_m": 0.05508420254653955,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 132199,
+          "ground_height_p95_m": 0.05516941801087962,
+          "soil_surface_points": 3709,
+          "soil_surface_height_p95_m": 0.06153787943161024,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0068.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 121646,
+          "ground_height_p95_m": 0.050010878449381235,
+          "soil_surface_points": 429,
+          "soil_surface_height_p95_m": 0.008214217452970417,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 96642,
+          "ground_height_p95_m": 0.06143284704883496,
+          "soil_surface_points": 165,
+          "soil_surface_height_p95_m": 0.119299134022235,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 132569,
+          "ground_height_p95_m": 0.06154013586363272,
+          "soil_surface_points": 26128,
+          "soil_surface_height_p95_m": 0.06977359405048396,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 132724,
+          "ground_height_p95_m": 0.05137472675749362,
+          "soil_surface_points": 3054,
+          "soil_surface_height_p95_m": 0.08907603450974533,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0069.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 124766,
+          "ground_height_p95_m": 0.05119973735587113,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 98888,
+          "ground_height_p95_m": 0.061427896944805195,
+          "soil_surface_points": 622,
+          "soil_surface_height_p95_m": 0.10887494831380323,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 117454,
+          "ground_height_p95_m": 0.06637376512384188,
+          "soil_surface_points": 40473,
+          "soil_surface_height_p95_m": 0.05879519678168871,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 127711,
+          "ground_height_p95_m": 0.051562734316166425,
+          "soil_surface_points": 4112,
+          "soil_surface_height_p95_m": 0.0925910529887473,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0070.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 135419,
+          "ground_height_p95_m": 0.05296172174244136,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 103297,
+          "ground_height_p95_m": 0.06113829571252456,
+          "soil_surface_points": 296,
+          "soil_surface_height_p95_m": 0.06987434915227386,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 153537,
+          "ground_height_p95_m": 0.05319666343518268,
+          "soil_surface_points": 2484,
+          "soil_surface_height_p95_m": 0.06863443375699665,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 104103,
+          "ground_height_p95_m": 0.05893307182423273,
+          "soil_surface_points": 13356,
+          "soil_surface_height_p95_m": 0.08030989375023084,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0071.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 140878,
+          "ground_height_p95_m": 0.051528685875552,
+          "soil_surface_points": 60,
+          "soil_surface_height_p95_m": 0.06632356920239602,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 105775,
+          "ground_height_p95_m": 0.05908930289723937,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 154834,
+          "ground_height_p95_m": 0.0530419965860333,
+          "soil_surface_points": 844,
+          "soil_surface_height_p95_m": 0.08312560284622698,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 98596,
+          "ground_height_p95_m": 0.058976813497851444,
+          "soil_surface_points": 11985,
+          "soil_surface_height_p95_m": 0.0901310907734623,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0072.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 141524,
+          "ground_height_p95_m": 0.051218076826460825,
+          "soil_surface_points": 130,
+          "soil_surface_height_p95_m": 0.07846485513547313,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 106281,
+          "ground_height_p95_m": 0.05906411244033416,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 153395,
+          "ground_height_p95_m": 0.05165476737270671,
+          "soil_surface_points": 455,
+          "soil_surface_height_p95_m": 0.08423813264358172,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 98519,
+          "ground_height_p95_m": 0.05706239005878868,
+          "soil_surface_points": 8757,
+          "soil_surface_height_p95_m": 0.09638903864301,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0073.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 141092,
+          "ground_height_p95_m": 0.049839755937634164,
+          "soil_surface_points": 82,
+          "soil_surface_height_p95_m": 0.12210512716497371,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 105760,
+          "ground_height_p95_m": 0.058964949862683635,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 154621,
+          "ground_height_p95_m": 0.051499548270753426,
+          "soil_surface_points": 273,
+          "soil_surface_height_p95_m": 0.1049062254075,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 99196,
+          "ground_height_p95_m": 0.056847334359028334,
+          "soil_surface_points": 6302,
+          "soil_surface_height_p95_m": 0.099341246748158,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0074.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 140959,
+          "ground_height_p95_m": 0.04978287569382234,
+          "soil_surface_points": 132,
+          "soil_surface_height_p95_m": 0.11400089975500183,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 105566,
+          "ground_height_p95_m": 0.05897380243092731,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 154759,
+          "ground_height_p95_m": 0.05144582232668902,
+          "soil_surface_points": 248,
+          "soil_surface_height_p95_m": 0.10430220779547164,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 99291,
+          "ground_height_p95_m": 0.05691406497120299,
+          "soil_surface_points": 5887,
+          "soil_surface_height_p95_m": 0.10029812261468703,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0075.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 141292,
+          "ground_height_p95_m": 0.05125574680965529,
+          "soil_surface_points": 114,
+          "soil_surface_height_p95_m": 0.12119539298276756,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 105790,
+          "ground_height_p95_m": 0.05888891686493665,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 154641,
+          "ground_height_p95_m": 0.051618739767613775,
+          "soil_surface_points": 269,
+          "soil_surface_height_p95_m": 0.09926489755176657,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 99116,
+          "ground_height_p95_m": 0.056965592907972096,
+          "soil_surface_points": 6219,
+          "soil_surface_height_p95_m": 0.09912848283781096,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0076.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 141794,
+          "ground_height_p95_m": 0.05134869985764195,
+          "soil_surface_points": 208,
+          "soil_surface_height_p95_m": 0.10621910729639987,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 106821,
+          "ground_height_p95_m": 0.05898788338781147,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 153548,
+          "ground_height_p95_m": 0.05145165290729463,
+          "soil_surface_points": 405,
+          "soil_surface_height_p95_m": 0.09126154905073065,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 98105,
+          "ground_height_p95_m": 0.05692770949378003,
+          "soil_surface_points": 8070,
+          "soil_surface_height_p95_m": 0.0975620778609242,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0077.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 142296,
+          "ground_height_p95_m": 0.05290279817168886,
+          "soil_surface_points": 126,
+          "soil_surface_height_p95_m": 0.10984418531959109,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 107790,
+          "ground_height_p95_m": 0.05891072109070328,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 154669,
+          "ground_height_p95_m": 0.05161267893386343,
+          "soil_surface_points": 815,
+          "soil_surface_height_p95_m": 0.08157782669596476,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 95397,
+          "ground_height_p95_m": 0.05912527878455922,
+          "soil_surface_points": 12094,
+          "soil_surface_height_p95_m": 0.0919122270058699,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0078.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 133149,
+          "ground_height_p95_m": 0.05464351460214045,
+          "soil_surface_points": 82,
+          "soil_surface_height_p95_m": 0.10235777591699557,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 102296,
+          "ground_height_p95_m": 0.06139723643766759,
+          "soil_surface_points": 630,
+          "soil_surface_height_p95_m": 0.0779038857655104,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 153933,
+          "ground_height_p95_m": 0.05305583438711725,
+          "soil_surface_points": 1972,
+          "soil_surface_height_p95_m": 0.07277997607669832,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 104541,
+          "ground_height_p95_m": 0.05688473375803804,
+          "soil_surface_points": 14328,
+          "soil_surface_height_p95_m": 0.08198485001938856,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0079.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 125192,
+          "ground_height_p95_m": 0.054841393915288236,
+          "soil_surface_points": 44,
+          "soil_surface_height_p95_m": 0.0786944444122987,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 98976,
+          "ground_height_p95_m": 0.06117983419403572,
+          "soil_surface_points": 3241,
+          "soil_surface_height_p95_m": 0.09613772163423162,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 144624,
+          "ground_height_p95_m": 0.056968564781035715,
+          "soil_surface_points": 11380,
+          "soil_surface_height_p95_m": 0.06601140387801986,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 122703,
+          "ground_height_p95_m": 0.05490209216160613,
+          "soil_surface_points": 6412,
+          "soil_surface_height_p95_m": 0.0884143160376797,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0080.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 124674,
+          "ground_height_p95_m": 0.05130531813385051,
+          "soil_surface_points": 12,
+          "soil_surface_height_p95_m": 0.06664161235844224,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 101209,
+          "ground_height_p95_m": 0.061128902759255054,
+          "soil_surface_points": 1183,
+          "soil_surface_height_p95_m": 0.10840898550467232,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 118037,
+          "ground_height_p95_m": 0.06657533396823193,
+          "soil_surface_points": 38982,
+          "soil_surface_height_p95_m": 0.05980682624272542,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 128234,
+          "ground_height_p95_m": 0.051449387302278125,
+          "soil_surface_points": 3998,
+          "soil_surface_height_p95_m": 0.09307787515455507,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0081.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 124055,
+          "ground_height_p95_m": 0.05135163254838959,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 101779,
+          "ground_height_p95_m": 0.061341910586393975,
+          "soil_surface_points": 440,
+          "soil_surface_height_p95_m": 0.11451917166105478,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 121379,
+          "ground_height_p95_m": 0.06396609545952373,
+          "soil_surface_points": 36073,
+          "soil_surface_height_p95_m": 0.06722379096157384,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 130016,
+          "ground_height_p95_m": 0.05164589427653099,
+          "soil_surface_points": 3185,
+          "soil_surface_height_p95_m": 0.09087636443392276,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0082.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 110297,
+          "ground_height_p95_m": 0.0528044788512295,
+          "soil_surface_points": 12167,
+          "soil_surface_height_p95_m": 0.08165154338233964,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 101626,
+          "ground_height_p95_m": 0.061487089779139414,
+          "soil_surface_points": 207,
+          "soil_surface_height_p95_m": 0.1188838487149277,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 142014,
+          "ground_height_p95_m": 0.05905013235673033,
+          "soil_surface_points": 16709,
+          "soil_surface_height_p95_m": 0.065647764580816,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 131807,
+          "ground_height_p95_m": 0.05296903393125296,
+          "soil_surface_points": 3030,
+          "soil_surface_height_p95_m": 0.08346380270086692,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0083.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 80971,
+          "ground_height_p95_m": 0.056361019477061625,
+          "soil_surface_points": 42244,
+          "soil_surface_height_p95_m": 0.07391764683086709,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 100081,
+          "ground_height_p95_m": 0.06115321238473026,
+          "soil_surface_points": 64,
+          "soil_surface_height_p95_m": 0.1199947744900144,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 159102,
+          "ground_height_p95_m": 0.05483379440423912,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 131746,
+          "ground_height_p95_m": 0.05511850343869096,
+          "soil_surface_points": 3992,
+          "soil_surface_height_p95_m": 0.059035016194377586,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0084.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 103146,
+          "ground_height_p95_m": 0.056386212557155035,
+          "soil_surface_points": 21322,
+          "soil_surface_height_p95_m": 0.08024636709966866,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 97520,
+          "ground_height_p95_m": 0.06362990902980274,
+          "soil_surface_points": 27,
+          "soil_surface_height_p95_m": 0.1133511140541477,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 158822,
+          "ground_height_p95_m": 0.053342991001354735,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 128043,
+          "ground_height_p95_m": 0.05708676173659177,
+          "soil_surface_points": 7435,
+          "soil_surface_height_p95_m": 0.056488848204626976,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0085.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 123162,
+          "ground_height_p95_m": 0.05311124788232886,
+          "soil_surface_points": 3264,
+          "soil_surface_height_p95_m": 0.09541035152686829,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 99550,
+          "ground_height_p95_m": 0.06391635190737976,
+          "soil_surface_points": 17,
+          "soil_surface_height_p95_m": 0.12093020772162173,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 158466,
+          "ground_height_p95_m": 0.053064091552217474,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 116852,
+          "ground_height_p95_m": 0.061372353341164664,
+          "soil_surface_points": 19236,
+          "soil_surface_height_p95_m": 0.05341407023693945,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0086.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 125136,
+          "ground_height_p95_m": 0.051379333827297424,
+          "soil_surface_points": 1358,
+          "soil_surface_height_p95_m": 0.07971939751211427,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 99172,
+          "ground_height_p95_m": 0.06361663453488069,
+          "soil_surface_points": 14,
+          "soil_surface_height_p95_m": 0.10580835074942123,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 157373,
+          "ground_height_p95_m": 0.05147472853305759,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 117302,
+          "ground_height_p95_m": 0.0611498692567831,
+          "soil_surface_points": 19465,
+          "soil_surface_height_p95_m": 0.06703199551364078,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0087.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 125744,
+          "ground_height_p95_m": 0.049962879467677704,
+          "soil_surface_points": 855,
+          "soil_surface_height_p95_m": 0.08635987583892339,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 101268,
+          "ground_height_p95_m": 0.06126495782469905,
+          "soil_surface_points": 15,
+          "soil_surface_height_p95_m": 0.11274062246772579,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 157102,
+          "ground_height_p95_m": 0.05001201595593137,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 126319,
+          "ground_height_p95_m": 0.059245991687138885,
+          "soil_surface_points": 10447,
+          "soil_surface_height_p95_m": 0.05883860278202024,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0088.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 130110,
+          "ground_height_p95_m": 0.051513190153133895,
+          "soil_surface_points": 447,
+          "soil_surface_height_p95_m": 0.08923790933958163,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 103364,
+          "ground_height_p95_m": 0.06141082906958184,
+          "soil_surface_points": 126,
+          "soil_surface_height_p95_m": 0.059208233360917295,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156898,
+          "ground_height_p95_m": 0.04984863200511212,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 121756,
+          "ground_height_p95_m": 0.059124937276479494,
+          "soil_surface_points": 1568,
+          "soil_surface_height_p95_m": 0.0371898021125037,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0089.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 139950,
+          "ground_height_p95_m": 0.051443745341874035,
+          "soil_surface_points": 207,
+          "soil_surface_height_p95_m": 0.10453441707230071,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 105920,
+          "ground_height_p95_m": 0.061299606736450706,
+          "soil_surface_points": 242,
+          "soil_surface_height_p95_m": 0.075603300676376,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156670,
+          "ground_height_p95_m": 0.049852979263196276,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 116401,
+          "ground_height_p95_m": 0.061442489140737244,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0090.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 144186,
+          "ground_height_p95_m": 0.05004022922478302,
+          "soil_surface_points": 152,
+          "soil_surface_height_p95_m": 0.08931614936489861,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 110267,
+          "ground_height_p95_m": 0.0589204031350933,
+          "soil_surface_points": 9,
+          "soil_surface_height_p95_m": 0.1173984915776966,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156576,
+          "ground_height_p95_m": 0.04850294880399353,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 108008,
+          "ground_height_p95_m": 0.06133658375323261,
+          "soil_surface_points": 83,
+          "soil_surface_height_p95_m": 0.019334356791912356,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0091.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 143694,
+          "ground_height_p95_m": 0.050025492427209495,
+          "soil_surface_points": 379,
+          "soil_surface_height_p95_m": 0.08419044804258012,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 110884,
+          "ground_height_p95_m": 0.05903807922810429,
+          "soil_surface_points": 74,
+          "soil_surface_height_p95_m": 0.06793410394775486,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156880,
+          "ground_height_p95_m": 0.04973032742739536,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 104986,
+          "ground_height_p95_m": 0.06366705371490688,
+          "soil_surface_points": 1361,
+          "soil_surface_height_p95_m": 0.03665893088584227,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0092.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 143154,
+          "ground_height_p95_m": 0.049726839185392335,
+          "soil_surface_points": 861,
+          "soil_surface_height_p95_m": 0.06842915759994711,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 108944,
+          "ground_height_p95_m": 0.05918671379996636,
+          "soil_surface_points": 1732,
+          "soil_surface_height_p95_m": 0.05983067728958223,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156749,
+          "ground_height_p95_m": 0.04985923818406883,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 103113,
+          "ground_height_p95_m": 0.06656697217328629,
+          "soil_surface_points": 2964,
+          "soil_surface_height_p95_m": 0.04635964395049035,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0093.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 141900,
+          "ground_height_p95_m": 0.049846314669299605,
+          "soil_surface_points": 2055,
+          "soil_surface_height_p95_m": 0.06565716121539182,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 100494,
+          "ground_height_p95_m": 0.06354670810124337,
+          "soil_surface_points": 7033,
+          "soil_surface_height_p95_m": 0.07206895619158113,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156936,
+          "ground_height_p95_m": 0.04997868779491521,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 105612,
+          "ground_height_p95_m": 0.06625571725164774,
+          "soil_surface_points": 4232,
+          "soil_surface_height_p95_m": 0.04747680878435588,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0094.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 142249,
+          "ground_height_p95_m": 0.04974889144833199,
+          "soil_surface_points": 1881,
+          "soil_surface_height_p95_m": 0.066132760286429,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 102544,
+          "ground_height_p95_m": 0.061433041999086814,
+          "soil_surface_points": 5482,
+          "soil_surface_height_p95_m": 0.07122393409466397,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156897,
+          "ground_height_p95_m": 0.049947848151209756,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 106682,
+          "ground_height_p95_m": 0.06653550742400734,
+          "soil_surface_points": 2976,
+          "soil_surface_height_p95_m": 0.04820893523656572,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0095.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 143429,
+          "ground_height_p95_m": 0.04968602557696853,
+          "soil_surface_points": 886,
+          "soil_surface_height_p95_m": 0.07191289284019536,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 107664,
+          "ground_height_p95_m": 0.061218775983716965,
+          "soil_surface_points": 2148,
+          "soil_surface_height_p95_m": 0.07000118186669602,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156711,
+          "ground_height_p95_m": 0.049959843962870565,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 106200,
+          "ground_height_p95_m": 0.06617590606580163,
+          "soil_surface_points": 1725,
+          "soil_surface_height_p95_m": 0.04019642915122546,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0096.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 143209,
+          "ground_height_p95_m": 0.04996262010782271,
+          "soil_surface_points": 226,
+          "soil_surface_height_p95_m": 0.09331566457842302,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 113173,
+          "ground_height_p95_m": 0.05894196395043325,
+          "soil_surface_points": 7,
+          "soil_surface_height_p95_m": 0.11188475371667665,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156721,
+          "ground_height_p95_m": 0.04994755220013092,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 103947,
+          "ground_height_p95_m": 0.06363461380241801,
+          "soil_surface_points": 1097,
+          "soil_surface_height_p95_m": 0.038553583850922016,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0097.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 144175,
+          "ground_height_p95_m": 0.05127298952609118,
+          "soil_surface_points": 119,
+          "soil_surface_height_p95_m": 0.0949443560370677,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 110763,
+          "ground_height_p95_m": 0.05912731921806884,
+          "soil_surface_points": 8,
+          "soil_surface_height_p95_m": 0.12031380071842364,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156416,
+          "ground_height_p95_m": 0.04836373956004958,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 107248,
+          "ground_height_p95_m": 0.06132464347371902,
+          "soil_surface_points": 234,
+          "soil_surface_height_p95_m": 0.021382755951543906,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0098.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 144187,
+          "ground_height_p95_m": 0.05126575985032091,
+          "soil_surface_points": 121,
+          "soil_surface_height_p95_m": 0.08774104439899788,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 109991,
+          "ground_height_p95_m": 0.059066544651226405,
+          "soil_surface_points": 7,
+          "soil_surface_height_p95_m": 0.10816428949269695,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156425,
+          "ground_height_p95_m": 0.0484480705014592,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 108483,
+          "ground_height_p95_m": 0.06123506370894831,
+          "soil_surface_points": 75,
+          "soil_surface_height_p95_m": 0.020085080571182544,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0099.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 140234,
+          "ground_height_p95_m": 0.051374441929191314,
+          "soil_surface_points": 292,
+          "soil_surface_height_p95_m": 0.09954269146816482,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 105669,
+          "ground_height_p95_m": 0.061117635138607,
+          "soil_surface_points": 493,
+          "soil_surface_height_p95_m": 0.059381136591838884,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156773,
+          "ground_height_p95_m": 0.04984918311610018,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 116220,
+          "ground_height_p95_m": 0.06146336564554973,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0100.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 128005,
+          "ground_height_p95_m": 0.05139199762958026,
+          "soil_surface_points": 614,
+          "soil_surface_height_p95_m": 0.07483947909958849,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 101213,
+          "ground_height_p95_m": 0.06151148941040559,
+          "soil_surface_points": 1322,
+          "soil_surface_height_p95_m": 0.08807280402272524,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 156912,
+          "ground_height_p95_m": 0.04986152900356934,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 127856,
+          "ground_height_p95_m": 0.05926602612247012,
+          "soil_surface_points": 952,
+          "soil_surface_height_p95_m": 0.03005776581951312,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0101.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 126408,
+          "ground_height_p95_m": 0.05148099522271208,
+          "soil_surface_points": 790,
+          "soil_surface_height_p95_m": 0.08284285590601641,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 102472,
+          "ground_height_p95_m": 0.06139465363983807,
+          "soil_surface_points": 10,
+          "soil_surface_height_p95_m": 0.10132147463740936,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 157015,
+          "ground_height_p95_m": 0.04996330796193051,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 125413,
+          "ground_height_p95_m": 0.05916565918991319,
+          "soil_surface_points": 6304,
+          "soil_surface_height_p95_m": 0.05347380513920691,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0102.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 125562,
+          "ground_height_p95_m": 0.049824896607950885,
+          "soil_surface_points": 1060,
+          "soil_surface_height_p95_m": 0.07753000924749438,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 101293,
+          "ground_height_p95_m": 0.06147255852087418,
+          "soil_surface_points": 14,
+          "soil_surface_height_p95_m": 0.12181373765174368,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 157180,
+          "ground_height_p95_m": 0.04976664905144461,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 122163,
+          "ground_height_p95_m": 0.061331465867605094,
+          "soil_surface_points": 14534,
+          "soil_surface_height_p95_m": 0.06379156748376734,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0103.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 124278,
+          "ground_height_p95_m": 0.051520277334267985,
+          "soil_surface_points": 1985,
+          "soil_surface_height_p95_m": 0.10077754317665695,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 98251,
+          "ground_height_p95_m": 0.06378823797734445,
+          "soil_surface_points": 13,
+          "soil_surface_height_p95_m": 0.11487206114392806,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 157515,
+          "ground_height_p95_m": 0.05144500998183275,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 113327,
+          "ground_height_p95_m": 0.06152206933121294,
+          "soil_surface_points": 23199,
+          "soil_surface_height_p95_m": 0.0638653760280628,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0104.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 121066,
+          "ground_height_p95_m": 0.053175600455609096,
+          "soil_surface_points": 4909,
+          "soil_surface_height_p95_m": 0.09447543578943088,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 97386,
+          "ground_height_p95_m": 0.06384810707701516,
+          "soil_surface_points": 19,
+          "soil_surface_height_p95_m": 0.11998009044742258,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 158512,
+          "ground_height_p95_m": 0.053031636900136514,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 113666,
+          "ground_height_p95_m": 0.06142359560346944,
+          "soil_surface_points": 22110,
+          "soil_surface_height_p95_m": 0.05288892889798573,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0105.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 90697,
+          "ground_height_p95_m": 0.05843141780441767,
+          "soil_surface_points": 34239,
+          "soil_surface_height_p95_m": 0.07832272398149517,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 94562,
+          "ground_height_p95_m": 0.06357680586660337,
+          "soil_surface_points": 25,
+          "soil_surface_height_p95_m": 0.11676283627460303,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 158868,
+          "ground_height_p95_m": 0.053147595057530306,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 126520,
+          "ground_height_p95_m": 0.056780215064621144,
+          "soil_surface_points": 8716,
+          "soil_surface_height_p95_m": 0.05681018750062253,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0106.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 81818,
+          "ground_height_p95_m": 0.05458743904846508,
+          "soil_surface_points": 38370,
+          "soil_surface_height_p95_m": 0.07941513911868088,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 96194,
+          "ground_height_p95_m": 0.061408292421946425,
+          "soil_surface_points": 89,
+          "soil_surface_height_p95_m": 0.11864714772191717,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 159269,
+          "ground_height_p95_m": 0.05515419227757219,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 131646,
+          "ground_height_p95_m": 0.0549444068938606,
+          "soil_surface_points": 4116,
+          "soil_surface_height_p95_m": 0.0657579476420474,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0107.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 120351,
+          "ground_height_p95_m": 0.05149392689467347,
+          "soil_surface_points": 1577,
+          "soil_surface_height_p95_m": 0.052808694578234804,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 97466,
+          "ground_height_p95_m": 0.06133551332423215,
+          "soil_surface_points": 253,
+          "soil_surface_height_p95_m": 0.11621973999721331,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 129335,
+          "ground_height_p95_m": 0.06141568981262804,
+          "soil_surface_points": 29274,
+          "soil_surface_height_p95_m": 0.06955322849044157,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 131929,
+          "ground_height_p95_m": 0.051593637298450006,
+          "soil_surface_points": 3711,
+          "soil_surface_height_p95_m": 0.08424653394652404,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0108.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 125558,
+          "ground_height_p95_m": 0.05313008328105109,
+          "soil_surface_points": 5,
+          "soil_surface_height_p95_m": 0.07021577491232689,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 100428,
+          "ground_height_p95_m": 0.061396817757640484,
+          "soil_surface_points": 1921,
+          "soil_surface_height_p95_m": 0.10173038001752832,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 113993,
+          "ground_height_p95_m": 0.06663324131671251,
+          "soil_surface_points": 42419,
+          "soil_surface_height_p95_m": 0.05921366213866516,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 125036,
+          "ground_height_p95_m": 0.05333812997612708,
+          "soil_surface_points": 5485,
+          "soil_surface_height_p95_m": 0.0887792606096804,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0109.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 140587,
+          "ground_height_p95_m": 0.05296096624847087,
+          "soil_surface_points": 98,
+          "soil_surface_height_p95_m": 0.11360461410445737,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 105558,
+          "ground_height_p95_m": 0.059231813522095035,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 154427,
+          "ground_height_p95_m": 0.053118561640133156,
+          "soil_surface_points": 1270,
+          "soil_surface_height_p95_m": 0.07613280682112034,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 97806,
+          "ground_height_p95_m": 0.05909197223824125,
+          "soil_surface_points": 14073,
+          "soil_surface_height_p95_m": 0.08608094937540701,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0110.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 141830,
+          "ground_height_p95_m": 0.05141783345295066,
+          "soil_surface_points": 177,
+          "soil_surface_height_p95_m": 0.08758084607375569,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 106717,
+          "ground_height_p95_m": 0.05912694017017621,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 153719,
+          "ground_height_p95_m": 0.05161314413532079,
+          "soil_surface_points": 531,
+          "soil_surface_height_p95_m": 0.09501678853954787,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 97875,
+          "ground_height_p95_m": 0.05907986526430324,
+          "soil_surface_points": 9495,
+          "soil_surface_height_p95_m": 0.0951006694856187,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0111.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 141526,
+          "ground_height_p95_m": 0.05087389164362455,
+          "soil_surface_points": 203,
+          "soil_surface_height_p95_m": 0.10687075361968153,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 106270,
+          "ground_height_p95_m": 0.05958306441682853,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 154235,
+          "ground_height_p95_m": 0.05180280891217635,
+          "soil_surface_points": 343,
+          "soil_surface_height_p95_m": 0.09428137449330441,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 98752,
+          "ground_height_p95_m": 0.05774596405251889,
+          "soil_surface_points": 7151,
+          "soil_surface_height_p95_m": 0.09874697618127293,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0112.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 141246,
+          "ground_height_p95_m": 0.049962332524006725,
+          "soil_surface_points": 271,
+          "soil_surface_height_p95_m": 0.08811893731761591,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 106181,
+          "ground_height_p95_m": 0.05892171443005623,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 154366,
+          "ground_height_p95_m": 0.05138121363260617,
+          "soil_surface_points": 322,
+          "soil_surface_height_p95_m": 0.09388033978618215,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 98891,
+          "ground_height_p95_m": 0.05675658432018893,
+          "soil_surface_points": 6852,
+          "soil_surface_height_p95_m": 0.09881794137301847,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0113.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 139897,
+          "ground_height_p95_m": 0.04851557241196165,
+          "soil_surface_points": 469,
+          "soil_surface_height_p95_m": 0.0899366275095354,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 105265,
+          "ground_height_p95_m": 0.058863773267135856,
+          "soil_surface_points": 0,
+          "soil_surface_height_p95_m": null,
+          "classes": [
+            0,
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 154704,
+          "ground_height_p95_m": 0.051369340356108406,
+          "soil_surface_points": 214,
+          "soil_surface_height_p95_m": 0.10773149567512626,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 99314,
+          "ground_height_p95_m": 0.056975023436213613,
+          "soil_surface_points": 5100,
+          "soil_surface_height_p95_m": 0.10071127036855253,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "frame": "frame_0114.npz",
+      "cameras": [
+        {
+          "camera": "front",
+          "ground_points": 139717,
+          "ground_height_p95_m": 0.04698200996070492,
+          "soil_surface_points": 453,
+          "soil_surface_height_p95_m": 0.08979489803485811,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "left",
+          "ground_points": 101685,
+          "ground_height_p95_m": 0.058957547108440075,
+          "soil_surface_points": 157,
+          "soil_surface_height_p95_m": 0.0724403285339078,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "rear",
+          "ground_points": 154346,
+          "ground_height_p95_m": 0.05145285629849261,
+          "soil_surface_points": 136,
+          "soil_surface_height_p95_m": 0.11451098294606016,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "camera": "right",
+          "ground_points": 98473,
+          "ground_height_p95_m": 0.055137269290467104,
+          "soil_surface_points": 3411,
+          "soil_surface_height_p95_m": 0.1019731047662108,
+          "classes": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    }
+  ],
+  "mcap_lossless_groups": 115,
+  "topic_counts": {
+    "/loader/cameras/front/raw/image": 115,
+    "/loader/cameras/front/raw/depth_image": 115,
+    "/loader/cameras/front/semantic/labels_map": 115,
+    "/loader/cameras/front/raw/camera_info": 115,
+    "/loader/cameras/left/raw/image": 115,
+    "/loader/cameras/left/raw/depth_image": 115,
+    "/loader/cameras/left/semantic/labels_map": 115,
+    "/loader/cameras/left/raw/camera_info": 115,
+    "/loader/cameras/rear/raw/image": 115,
+    "/loader/cameras/rear/raw/depth_image": 115,
+    "/loader/cameras/rear/semantic/labels_map": 115,
+    "/loader/cameras/rear/raw/camera_info": 115,
+    "/loader/cameras/right/raw/image": 115,
+    "/loader/cameras/right/raw/depth_image": 115,
+    "/loader/cameras/right/semantic/labels_map": 115,
+    "/loader/cameras/right/raw/camera_info": 115,
+    "/tf": 115,
+    "/clock": 115,
+    "/loader/terrain_state": 115
+  },
+  "ground_tolerance_m": 0.1,
+  "seen_classes": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "changed_terrain_surface_matches": 200424,
+  "drivable_cells_scored": 5486061,
+  "drivable_unsafe_fraction": 4.374723503803549e-06,
+  "drivable_reference": "independent recorded terrain heights and configured physical obstacle polygons; cell centers",
+  "soil_note": "Diagnostic top-surface subset; not a whole-scene recall score."
+}

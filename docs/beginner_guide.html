@@ -20,7 +20,7 @@ code{font-family:Consolas,'Microsoft YaHei',monospace;font-size:.91em;background
 <div class="layout"><aside aria-label="章节目录"><h2>本页目录</h2><ol class="toc"><li><a href="#section-1">1. 先弄清楚：这到底是一套什么软件</a></li><li><a href="#section-2">2. 六个部分分别在做什么</a></li><li><a href="#section-3">3. 文件在哪里，程序又在哪里运行</a></li><li><a href="#section-4">4. 第一次怎么用：只选一种模式启动</a></li><li><a href="#section-5">5. 跟着一次“举升”看懂代码如何合作</a></li><li><a href="#section-6">6. 六个 ROS 包：核心代码分别负责什么</a></li><li><a href="#section-7">7. 定位为什么又多了好几个程序</a></li><li><a href="#section-8">8. 想改某个效果，应该找哪里</a></li><li><a href="#section-9">9. 测试文件在干什么，怎样看结果</a></li><li><a href="#section-10">10. 当前做到哪了，哪些还不能当作完成</a></li><li><a href="#section-11">11. 看不懂或出问题时，先从现象判断</a></li><li><a href="#section-12">12. 想继续深入，按问题选文档</a></li><li><a href="#section-13">最新开发进度入口</a></li></ol><p class="aside-note">初次阅读先看整体和启动方法。<br>用 Ctrl+F 搜索文件名或关键词。<br><br>离线阅读 · 无需启动仿真<br>文档快照：2026-09-07</p></aside>
 <main><div class="eyebrow">从使用方法，到代码职责</div><h1 id="heading-0-1">无人装载机仿真软件：零基础说明书</h1>
 <p>适用对象：想知道这套软件在做什么、怎样使用、每块代码负责什么，但还不会读 ROS 或 C++ 的项目使用者。</p>
-<p>文档版本：2026-09-06。内容以当前项目代码和已保存的测试结果为依据。后续开发状态请看 <a href="deployment_status.md">开发状态</a>。</p>
+<p>文档版本：2026-09-08。内容以当前项目代码和已保存的测试结果为依据。最新验收进度请看 <a href="next_stage_3d_ab.html">三维作业计划</a>。</p>
 <p>本版包含修复后的 L580 外观和第四阶段定位评测结果；模型尺寸、安装位置等具体数值请以最新模型文件为准。</p>
 <p><strong>你现在不需要从第一行代码开始学。先认识软件的几个部分，再顺着一个动作看它们怎样配合。</strong></p>
 <section id="section-1">
@@ -35,8 +35,8 @@ code{font-family:Consolas,'Microsoft YaHei',monospace;font-size:.91em;background
 <tr><td>铲斗举起、土堆出现缺口</td><td>控制程序计算工作装置受力，土料程序扣除被铲走的体积</td></tr>
 <tr><td>Foxglove 中出现车速曲线</td><td>状态数据经过消息通道送到浏览器</td></tr>
 <tr><td>一大片彩色的点</td><td>虚拟雷达测到了周围表面，点的颜色用于帮助观察</td></tr>
-<tr><td>定位页面显示位置</td><td>KISS-ICP 根据前后扫描的变化估计车辆移动</td></tr>
-<tr><td>自动演示完成一套动作</td><td>脚本按预设流程发命令，部分动作使用关节反馈</td></tr>
+<tr><td>定位页面显示位置</td><td>激光扫描与地图匹配，结合 IMU 估计车辆位置；也保留 KISS-ICP 对照模式</td></tr>
+<tr><td>自动演示完成一套动作</td><td>程序根据位置、速度、关节和装料量反馈，完成铲取、转弯、卸料及返回</td></tr>
 </tbody></table></div>
 <p><strong>当前自动演示是预先编写的作业流程。自主找料堆、规划路线、决定怎么铲装，还没有全部实现。</strong> 开发时使用 AI 写代码，也不表示仿真车里已经运行了大语言模型或完整自动驾驶系统。</p>
 <h3 id="heading-1-1">第一次阅读怎么安排</h3>
@@ -194,13 +194,14 @@ code{font-family:Consolas,'Microsoft YaHei',monospace;font-size:.91em;background
 <th scope="col">第一次重点看什么</th>
 </tr></thead><tbody>
 <tr><td>整车总览</td><td>车速、压力和斗内载荷有没有随动作变化</td></tr>
+<tr><td>三维料场</td><td>世界坐标下的车辆、实际土堆网格、规划路线和当前作业步骤</td></tr>
 <tr><td>ROS 节点与消息</td><td>各程序交换的数据长什么样，暂时不必理解所有字段</td></tr>
 <tr><td>手动控制</td><td>驾驶、举升、翻斗和急停按钮</td></tr>
 <tr><td>感知与三维</td><td>雷达有没有看到地面、车体和周围物体</td></tr>
 <tr><td>第四阶段·传感器</td><td>加入效应后的传感器输入</td></tr>
 <tr><td>第四阶段·定位</td><td>算法估计的位置有没有随行驶变化</td></tr>
 </tbody></table></div>
-<p>截至本文版本，真实数据和控制回路自动检查已通过；此前浏览器停在登录页，登录后的六页布局目视验收仍待完成。</p>
+<p>截至本文版本，真实数据和控制回路自动检查已通过；三维料场新增网格账本检查和 WebSocket 实际传输检查也已通过。登录后的七页布局人工目视验收仍待完成。</p>
 </section>
 <section id="section-5">
 <h2>5. 跟着一次“举升”看懂代码如何合作</h2>
@@ -378,7 +379,7 @@ Gazebo 独立真实位置 /loader/ground_truth/odometry
 <section id="section-10">
 <h2>10. 当前做到哪了，哪些还不能当作完成</h2>
 <p>本文的阶段编号沿用项目路线图；M1、M2 是第四阶段内部的小里程碑。开发存在交叉推进，进入第四阶段不表示前三阶段的所有精细化工作都结束了。</p>
-<p><strong>2026-09-07 新增目标：</strong>先让料堆在前后、左右方向都能变化，再让装载机从 A 点铲料，沿含转弯的路线到 B 点卸料并返回。接下来的定位、IMU、地图与鱼眼/BEV 工作都放在这个三维场景里验收。具体顺序见 <a href="next_stage_3d_ab.html">三维 A→B 开发计划</a>。当前只是更新了计划，这些新功能还没有完成。</p>
+<p><strong>当前已能演示：</strong>从三维土堆铲料，倒车退出，转弯后卸在另一侧地面，再返回。三维斗刃、随载料变化的质量/质心/惯性已有整车验证；同一场地中两轮 A→B、两轮 B→A 的连续作业也已通过。长时间运行和完整统计验收仍在进行，具体证据见 <a href="next_stage_3d_ab.html">三维 A→B 开发计划</a>。</p>
 <div class="table-scroll"><table><thead><tr>
 <th scope="col">范围</th>
 <th scope="col">当前实际状态</th>
@@ -386,15 +387,26 @@ Gazebo 独立真实位置 /loader/ground_truth/odometry
 </tr></thead><tbody>
 <tr><td>第一阶段：基础环境</td><td>ROS、Gazebo、GPU 和通信基础已跑通</td><td>持续关注本机运行稳定性</td></tr>
 <tr><td>第二阶段：装载机</td><td>L580 细节外观已接入并修正装配；正式力级控制、基本保护已跑通</td><td>物理仍为名义模型；厂家几何与实车参数标定，轮胎和液压细化</td></tr>
-<tr><td>第三阶段：砂土</td><td>二维土料已接入整车；独立三维高度场原型已验证</td><td>三维内核迁入整车、溢料、载荷惯量和材料标定</td></tr>
-<tr><td>Foxglove 可视化</td><td>六页布局已准备；14 个感知模式实时通道和控制回路通过</td><td>登录后对六页布局做目视确认</td></tr>
+<tr><td>第三阶段：砂土</td><td>三维高度场、不同高度斗刃、动态载荷惯性已接入整车</td><td>逐颗粒飞散、任意起伏地基和实车材料标定</td></tr>
+<tr><td>Foxglove 可视化</td><td>七页布局已准备；新三维网格与世界坐标车辆的实时传输检查通过</td><td>登录后对七页布局做目视确认</td></tr>
 <tr><td>第四阶段 M1：传感器效应</td><td>原始/效应点云逐帧对应，实测均为 10 Hz；IMU 噪声检查通过</td><td>平移畸变、更多误差来源、目标传感器标定</td></tr>
-<tr><td>第四阶段 M2：定位</td><td>自适应地面识别与车体过滤已接入；三次名义行驶均通过 0.15 m RMSE 门槛</td><td>IMU 融合、坡地/转向/动态铲装、多工况重复评测</td></tr>
-<tr><td>后续自主作业</td><td>已有路线和部分配置骨架</td><td>完整规划控制、地图重定位、鱼眼/BEV 等继续开发</td></tr>
+<tr><td>第四阶段 M2：定位</td><td>地图匹配与 IMU 融合已完成一次完整估计位置 A→B，位置 RMSE 8.49 cm</td><td>保存地图重启、失效恢复、多工况与重复统计</td></tr>
+<tr><td>四鱼眼与 BEV</td><td>四相机同步图像、深度、语义、标定、MCAP 和离线俯视图已有移动作业数据验证</td><td>连续 10 Hz 采集与联合验收收尾</td></tr>
+<tr><td>自主作业</td><td>A/B 状态机、前后车体包络、障碍停车、四轮连续转运已实现</td><td>静态绕障最后入位、100 轮稳定性和实时性能</td></tr>
 </tbody></table></div>
 <p><strong><code>nominal</code> 表示目前采用估算或简化参数。</strong> <code>validated</code> 才表示经过所规定的对照和验收。文件里写了一个配置项或安装了某个库，不等于对应功能已经验收。</p>
 <p>Chrono DEM 已完成小规模颗粒运行和链接验证。它是未来离线标定砂土模型的工具，当前 Gazebo 演示中的砂堆没有使用 Chrono 逐颗粒计算。</p>
-<p><code>tools/soil_heightfield_3d/</code> 中的三维原型也是单独运行的；它没有因为文件存在，就自动替换整车里的二维插件。<code>bev_capture.yaml</code> 描述的是目标数据采集配置，不表示四路鱼眼和 BEV 已经接好。</p>
+<p>默认 <code>ab</code> 场景已使用三维高度场。<code>soil</code> 仍保留旧一维场景，便于比较历史结果。相机采用统一的离线等距鱼眼重投影，BEV 是把观察到的表面投影到俯视网格；黑色表示未观察到，绿色表示可行驶地面，红色表示被占用表面。它尚不是训练得到的识别网络。</p>
+<p>新增入口（PowerShell，在项目根目录执行）：</p>
+<div class="code-box"><div class="code-label">PowerShell · 复制完整命令</div><pre><code># 使用激光/IMU 估计位置完成 A/B 作业
+.\scripts\windows\run_loader_soil_demo.ps1 -Mode perception -Localization lio_map
+
+# 同时记录四相机，结束后自动输出鱼眼、BEV 与 MCAP
+.\scripts\windows\run_loader_soil_demo.ps1 -SurroundCapture
+
+# 同一世界连续四轮：两轮运过去、两轮运回来
+.\scripts\windows\run_loader_soil_demo.ps1 -ContinuousCycles 4</code></pre></div>
+<p>每次演示的独立结果位于 WSL <code>/home/lyc/loader_sim_runtime/results/runs/</code> 下。相机运行目录中的 <code>surround/bev/</code> 保存预览图，<code>surround/mcap/</code> 保存原始记录，<code>surround/fisheye_mcap/</code> 保存可回放的鱼眼数据。连续运行结果在 <code>continuous/endurance.json</code>；失败轮次会写明原因。</p>
 </section>
 <section id="section-11">
 <h2>11. 看不懂或出问题时，先从现象判断</h2>

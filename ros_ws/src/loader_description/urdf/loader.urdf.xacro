@@ -15,6 +15,7 @@
   <xacro:if value="$(arg enable_surround_cameras)"><xacro:surround_cameras/></xacro:if>
   <xacro:arg name="enable_lidar_imu" default="false"/>
   <xacro:arg name="enable_ros2_control" default="false"/>
+  <xacro:arg name="controller_config" default="$(find loader_control)/config/loader_controllers.yaml"/>
   <xacro:arg name="soil_3d_config" default="$(find loader_description)/config/soil_heightfield.yaml"/>
   <xacro:arg name="dynamic_payload" default="true"/>
   <xacro:arg name="soil_bucket_capacity_m3" default="3.0"/>
@@ -287,7 +288,7 @@
 
     <gazebo>
       <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
-        <parameters>$(find loader_control)/config/loader_controllers.yaml</parameters>
+        <parameters>$(arg controller_config)</parameters>
       </plugin>
     </gazebo>
   </xacro:if>

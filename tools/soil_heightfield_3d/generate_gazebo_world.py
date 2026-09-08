@@ -17,8 +17,11 @@ parser.add_argument("--task-config",type=Path)
 parser.add_argument("--wheel-ramp",action="store_true")
 parser.add_argument("--overview-camera",action="store_true")
 parser.add_argument("--sensor-systems",action="store_true")
+parser.add_argument('--physics-hz',type=int,choices=[250,500],default=500)
 args=parser.parse_args()
 text=render_world(observer_lidar=args.observer_lidar, sensor_systems=args.observer_lidar or args.overview_camera or args.sensor_systems)
+text=text.replace('<max_step_size>0.002</max_step_size>',f'<max_step_size>{1/args.physics_hz}</max_step_size>')
+text=text.replace('name="loader_500hz"',f'name="loader_{args.physics_hz}hz"')
 # The 3D unloading point can lie well beyond the original narrow slice view.
 # Cover the whole nominal XY field with the fixed observer.
 text=text.replace('<min_angle>-0.50</min_angle><max_angle>0.50</max_angle>',
@@ -88,14 +91,29 @@ if args.overview_camera:
 args.output.parent.mkdir(parents=True,exist_ok=True)
 world_xml=text[:start]+'<model name="soil_grid"><static>true</static><link name="link">'+"\n".join(columns)+'</link></model>'+yard_text+text[end:]
 root=ET.fromstring(world_xml)
+# Gazebo reliably loads Label at model scope. Keep painted ground separate
+# from solid structures, and each obstacle in its own panoptic instance.
+landmarks=root.find('./world/model[@name="yard_landmarks"]')
+if landmarks is not None:
+    painted=ET.SubElement(root.find('world'),'model',name='yard_markings')
+    ET.SubElement(painted,'static').text='true';paint_link=ET.SubElement(painted,'link',name='link')
+    for visual in list(landmarks.find('link').findall('visual')):
+        name=visual.get('name')
+        if name.startswith(('source_','dump_')):
+            landmarks.find('link').remove(visual);paint_link.append(visual)
+        elif name.startswith('obstacle_'):
+            obstacle=ET.SubElement(root.find('world'),'model',name=name)
+            ET.SubElement(obstacle,'static').text='true';link=ET.SubElement(obstacle,'link',name='link')
+            landmarks.find('link').remove(visual);link.append(visual)
 for model in root.findall('./world/model'):
+    name=model.get('name')
+    label=2 if name=='soil_grid' else 1 if name in ('rigid_ground','yard_markings') else 3
+    plugin=ET.SubElement(model,'plugin',filename='gz-sim-label-system',name='gz::sim::systems::Label')
+    ET.SubElement(plugin,'label').text=str(label)
     for visual in model.findall('./link/visual'):
-        name=model.get('name');vname=visual.get('name')
-        label=2 if name=='soil_grid' else 1 if name=='rigid_ground' or vname.startswith(('source_','dump_')) else 3
-        plugin=ET.SubElement(visual,'plugin',filename='gz-sim-label-system',name='gz::sim::systems::Label')
-        ET.SubElement(plugin,'label').text=str(label)
+        vname=visual.get('name')
         # Yard walls now have physical geometry matching their visible outline.
-        if name=='yard_landmarks' and ('wall' in vname or vname.startswith('obstacle_')):
+        if (name=='yard_landmarks' and 'wall' in vname) or name.startswith('obstacle_'):
             import copy
             collision=ET.SubElement(model.find('link'),'collision',name=vname)
             collision.append(copy.deepcopy(visual.find('pose')))

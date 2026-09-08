@@ -4,6 +4,9 @@ set -Eeuo pipefail
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 project_root="${LOADER_PROJECT_ROOT:-$(cd "${script_dir}/../.." && pwd)}"
 runtime_root="${HOME}/loader_sim_runtime"
+# Several small-matrix ROS processes run together. Avoid allocating a full
+# BLAS thread pool in every process and competing with Gazebo's render loop.
+export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
 mode="${1:-physics}"
 control_mode="${2:-auto}"
 localization="${3:-none}"
@@ -21,6 +24,15 @@ if [[ ${scenario} == ab && ${localization} == kiss_icp ]]; then
   exit 2
 fi
 headless="${LOADER_HEADLESS:-0}"
+physics_hz="${LOADER_PHYSICS_HZ:-500}"
+if [[ ${physics_hz} != 500 && ${physics_hz} != 250 ]]; then
+  printf 'ERROR: physics rate must be 500 or the documented 250 Hz fallback.\n' >&2
+  exit 2
+fi
+if [[ ${LOADER_BEV_CAPTURE:-false} == true && ${scenario} != ab ]]; then
+  printf 'ERROR: the calibrated surround capture profile requires the ab scene.\n' >&2
+  exit 2
+fi
 if [[ ${localization} != none && ${localization} != kiss_icp && ${localization} != lio && ${localization} != lio_map ]]; then
   printf 'ERROR: localization must be none, kiss_icp, lio or lio_map.\n' >&2
   exit 2
@@ -93,7 +105,7 @@ if [[ ${scenario} == soil3d || ${scenario} == ab ]]; then
   world_file="${run_dir}/loader_soil_3d.sdf"
   grid_config="${project_root}/ros_ws/src/loader_description/config/soil_heightfield.yaml"
   [[ ${scenario} == ab ]] && grid_config="${project_root}/ros_ws/src/loader_description/config/soil_heightfield_ab.yaml"
-  generator_args=(--config "${grid_config}" --task-config "${LOADER_AB_CONFIG:-${project_root}/simulation/config/ab_task.yaml}")
+  generator_args=(--physics-hz "${physics_hz}" --config "${grid_config}" --task-config "${LOADER_AB_CONFIG:-${project_root}/simulation/config/ab_task.yaml}")
   [[ ${LOADER_CAPTURE_YARD:-false} == true ]] && generator_args+=(--overview-camera)
   [[ ${LOADER_BEV_CAPTURE:-false} == true ]] && generator_args+=(--sensor-systems)
   if [[ ${mode} == perception ]]; then
@@ -110,7 +122,11 @@ if [[ ${mode} == perception ]]; then
 fi
 enable_ground_truth="${enable_lidar_imu}"
 [[ ${scenario} == ab ]] && enable_ground_truth=true
+controller_config="${run_dir}/controllers.yaml"
+sed "s/update_rate: 500/update_rate: ${physics_hz}/" "${runtime_root}/install/loader_control/share/loader_control/config/loader_controllers.yaml" >"${controller_config}"
+printf '{"physics_hz":%s,"step_size_s":%s,"mode":"%s","localization":"%s"}\n' "${physics_hz}" "$(awk "BEGIN {print 1/${physics_hz}}")" "${mode}" "${localization}" >"${run_dir}/runtime_profile.json"
 xacro "${project_root}/ros_ws/src/loader_description/urdf/loader.urdf.xacro" \
+  controller_config:="${controller_config}" \
   dynamic_payload:="${LOADER_DYNAMIC_PAYLOAD:-true}" enable_ros2_control:=true enable_soil_slice:=true enable_soil_3d:="${enable_soil_3d}" \
   enable_surround_cameras:="${LOADER_BEV_CAPTURE:-false}" enable_lidar_imu:="${enable_lidar_imu}" \
   enable_ground_truth:="${enable_ground_truth}" soil_3d_config:="${grid_config}" >"${urdf_file}"
@@ -136,8 +152,11 @@ effects_pid=''
 imu_tf_pid=''
 localization_pid=''
 fusion_pid=''
+capture_pid=''
 localization_crop_pid=''
 evaluation_pid=''
+performance_pid=''
+display_pid=''
 
 stop_process() {
   local process_id="$1"
@@ -146,18 +165,30 @@ stop_process() {
     wait "${process_id}" >/dev/null 2>&1 || true
     return 0
   fi
-  kill -INT "${process_id}" >/dev/null 2>&1 || true
-  for _ in $(seq 1 20); do
-    kill -0 "${process_id}" >/dev/null 2>&1 || break
-    sleep 0.1
-  done
-  if kill -0 "${process_id}" >/dev/null 2>&1; then
-    kill -KILL "${process_id}" >/dev/null 2>&1 || true
-  fi
+  python3 "${project_root}/tools/ros/stop_process_tree.py" "${process_id}"
   wait "${process_id}" >/dev/null 2>&1 || true
 }
 
+prepare_shutdown() {
+  if [[ -n ${server_pid} ]] && kill -0 "${server_pid}" 2>/dev/null; then
+    timeout 3 ros2 service call /loader/prepare_shutdown std_srvs/srv/Trigger '{}' >/dev/null 2>&1 || true
+    sleep 0.1
+  fi
+}
+
+build_surround() {
+  python3 "${project_root}/tools/ros/build_bev.py" "${run_dir}/surround" &&
+  python3 "${project_root}/tools/ros/verify_surround.py" "${run_dir}/surround" \
+    --task-config "${LOADER_AB_CONFIG:-${project_root}/simulation/config/ab_task.yaml}" &&
+  python3 "${project_root}/tools/ros/export_bev_mcap.py" "${run_dir}/surround" &&
+  python3 "${project_root}/tools/ros/verify_fisheye_mcap.py" "${run_dir}/surround"
+}
+
 cleanup() {
+  stop_process "${display_pid}"
+  stop_process "${performance_pid}"
+  prepare_shutdown
+  stop_process "${capture_pid}"
   stop_process "${evaluation_pid}"
   stop_process "${fusion_pid}"
   stop_process "${localization_pid}"
@@ -171,11 +202,13 @@ cleanup() {
   stop_process "${rsp_pid}"
   stop_process "${gui_pid}"
   stop_process "${server_pid}"
+  [[ ! -f ${server_log} ]] || cp "${server_log}" "${run_dir}/gazebo.log"
 }
 trap cleanup EXIT INT TERM
 
 bridge_arguments=('/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock')
 if [[ ${LOADER_BEV_CAPTURE:-false} == true ]]; then
+  bridge_arguments+=('/world/loader_soil_slice/control@ros_gz_interfaces/srv/ControlWorld')
   for camera in front left rear right; do
     bridge_arguments+=("/loader/cameras/${camera}/raw/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo")
     for stream in raw/image raw/depth_image semantic/labels_map; do
@@ -205,6 +238,12 @@ ros2 run robot_state_publisher robot_state_publisher \
   --ros-args -p use_sim_time:=true -p robot_description:="$(<"${urdf_file}")" \
   >"${rsp_log}" 2>&1 &
 rsp_pid=$!
+if [[ ${scenario} == ab || ${scenario} == soil3d ]]; then
+  display_pose=ground_truth
+  [[ ${localization} == lio || ${localization} == lio_map ]] && display_pose=estimated
+  python3 "${project_root}/tools/ros/terrain_visualization.py" --pose-source "${display_pose}" >"${run_dir}/terrain_display.log" 2>&1 &
+  display_pid=$!
+fi
 
 if [[ ${mode} == perception ]]; then
   # Gazebo scopes sensor frame IDs below the sensor name, while the URDF TF tree
@@ -295,8 +334,10 @@ printf 'Import this layout once: %s\n' \
   "${project_root}/foxglove/loader_simulation_layout.json"
 
 printf '%s\n' 'Starting the Gazebo server...'
-gz sim -s -r "${world_file}" >"${server_log}" 2>&1 &
+gz sim -s -r --seed "${LOADER_RANDOM_SEED:-1001}" "${world_file}" >"${server_log}" 2>&1 &
 server_pid=$!
+python3 "${project_root}/tools/ros/record_performance.py" --pid "${server_pid}" --output "${run_dir}/performance.csv" >"${run_dir}/performance.log" 2>&1 &
+performance_pid=$!
 
 for _ in $(seq 1 60); do
   if gz service -l 2>/dev/null | grep -q '^/world/loader_soil_slice/create$'; then
@@ -390,7 +431,7 @@ if [[ ${scenario} == localization || ${localization} == lio || ${localization} =
   evaluation_frame=odom
   [[ ${localization} == lio || ${localization} == lio_map ]] && evaluation_frame=world
   python3 "${project_root}/tools/ros/evaluate_localization.py" \
-    --output "${run_dir}/localization" --duration 1800 --frame "${evaluation_frame}" \
+    --output "${run_dir}/localization" --duration "${LOADER_EVALUATION_DURATION:-1800}" --frame "${evaluation_frame}" --algorithm "${localization}" \
     --configuration "${project_root}/simulation/config/localization/kiss_icp.yaml" \
     --model-urdf "${urdf_file}" \
     >"${run_dir}/localization_evaluation.log" 2>&1 &
@@ -398,15 +439,25 @@ if [[ ${scenario} == localization || ${localization} == lio || ${localization} =
   sleep 3
 fi
 
+if [[ ${LOADER_BEV_CAPTURE:-false} == true && ${LOADER_CAPTURE_ONLY:-false} != true ]]; then
+  capture_pose=ground_truth
+  [[ ${localization} == lio_map || ${localization} == lio ]] && capture_pose=estimated
+  python3 "${project_root}/tools/ros/capture_surround.py" --output "${run_dir}/surround" \
+    --frames 0 --interval 2 --wall-timeout 3600 --world-pose-source "${capture_pose}" >"${run_dir}/capture.log" 2>&1 &
+  capture_pid=$!
+fi
+
 scenario_status=0
 if [[ ${control_mode} == auto ]]; then
   printf 'Loader is ready. Starting %s scenario.\n' "${scenario}"
   set +e
   if [[ ${LOADER_CAPTURE_ONLY:-false} == true ]]; then
-    python3 "${project_root}/tools/ros/capture_surround.py" --output "${run_dir}/surround" --frames 5
+    capture_arguments=(--frames 20 --interval 0.1 --world-pose-source ground_truth)
+    [[ ${LOADER_LOCKSTEP_CAPTURE:-false} == true ]] && capture_arguments+=(--lockstep)
+    python3 "${project_root}/tools/ros/capture_surround.py" --output "${run_dir}/surround" "${capture_arguments[@]}"
     capture_status=$?
     if [[ ${capture_status} -eq 0 ]]; then
-      python3 "${project_root}/tools/ros/build_bev.py" "${run_dir}/surround"
+      build_surround
     else
       exit "${capture_status}"
     fi
@@ -434,6 +485,21 @@ else
   printf '%s\n' 'Loader is ready for manual control from the Foxglove Teleop panels.'
   printf '%s\n' 'Raise and curl the bucket before driving so the cutting edge clears the ground.'
   printf '%s\n' 'The gateway brakes automatically when a Teleop button is released.'
+fi
+
+if [[ -n ${capture_pid} ]]; then
+  kill -INT "${capture_pid}" 2>/dev/null || true
+  set +e
+  wait "${capture_pid}"
+  capture_status=$?
+  set -e
+  capture_pid=''
+  cat "${run_dir}/capture.log"
+  if [[ ${capture_status} -eq 0 ]]; then
+    build_surround
+  else
+    scenario_status=${capture_status}
+  fi
 fi
 
 if [[ -n ${evaluation_pid} ]]; then
@@ -466,6 +532,7 @@ gui_status=$?
 set -e
 gui_pid=''
 
+prepare_shutdown
 stop_process "${server_pid}"
 server_pid=''
 

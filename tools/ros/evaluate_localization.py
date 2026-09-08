@@ -16,6 +16,8 @@ import numpy as np
 import rclpy
 import yaml
 from nav_msgs.msg import Odometry
+from std_msgs.msg import String
+from loader_sim_msgs.msg import VehicleState
 from rclpy.node import Node
 from rclpy.parameter import Parameter
 from rclpy.qos import qos_profile_sensor_data
@@ -66,6 +68,10 @@ class Recorder(Node):
         super().__init__("loader_localization_evaluator", parameter_overrides=[Parameter("use_sim_time", value=True)])
         self.frame=frame
         self.odometry, self.truth = [], []
+        self.health_events=[];self.last_health=None;self.vehicle_speed=0.
+        self.odometry_count=0;self.first_odometry_stamp=None;self.last_odometry_stamp=None
+        self.create_subscription(String,'/loader/localization/health',self.on_health,10)
+        self.create_subscription(VehicleState,'/loader/state',lambda m:setattr(self,'vehicle_speed',m.longitudinal_speed_mps),1)
         self.create_subscription(Odometry, "/loader/localization/odometry", self.on_odometry, qos_profile_sensor_data)
         self.create_subscription(Odometry, "/loader/ground_truth/odometry", self.on_truth, qos_profile_sensor_data)
 
@@ -73,14 +79,27 @@ class Recorder(Node):
         if message.header.frame_id != self.frame or message.child_frame_id != "base_link":
             raise RuntimeError("unexpected estimator frame contract")
         stamp = seconds(message.header.stamp)
+        self.odometry_count+=1
+        if self.first_odometry_stamp is None:self.first_odometry_stamp=stamp
+        self.last_odometry_stamp=stamp
+        if self.odometry and stamp-self.odometry[-1][0]<.04-1e-6:return
         latency = self.get_clock().now().nanoseconds/1e9-stamp
         self.odometry.append((stamp, pose_matrix(message.pose.pose.position, message.pose.pose.orientation), latency))
 
     def on_truth(self, message):
         if message.header.frame_id != "world" or message.child_frame_id != "base_link":
             raise RuntimeError("unexpected ground-truth frame contract")
-        self.truth.append((seconds(message.header.stamp),
+        stamp=seconds(message.header.stamp)
+        if self.truth and stamp-self.truth[-1][0]<.04-1e-6:return
+        self.truth.append((stamp,
                            pose_matrix(message.pose.pose.position, message.pose.pose.orientation)))
+
+    def on_health(self,message):
+        health=json.loads(message.data);status=health.get('status')
+        if status!=self.last_health or status!='tracking':
+            self.health_events.append(health|{'vehicle_speed_mps':self.vehicle_speed,
+              'truth_position':self.truth[-1][1][:3,3].tolist() if self.truth else None})
+        self.last_health=status
 
 
 def main():
@@ -89,12 +108,15 @@ def main():
     parser.add_argument("--duration", type=float, default=120.)
     parser.add_argument("--configuration", required=True)
     parser.add_argument("--model-urdf", required=True)
+    parser.add_argument("--algorithm",choices=["kiss_icp","lio","lio_map"],default="kiss_icp")
     parser.add_argument("--frame", choices=["odom","world"],default="odom")
     args = parser.parse_args()
     output = Path(args.output)
     output.mkdir(parents=True, exist_ok=True)
     configuration = yaml.safe_load(Path(args.configuration).read_text())
     preprocessing = configuration['loader_localization_crop']['ros__parameters']
+    if args.algorithm in ('lio','lio_map'):
+        preprocessing.update(synthetic_deskew=True,ground_constraint=args.algorithm=='lio',ground_samples=6000 if args.algorithm=='lio_map' else 0)
     # A failed/interrupted new run must not leave a previous passing report.
     archive = output / 'previous' / str(time.time_ns())
     for name in ('metrics.json', 'trajectory.csv', 'poses.json'):
@@ -121,6 +143,7 @@ def main():
     raw = {"odometry": [[t, p.tolist(), lag] for t, p, lag in node.odometry],
            "ground_truth": [[t, p.tolist()] for t, p in node.truth]}
     (output/"poses.json").write_text(json.dumps(raw))
+    (output/'health_events.json').write_text(json.dumps(node.health_events,indent=2))
     def fail(message):
         (output/'status.json').write_text(json.dumps({'status': 'failed', 'reason': message}))
         raise RuntimeError(message)
@@ -135,7 +158,7 @@ def main():
     if travel < 0.5:
         fail(f"stationary test cannot validate odometry: {travel:.3f} m")
     metrics = {
-        "algorithm": "KISS-ICP + 15-state LiDAR/IMU fusion" if args.frame=="world" else "KISS-ICP 1ffa7d7512f10bfc8b1185095011fa31184019e3",
+        "algorithm": {"kiss_icp":"KISS-ICP 1ffa7d7512f10bfc8b1185095011fa31184019e3", "lio":"KISS-ICP + 15-state LiDAR/IMU fusion", "lio_map":"static map point-to-plane ICP + 15-state LiDAR/IMU fusion"}[args.algorithm],
         "input": "/loader/localization/points",
         "sensor_source": "/loader/sensors/lidar/scan/points_effect",
         "preprocessing": preprocessing,
@@ -149,7 +172,8 @@ def main():
         "rotation_rmse_deg": float(np.sqrt(np.mean(rows[:, 8]**2))),
         "rotation_max_deg": float(rows[:, 8].max()),
         "sim_latency_p95_s": float(np.percentile(rows[:, 9], 95)),
-        "odometry_sim_hz": float((len(rows)-1)/(rows[-1, 0]-rows[0, 0])),
+        "odometry_sim_hz": float((node.odometry_count-1)/(node.last_odometry_stamp-node.first_odometry_stamp)),
+        "evaluation_sampling_max_hz":25,
     }
     metrics["nominal_accuracy_pass"] = metrics["translation_rmse_m"] <= 0.15
     with (output/"trajectory.csv").open("w", newline="") as f:

@@ -10,7 +10,12 @@ param(
     [string]$Localization = 'none',
 
     [ValidateSet('soil', 'soil3d', 'ab', 'localization')]
-    [string]$Scenario = 'ab'
+    [string]$Scenario = 'ab',
+    [switch]$SurroundCapture,
+    [switch]$CaptureOnly,
+    [switch]$Headless,
+    [ValidateRange(1, 1000)][int]$ContinuousCycles = 1,
+    [ValidateRange(0, 2147483647)][int]$RandomSeed = 1001
 )
 
 $ErrorActionPreference = 'Stop'
@@ -22,7 +27,7 @@ if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($wslProjectRoot)) {
 }
 
 $westonLog = '\\wsl.localhost\Ubuntu-24.04\mnt\wslg\weston.log'
-if (Test-Path -LiteralPath $westonLog) {
+if (-not $Headless -and (Test-Path -LiteralPath $westonLog)) {
     $gfxMode = Get-Content -LiteralPath $westonLog -ErrorAction SilentlyContinue |
         Select-String -Pattern 'use_gfxredir\s*=\s*[01]' |
         Select-Object -Last 1
@@ -38,7 +43,7 @@ if (Test-Path -LiteralPath $westonLog) {
         }
         Write-Warning 'WSLg is in COPY MODE; repairing it before Gazebo starts.'
         Write-Warning 'The repair restarts WSL and stops other processes currently running in WSL.'
-        & (Join-Path $PSScriptRoot 'repair_wslg_gui.ps1') -Mode $Mode -ControlMode $ControlMode -Localization $Localization -Scenario $Scenario
+        & (Join-Path $PSScriptRoot 'repair_wslg_gui.ps1') -Mode $Mode -ControlMode $ControlMode -Localization $Localization -Scenario $Scenario -SurroundCapture:$SurroundCapture -CaptureOnly:$CaptureOnly -ContinuousCycles $ContinuousCycles -RandomSeed $RandomSeed
         return
     }
 }
@@ -47,7 +52,13 @@ $launcher = "$wslProjectRoot/scripts/wsl/run_loader_soil_demo.sh"
 Write-Host "Starting loader simulation demo in $Mode / $ControlMode mode..."
 Write-Host 'Close the Gazebo window or press Ctrl+C to stop.'
 
-& wsl -d Ubuntu-24.04 -- bash $launcher $Mode $ControlMode $Localization $Scenario
+$demoEnvironment = @(
+    "LOADER_BEV_CAPTURE=$(($SurroundCapture.IsPresent -or $CaptureOnly.IsPresent).ToString().ToLower())",
+    "LOADER_CAPTURE_ONLY=$($CaptureOnly.IsPresent.ToString().ToLower())",
+    "LOADER_HEADLESS=$(if ($Headless) { '1' } else { '0' })",
+    "LOADER_CONTINUOUS_CYCLES=$ContinuousCycles", "LOADER_RANDOM_SEED=$RandomSeed"
+)
+& wsl -d Ubuntu-24.04 -- env @demoEnvironment bash $launcher $Mode $ControlMode $Localization $Scenario
 $launcherStatus = $LASTEXITCODE
 
 if ($launcherStatus -ne 0) {

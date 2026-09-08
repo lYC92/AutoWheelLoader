@@ -1,0 +1,42 @@
+{
+  "frames": [
+    {
+      "frame": "frame_0000",
+      "observed_cells": 50268,
+      "drivable_cells": 47837,
+      "blocked_cells": 2431
+    },
+    {
+      "frame": "frame_0001",
+      "observed_cells": 50296,
+      "drivable_cells": 47836,
+      "blocked_cells": 2460
+    },
+    {
+      "frame": "frame_0002",
+      "observed_cells": 50319,
+      "drivable_cells": 47836,
+      "blocked_cells": 2483
+    },
+    {
+      "frame": "frame_0003",
+      "observed_cells": 50348,
+      "drivable_cells": 47837,
+      "blocked_cells": 2511
+    },
+    {
+      "frame": "frame_0004",
+      "observed_cells": 50349,
+      "drivable_cells": 47833,
+      "blocked_cells": 2516
+    }
+  ],
+  "seconds": 5.661917841000047,
+  "groups_per_second": 0.8830929978872433,
+  "depth": "radial range metres",
+  "ground_reference": "world z=0, pose roll/pitch removed when recorded; otherwise configured base height",
+  "resolution_m": 0.1,
+  "extent_m": 12,
+  "drivable_method": "observed ground labels AND ground height, non-ground occupancy overrides; unknown excluded",
+  "semantic_source": "Gazebo label ground truth; this validates projection, not a learned classifier"
+}

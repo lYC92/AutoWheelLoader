@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "stamp_ns": 21426000000,
+  "triangles": 2872,
+  "active_cells": 1436,
+  "surface": "two triangles per active terrain cell, world frame; exact ledger heights"
+}

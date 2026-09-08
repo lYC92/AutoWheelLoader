@@ -148,6 +148,8 @@ public:
       if (payload>=capacity-1e-14) return removed;
       if (fragments[i].empty()) {
         double x=x0+ix*resolution,y=y0+iy*resolution,r=resolution;
+        const double lowest=std::max(0.,std::min({target.At({x,y}),target.At({x+r,y}),target.At({x+r,y+r}),target.At({x,y+r})}));
+        if(heights[i]<=lowest) continue; // No surface intersection; keep untouched cells implicit.
         fragments[i].push_back({{{x,y},{x+r,y},{x+r,y+r},{x,y+r}},heights[i]});
       }
       std::vector<Fragment> updated;
@@ -243,18 +245,33 @@ public:
   double Deposit(double x,double y,double requested,double slope) {
     if (Cell(x,y)<0 || requested<=0) return 0; // Keep payload outside the domain.
     requested=std::min(requested,payload);
-    std::vector<double> radial(heights.size());
-    for(int i=0;i<nx*ny;++i) radial[i]=slope*std::hypot(X(i)-x,Y(i)-y);
+    if(!std::isfinite(slope) || slope<=0) throw std::invalid_argument("invalid deposition slope");
+    // Outside apex/slope the cone is below the nonnegative rigid ground;
+    // those cells cannot receive material. Rebuild this exact support only
+    // if the upper bracket grows, instead of visiting the whole yard 60 times.
+    std::vector<std::pair<int,double>> support;
+    auto bound=[&](double apex) {
+      support.clear();const double radius=apex/slope;
+      const int ix0=std::max(0,static_cast<int>(std::floor((x-radius-x0)/resolution)));
+      const int ix1=std::min(nx-1,static_cast<int>(std::floor((x+radius-x0)/resolution)));
+      const int iy0=std::max(0,static_cast<int>(std::floor((y-radius-y0)/resolution)));
+      const int iy1=std::min(ny-1,static_cast<int>(std::floor((y+radius-y0)/resolution)));
+      for(int iy=iy0;iy<=iy1;++iy) for(int ix=ix0;ix<=ix1;++ix) {
+        const int i=iy*nx+ix;const double radial=slope*std::hypot(X(i)-x,Y(i)-y);
+        if(radial<apex) support.emplace_back(i,radial);
+      }
+    };
     auto added=[&](double apex) {
       double sum=0;
-      for(int i=0;i<nx*ny;++i) sum+=std::max(0.0,apex-radial[i]-heights[i]);
+      for(const auto &[i,radial]:support) sum+=std::max(0.0,apex-radial-heights[i]);
       return sum*resolution*resolution;
     };
     double low=0,high=*std::max_element(heights.begin(),heights.end())+1;
-    while(added(high)<requested) high*=2;
+    bound(high);
+    while(added(high)<requested) {high*=2;bound(high);}
     for(int k=0;k<60;++k) { double mid=(low+high)/2; if(added(mid)<requested) low=mid; else high=mid; }
-    for(int i=0;i<nx*ny;++i) {
-      double next=std::max(heights[i],(low+high)/2-radial[i]);
+    for(const auto &[i,radial]:support) {
+      double next=std::max(heights[i],(low+high)/2-radial);
       if(next>heights[i]) { heights[i]=next; dirty[i]=true; fragments[i].clear(); }
     }
     payload-=requested; dumped+=requested;

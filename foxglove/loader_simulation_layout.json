@@ -33,6 +33,15 @@
           }
         },
         {
+          "title": "三维料场",
+          "layout": {
+            "direction": "row",
+            "first": "3D!yard",
+            "second": "RawMessages!task",
+            "splitPercentage": 82
+          }
+        },
+        {
           "title": "ROS 节点与消息",
           "layout": {
             "direction": "row",
@@ -791,6 +800,78 @@
     "RawMessages!localization": {
       "foxglovePanelTitle": "定位输出（非实车标定结果）",
       "topicPath": "/loader/localization/odometry",
+      "defaultExpanded": true
+    },
+    "3D!yard": {
+      "foxglovePanelTitle": "三维料场、实际地形与载荷重心",
+      "cameraState": {
+        "distance": 45,
+        "perspective": true,
+        "phi": 45,
+        "thetaOffset": 135,
+        "targetOffset": [
+          3,
+          8,
+          0
+        ],
+        "fovy": 45,
+        "near": 0.1,
+        "far": 500
+      },
+      "fixedFrame": "world",
+      "followMode": "follow-pose",
+      "followTf": "world",
+      "topics": {
+        "/loader/visualization/terrain": {
+          "visible": true
+        },
+        "/loader/planned_path": {
+          "visible": true
+        },
+        "/robot_description": {
+          "visible": true
+        }
+      },
+      "layers": {
+        "loader-grid": {
+          "visible": true,
+          "frameLocked": true,
+          "label": "Ground grid",
+          "instanceId": "loader-grid",
+          "layerId": "foxglove.Grid",
+          "size": 50,
+          "divisions": 50,
+          "lineWidth": 1,
+          "color": "#7b8794",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "order": 1,
+          "frameId": "world"
+        }
+      },
+      "publish": {
+        "type": "point",
+        "poseTopic": "/goal_pose",
+        "pointTopic": "/clicked_point",
+        "poseEstimateTopic": "/initialpose",
+        "poseEstimateXDeviation": 0.5,
+        "poseEstimateYDeviation": 0.5,
+        "poseEstimateThetaDeviation": 0.26179939
+      },
+      "imageMode": {},
+      "synchronize": false
+    },
+    "RawMessages!task": {
+      "foxglovePanelTitle": "当前作业步骤",
+      "topicPath": "/loader/task_state",
       "defaultExpanded": true
     }
   },

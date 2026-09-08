@@ -18,5 +18,9 @@ class NavigationTests(unittest.TestCase):
         # Every path rear reference must stay away from the actual obstacle;
         # articulated envelopes are checked during primitive integration.
         self.assertTrue(all(not(-1<=p.x<=1 and -1<=p.y<=1) for p in path))
+    def test_early_alignment_in_narrow_approach(self):
+        site=SafetyMap(bounds=(-18,19.7,-8,26.7),obstacles=[[(1.2,2),(2.4,2),(2.4,3.2),(1.2,3.2)]])
+        path=plan_route(Pose(-7.804,-.1002,-.0642),Pose(-1.55,0,0),1,site)
+        self.assertTrue(site.clear_path(path,1))
 
 if __name__=='__main__': unittest.main()

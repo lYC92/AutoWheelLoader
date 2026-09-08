@@ -10,7 +10,11 @@ param(
     [string]$Localization = 'none',
 
     [ValidateSet('soil', 'soil3d', 'ab', 'localization')]
-    [string]$Scenario = 'ab'
+    [string]$Scenario = 'ab',
+    [switch]$SurroundCapture,
+    [switch]$CaptureOnly,
+    [ValidateRange(1, 1000)][int]$ContinuousCycles = 1,
+    [ValidateRange(0, 2147483647)][int]$RandomSeed = 1001
 )
 
 $ErrorActionPreference = 'Stop'
@@ -41,7 +45,12 @@ Start-Sleep -Seconds 2
 
 Write-Host "Starting the loader demo immediately in $Mode / $ControlMode mode..."
 Write-Host 'Keep this PowerShell window open while Gazebo is running.'
-& wsl -d Ubuntu-24.04 -- bash $launcher $Mode $ControlMode $Localization $Scenario
+$demoEnvironment = @(
+    "LOADER_BEV_CAPTURE=$(($SurroundCapture.IsPresent -or $CaptureOnly.IsPresent).ToString().ToLower())",
+    "LOADER_CAPTURE_ONLY=$($CaptureOnly.IsPresent.ToString().ToLower())",
+    "LOADER_CONTINUOUS_CYCLES=$ContinuousCycles", "LOADER_RANDOM_SEED=$RandomSeed"
+)
+& wsl -d Ubuntu-24.04 -- env @demoEnvironment bash $launcher $Mode $ControlMode $Localization $Scenario
 $launcherStatus = $LASTEXITCODE
 
 if ($launcherStatus -ne 0) {

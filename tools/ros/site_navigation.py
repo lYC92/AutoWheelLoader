@@ -32,6 +32,8 @@ class SafetyMap:
     obstacles: list=field(default_factory=list)
     margin: float=0.35
     dynamic_obstacles: list=field(default_factory=list)
+    tracking_reserve: float=0.0
+    parking_endpoints: tuple=()
 
     def __post_init__(self):
         if len(self.bounds)!=4 or not all(math.isfinite(v) for v in (*self.bounds,self.margin)) or self.margin<0:
@@ -52,10 +54,15 @@ class SafetyMap:
 
     def clear(self,pose,articulation):
         if not all(math.isfinite(v) for v in (*vars(pose).values(),articulation)): return False
+        # Preserve the mandatory stop envelope everywhere. Extra front-swing
+        # allowance grows with steering and distance from parking endpoints;
+        # straight exits retain their measured body clearance.
+        scale=min([1.0]+[math.hypot(pose.x-p.x,pose.y-p.y)/3.0 for p in self.parking_endpoints])
+        margin=self.margin+self.tracking_reserve*scale*min(1.,abs(articulation)/.15)
         # Rear axle reference. Front envelope includes boom and bucket overhang.
         joint=(pose.x+1.55*math.cos(pose.yaw),pose.y+1.55*math.sin(pose.yaw))
-        bodies=[rectangle(pose.x,pose.y,pose.yaw,-2.0,1.55,1.55,self.margin),
-                rectangle(*joint,pose.yaw+articulation,-0.25,4.8,1.55,self.margin)]
+        bodies=[rectangle(pose.x,pose.y,pose.yaw,-2.0,1.55,1.55,margin),
+                rectangle(*joint,pose.yaw+articulation,-0.25,4.8,1.55,margin)]
         xmin,xmax,ymin,ymax=self.bounds
         return all(all(xmin<=x<=xmax and ymin<=y<=ymax for x,y in body)
                    and not any(intersects(body,o) for o in self.obstacles+self.dynamic_obstacles) for body in bodies)
@@ -85,36 +92,61 @@ class SafetyMap:
         return True
 
 
-def plan_route(start,goal,gear,site,max_expansions=12000):
+def plan_route(start,goal,gear,site,max_expansions=12000,initial_articulation=0.):
     """Try the short analytic connector, then a one-gear Hybrid A* search.
 
     Search returns a sampled feasible route or fails explicitly. It never
     returns the unsafe direct connector when its planning budget is exhausted.
     """
-    def connector(p):
-        try: path=transfer_path(p,goal,gear)
-        except ValueError: return None
-        return path if site.clear_path(path,gear) else None
-    direct=connector(start)
+    limits=Limits(articulation=.5)  # Reserve steering authority for tracking corrections.
+    def connector(p,steering=0.):
+        def compatible(path):
+            a,b=path[:2];length=math.hypot(b.x-a.x,b.y-a.y)
+            first_angle=limits.steering(wrap(b.yaw-a.yaw)/(gear*max(length,1e-9)))
+            return (abs(steering)<.04 or abs(first_angle-steering)<.08) and site.clear_path(path,gear)
+        try:
+            path=transfer_path(p,goal,gear,limits)
+            if compatible(path):return path
+        except ValueError:pass
+        for straight,radius in ((3.,10.),(2.,12.)):
+            try:
+                path=transfer_path(p,goal,gear,limits,terminal_straight=straight,preferred_radius=radius)
+                if compatible(path):return path
+            except ValueError:pass
+        # In a narrow parking approach, remove residual heading before the
+        # front overhang enters the corridor. A full-length cubic may swing
+        # the bucket into an obstacle even though both endpoints are clear.
+        if abs(wrap(p.yaw-goal.yaw))<math.radians(15):
+            for straight in (6.,5.,4.,3.5,3.):
+                entry=Pose(goal.x-gear*straight*math.cos(goal.yaw),goal.y-gear*straight*math.sin(goal.yaw),goal.yaw)
+                try:
+                    path=transfer_path(p,entry,gear,limits)+transfer_path(entry,goal,gear,limits)[1:]
+                    if compatible(path):return path
+                except ValueError:pass
+        return None
+    direct=connector(start,initial_articulation)
     if direct is not None: return direct
-    if not site.clear(start,0) or not site.clear(goal,0):
+    if not site.clear(start,initial_articulation) or not site.clear(goal,0):
         raise RuntimeError("start or parking body envelope is obstructed")
-    limits=Limits(); serial=itertools.count()
+    serial=itertools.count()
     def key(p,angle): return (round(p.x/0.5),round(p.y/0.5),round(wrap(p.yaw)/math.radians(10)),round(angle/0.15))
     def heuristic(p): return math.hypot(p.x-goal.x,p.y-goal.y)+2*abs(wrap(p.yaw-goal.yaw))
-    queue=[(heuristic(start),next(serial),0,start,0,[start])]; costs={key(start,0):0}
+    queue=[(heuristic(start),next(serial),0,start,initial_articulation,[start])]; costs={key(start,initial_articulation):0}
     for _ in range(max_expansions):
         if not queue: break
         _,_,cost,p,steering,path=heapq.heappop(queue)
         if cost>costs.get(key(p,steering),math.inf)+1e-9: continue
-        shot=connector(p)
+        shot=connector(p,steering)
         if shot is not None: return path+shot[1:]
-        for target in (-0.6,-0.3,0,0.3,0.6):
+        for target in (-0.5,-0.25,0,0.25,0.5):
             q=p; angle=steering; segment=[]
             for step in range(20):
                 dt=0.1; speed=gear*0.6
                 rate=max(-limits.articulation_rate,min(limits.articulation_rate,(target-angle)/dt))
                 angle+=rate*dt
+                # Integrate the articulated primitive, including rear-frame
+                # counter-yaw while the steering joint moves. Its envelope
+                # is checked with the actual primitive articulation below.
                 yaw_rate=(speed*math.sin(angle)-limits.front_axle_to_joint*rate)/(limits.front_axle_to_joint+limits.rear_axle_to_joint*math.cos(angle))
                 q=Pose(q.x+speed*math.cos(q.yaw)*dt,q.y+speed*math.sin(q.yaw)*dt,wrap(q.yaw+yaw_rate*dt))
                 if not site.clear(q,angle): break

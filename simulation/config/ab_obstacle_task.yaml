@@ -1,5 +1,7 @@
 # Rear axle poses, world XY (metres), rear-frame yaw (radians).
-# Nominal open-ground development route. Ground truth must be selected explicitly.
+# Detour fixture: the inner obstacle blocks the nominal A/B turn while leaving
+# room for parking corrections. ab_tight_obstacle_task.yaml retains the narrow
+# approach stress case, which has not passed the complete vehicle cycle.
 source_center: [7.0, 0.0]
 staging_pose: [-8.0, 0.0, 0.0]
 unload_pose: [4.0, 12.0, 1.5707963267948966]
@@ -14,7 +16,7 @@ navigation:
   bounds: [-18.0, 19.7, -8.0, 26.7]
   margin: 0.35
   obstacles:
-    - [[1.2, 2.0], [2.4, 2.0], [2.4, 3.2], [1.2, 3.2]]
+    - [[0.2, 3.5], [1.4, 3.5], [1.4, 4.7], [0.2, 4.7]]
 
     - [[-15.4, -4.4], [-14.6, -4.4], [-14.6, -3.6], [-15.4, -3.6]]
     - [[-15.4, 7.6], [-14.6, 7.6], [-14.6, 8.4], [-15.4, 8.4]]

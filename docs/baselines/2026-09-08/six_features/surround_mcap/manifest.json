@@ -1,0 +1,221 @@
+{
+  "schema_version": 1,
+  "status": "complete",
+  "recording": "MCAP CDR plus NPZ convenience arrays",
+  "label_encoding": "Gazebo panoptic: byte 2 class, bytes 1:0 instance (frame-local)",
+  "projection": "perspective input; unified equidistant offline",
+  "input_size": [
+    640,
+    640
+  ],
+  "fish_size": [
+    640,
+    480
+  ],
+  "horizontal_fov_deg": 160,
+  "nominal_hz": 10,
+  "sample_interval_s": 1.0,
+  "depth_convention": "optical Z metres",
+  "optical_axes": "+X right, +Y down, +Z forward",
+  "transform": "T_base_link_camera_optical at image timestamp",
+  "calibration": {
+    "front": {
+      "width": 640,
+      "height": 640,
+      "K": [
+        56.42463382670882,
+        0.0,
+        320.0,
+        0.0,
+        56.42463382670882,
+        320.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "D": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "P": [
+        56.42463382670882,
+        0.0,
+        320.0,
+        0.0,
+        0.0,
+        56.42463382670882,
+        320.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "distortion_model": "plumb_bob",
+      "frame_id": "soil_loader/camera_front_link/front_rgbd"
+    },
+    "left": {
+      "width": 640,
+      "height": 640,
+      "K": [
+        56.42463382670882,
+        0.0,
+        320.0,
+        0.0,
+        56.42463382670882,
+        320.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "D": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "P": [
+        56.42463382670882,
+        0.0,
+        320.0,
+        0.0,
+        0.0,
+        56.42463382670882,
+        320.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "distortion_model": "plumb_bob",
+      "frame_id": "soil_loader/camera_left_link/left_rgbd"
+    },
+    "rear": {
+      "width": 640,
+      "height": 640,
+      "K": [
+        56.42463382670882,
+        0.0,
+        320.0,
+        0.0,
+        56.42463382670882,
+        320.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "D": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "P": [
+        56.42463382670882,
+        0.0,
+        320.0,
+        0.0,
+        0.0,
+        56.42463382670882,
+        320.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "distortion_model": "plumb_bob",
+      "frame_id": "soil_loader/camera_rear_link/rear_rgbd"
+    },
+    "right": {
+      "width": 640,
+      "height": 640,
+      "K": [
+        56.42463382670882,
+        0.0,
+        320.0,
+        0.0,
+        56.42463382670882,
+        320.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "D": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "P": [
+        56.42463382670882,
+        0.0,
+        320.0,
+        0.0,
+        0.0,
+        56.42463382670882,
+        320.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "distortion_model": "plumb_bob",
+      "frame_id": "soil_loader/camera_right_link/right_rgbd"
+    }
+  },
+  "world_pose_source": "ground_truth",
+  "labels": {
+    "0": "unknown",
+    "1": "rigid_ground",
+    "2": "soil",
+    "3": "obstacle",
+    "4": "vehicle"
+  },
+  "dropped_incomplete_groups": 0,
+  "frames": [
+    {
+      "file": "frame_0000.npz",
+      "stamp_ns": 4900000000,
+      "phase": "initial",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0001.npz",
+      "stamp_ns": 5900000000,
+      "phase": "initial",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0002.npz",
+      "stamp_ns": 7100000000,
+      "phase": "initial",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0003.npz",
+      "stamp_ns": 8100000000,
+      "phase": "initial",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0004.npz",
+      "stamp_ns": 9200000000,
+      "phase": "initial",
+      "streams": 12,
+      "max_skew_ns": 0
+    }
+  ]
+}

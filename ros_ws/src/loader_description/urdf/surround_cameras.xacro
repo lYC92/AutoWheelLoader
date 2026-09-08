@@ -13,7 +13,7 @@
       </sensor>
       <sensor name="${name}_semantic" type="segmentation_camera">
         <always_on>true</always_on><update_rate>10</update_rate><topic>/loader/cameras/${name}/semantic</topic>
-        <camera><segmentation_type>semantic</segmentation_type><horizontal_fov>2.792526803190927</horizontal_fov><image><width>640</width><height>640</height><format>R8G8B8</format></image><clip><near>0.1</near><far>40</far></clip></camera>
+        <camera><segmentation_type>panoptic</segmentation_type><horizontal_fov>2.792526803190927</horizontal_fov><image><width>640</width><height>640</height><format>R8G8B8</format></image><clip><near>0.1</near><far>40</far></clip></camera>
       </sensor>
     </gazebo>
   </xacro:macro>

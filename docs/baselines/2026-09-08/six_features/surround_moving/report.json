@@ -1,0 +1,702 @@
+{
+  "frames": [
+    {
+      "frame": "frame_0000",
+      "observed_cells": 50025,
+      "drivable_cells": 47886,
+      "blocked_cells": 2139
+    },
+    {
+      "frame": "frame_0001",
+      "observed_cells": 49889,
+      "drivable_cells": 47802,
+      "blocked_cells": 2087
+    },
+    {
+      "frame": "frame_0002",
+      "observed_cells": 49767,
+      "drivable_cells": 47655,
+      "blocked_cells": 2112
+    },
+    {
+      "frame": "frame_0003",
+      "observed_cells": 49769,
+      "drivable_cells": 47439,
+      "blocked_cells": 2330
+    },
+    {
+      "frame": "frame_0004",
+      "observed_cells": 50048,
+      "drivable_cells": 47603,
+      "blocked_cells": 2445
+    },
+    {
+      "frame": "frame_0005",
+      "observed_cells": 50087,
+      "drivable_cells": 47756,
+      "blocked_cells": 2331
+    },
+    {
+      "frame": "frame_0006",
+      "observed_cells": 50141,
+      "drivable_cells": 48064,
+      "blocked_cells": 2077
+    },
+    {
+      "frame": "frame_0007",
+      "observed_cells": 50370,
+      "drivable_cells": 48584,
+      "blocked_cells": 1786
+    },
+    {
+      "frame": "frame_0008",
+      "observed_cells": 50537,
+      "drivable_cells": 49003,
+      "blocked_cells": 1534
+    },
+    {
+      "frame": "frame_0009",
+      "observed_cells": 50213,
+      "drivable_cells": 48789,
+      "blocked_cells": 1424
+    },
+    {
+      "frame": "frame_0010",
+      "observed_cells": 49917,
+      "drivable_cells": 48524,
+      "blocked_cells": 1393
+    },
+    {
+      "frame": "frame_0011",
+      "observed_cells": 49885,
+      "drivable_cells": 48461,
+      "blocked_cells": 1424
+    },
+    {
+      "frame": "frame_0012",
+      "observed_cells": 50374,
+      "drivable_cells": 48852,
+      "blocked_cells": 1522
+    },
+    {
+      "frame": "frame_0013",
+      "observed_cells": 50475,
+      "drivable_cells": 48635,
+      "blocked_cells": 1840
+    },
+    {
+      "frame": "frame_0014",
+      "observed_cells": 49960,
+      "drivable_cells": 47767,
+      "blocked_cells": 2193
+    },
+    {
+      "frame": "frame_0015",
+      "observed_cells": 49369,
+      "drivable_cells": 46836,
+      "blocked_cells": 2533
+    },
+    {
+      "frame": "frame_0016",
+      "observed_cells": 48944,
+      "drivable_cells": 46245,
+      "blocked_cells": 2699
+    },
+    {
+      "frame": "frame_0017",
+      "observed_cells": 49153,
+      "drivable_cells": 46349,
+      "blocked_cells": 2804
+    },
+    {
+      "frame": "frame_0018",
+      "observed_cells": 49570,
+      "drivable_cells": 46680,
+      "blocked_cells": 2890
+    },
+    {
+      "frame": "frame_0019",
+      "observed_cells": 49659,
+      "drivable_cells": 46734,
+      "blocked_cells": 2925
+    },
+    {
+      "frame": "frame_0020",
+      "observed_cells": 49327,
+      "drivable_cells": 46398,
+      "blocked_cells": 2929
+    },
+    {
+      "frame": "frame_0021",
+      "observed_cells": 49500,
+      "drivable_cells": 46520,
+      "blocked_cells": 2980
+    },
+    {
+      "frame": "frame_0022",
+      "observed_cells": 49603,
+      "drivable_cells": 46726,
+      "blocked_cells": 2877
+    },
+    {
+      "frame": "frame_0023",
+      "observed_cells": 49169,
+      "drivable_cells": 46350,
+      "blocked_cells": 2819
+    },
+    {
+      "frame": "frame_0024",
+      "observed_cells": 49259,
+      "drivable_cells": 46535,
+      "blocked_cells": 2724
+    },
+    {
+      "frame": "frame_0025",
+      "observed_cells": 49986,
+      "drivable_cells": 47421,
+      "blocked_cells": 2565
+    },
+    {
+      "frame": "frame_0026",
+      "observed_cells": 50457,
+      "drivable_cells": 48170,
+      "blocked_cells": 2287
+    },
+    {
+      "frame": "frame_0027",
+      "observed_cells": 50338,
+      "drivable_cells": 48452,
+      "blocked_cells": 1886
+    },
+    {
+      "frame": "frame_0028",
+      "observed_cells": 51376,
+      "drivable_cells": 49377,
+      "blocked_cells": 1999
+    },
+    {
+      "frame": "frame_0029",
+      "observed_cells": 51378,
+      "drivable_cells": 49165,
+      "blocked_cells": 2213
+    },
+    {
+      "frame": "frame_0030",
+      "observed_cells": 51102,
+      "drivable_cells": 48405,
+      "blocked_cells": 2697
+    },
+    {
+      "frame": "frame_0031",
+      "observed_cells": 50434,
+      "drivable_cells": 47584,
+      "blocked_cells": 2850
+    },
+    {
+      "frame": "frame_0032",
+      "observed_cells": 49691,
+      "drivable_cells": 46698,
+      "blocked_cells": 2993
+    },
+    {
+      "frame": "frame_0033",
+      "observed_cells": 49823,
+      "drivable_cells": 46743,
+      "blocked_cells": 3080
+    },
+    {
+      "frame": "frame_0034",
+      "observed_cells": 49931,
+      "drivable_cells": 46772,
+      "blocked_cells": 3159
+    },
+    {
+      "frame": "frame_0035",
+      "observed_cells": 49873,
+      "drivable_cells": 46709,
+      "blocked_cells": 3164
+    },
+    {
+      "frame": "frame_0036",
+      "observed_cells": 49626,
+      "drivable_cells": 46634,
+      "blocked_cells": 2992
+    },
+    {
+      "frame": "frame_0037",
+      "observed_cells": 50197,
+      "drivable_cells": 47080,
+      "blocked_cells": 3117
+    },
+    {
+      "frame": "frame_0038",
+      "observed_cells": 50393,
+      "drivable_cells": 47371,
+      "blocked_cells": 3022
+    },
+    {
+      "frame": "frame_0039",
+      "observed_cells": 50064,
+      "drivable_cells": 47191,
+      "blocked_cells": 2873
+    },
+    {
+      "frame": "frame_0040",
+      "observed_cells": 49632,
+      "drivable_cells": 46885,
+      "blocked_cells": 2747
+    },
+    {
+      "frame": "frame_0041",
+      "observed_cells": 50186,
+      "drivable_cells": 47733,
+      "blocked_cells": 2453
+    },
+    {
+      "frame": "frame_0042",
+      "observed_cells": 50717,
+      "drivable_cells": 48653,
+      "blocked_cells": 2064
+    },
+    {
+      "frame": "frame_0043",
+      "observed_cells": 50768,
+      "drivable_cells": 49018,
+      "blocked_cells": 1750
+    },
+    {
+      "frame": "frame_0044",
+      "observed_cells": 50594,
+      "drivable_cells": 49166,
+      "blocked_cells": 1428
+    },
+    {
+      "frame": "frame_0045",
+      "observed_cells": 50741,
+      "drivable_cells": 49197,
+      "blocked_cells": 1544
+    },
+    {
+      "frame": "frame_0046",
+      "observed_cells": 50781,
+      "drivable_cells": 48977,
+      "blocked_cells": 1804
+    },
+    {
+      "frame": "frame_0047",
+      "observed_cells": 50619,
+      "drivable_cells": 48626,
+      "blocked_cells": 1993
+    },
+    {
+      "frame": "frame_0048",
+      "observed_cells": 50113,
+      "drivable_cells": 47956,
+      "blocked_cells": 2157
+    },
+    {
+      "frame": "frame_0049",
+      "observed_cells": 49872,
+      "drivable_cells": 47768,
+      "blocked_cells": 2104
+    },
+    {
+      "frame": "frame_0050",
+      "observed_cells": 49767,
+      "drivable_cells": 47608,
+      "blocked_cells": 2159
+    },
+    {
+      "frame": "frame_0051",
+      "observed_cells": 49816,
+      "drivable_cells": 47394,
+      "blocked_cells": 2422
+    },
+    {
+      "frame": "frame_0052",
+      "observed_cells": 50456,
+      "drivable_cells": 48057,
+      "blocked_cells": 2399
+    },
+    {
+      "frame": "frame_0053",
+      "observed_cells": 50197,
+      "drivable_cells": 47587,
+      "blocked_cells": 2610
+    },
+    {
+      "frame": "frame_0054",
+      "observed_cells": 50074,
+      "drivable_cells": 47773,
+      "blocked_cells": 2301
+    },
+    {
+      "frame": "frame_0055",
+      "observed_cells": 50207,
+      "drivable_cells": 48213,
+      "blocked_cells": 1994
+    },
+    {
+      "frame": "frame_0056",
+      "observed_cells": 50467,
+      "drivable_cells": 48804,
+      "blocked_cells": 1663
+    },
+    {
+      "frame": "frame_0057",
+      "observed_cells": 50333,
+      "drivable_cells": 48875,
+      "blocked_cells": 1458
+    },
+    {
+      "frame": "frame_0058",
+      "observed_cells": 49987,
+      "drivable_cells": 48570,
+      "blocked_cells": 1417
+    },
+    {
+      "frame": "frame_0059",
+      "observed_cells": 49908,
+      "drivable_cells": 48500,
+      "blocked_cells": 1408
+    },
+    {
+      "frame": "frame_0060",
+      "observed_cells": 50399,
+      "drivable_cells": 48845,
+      "blocked_cells": 1554
+    },
+    {
+      "frame": "frame_0061",
+      "observed_cells": 50468,
+      "drivable_cells": 48614,
+      "blocked_cells": 1854
+    },
+    {
+      "frame": "frame_0062",
+      "observed_cells": 49934,
+      "drivable_cells": 47643,
+      "blocked_cells": 2291
+    },
+    {
+      "frame": "frame_0063",
+      "observed_cells": 49416,
+      "drivable_cells": 46717,
+      "blocked_cells": 2699
+    },
+    {
+      "frame": "frame_0064",
+      "observed_cells": 49198,
+      "drivable_cells": 46281,
+      "blocked_cells": 2917
+    },
+    {
+      "frame": "frame_0065",
+      "observed_cells": 49529,
+      "drivable_cells": 46581,
+      "blocked_cells": 2948
+    },
+    {
+      "frame": "frame_0066",
+      "observed_cells": 49788,
+      "drivable_cells": 46697,
+      "blocked_cells": 3091
+    },
+    {
+      "frame": "frame_0067",
+      "observed_cells": 49684,
+      "drivable_cells": 46451,
+      "blocked_cells": 3233
+    },
+    {
+      "frame": "frame_0068",
+      "observed_cells": 49308,
+      "drivable_cells": 46042,
+      "blocked_cells": 3266
+    },
+    {
+      "frame": "frame_0069",
+      "observed_cells": 49690,
+      "drivable_cells": 46474,
+      "blocked_cells": 3216
+    },
+    {
+      "frame": "frame_0070",
+      "observed_cells": 49157,
+      "drivable_cells": 46256,
+      "blocked_cells": 2901
+    },
+    {
+      "frame": "frame_0071",
+      "observed_cells": 49529,
+      "drivable_cells": 46666,
+      "blocked_cells": 2863
+    },
+    {
+      "frame": "frame_0072",
+      "observed_cells": 50165,
+      "drivable_cells": 47472,
+      "blocked_cells": 2693
+    },
+    {
+      "frame": "frame_0073",
+      "observed_cells": 50482,
+      "drivable_cells": 48410,
+      "blocked_cells": 2072
+    },
+    {
+      "frame": "frame_0074",
+      "observed_cells": 51139,
+      "drivable_cells": 49102,
+      "blocked_cells": 2037
+    },
+    {
+      "frame": "frame_0075",
+      "observed_cells": 51345,
+      "drivable_cells": 49157,
+      "blocked_cells": 2188
+    },
+    {
+      "frame": "frame_0076",
+      "observed_cells": 51089,
+      "drivable_cells": 48333,
+      "blocked_cells": 2756
+    },
+    {
+      "frame": "frame_0077",
+      "observed_cells": 50239,
+      "drivable_cells": 47192,
+      "blocked_cells": 3047
+    },
+    {
+      "frame": "frame_0078",
+      "observed_cells": 49698,
+      "drivable_cells": 46565,
+      "blocked_cells": 3133
+    },
+    {
+      "frame": "frame_0079",
+      "observed_cells": 49929,
+      "drivable_cells": 46690,
+      "blocked_cells": 3239
+    },
+    {
+      "frame": "frame_0080",
+      "observed_cells": 50075,
+      "drivable_cells": 46720,
+      "blocked_cells": 3355
+    },
+    {
+      "frame": "frame_0081",
+      "observed_cells": 50069,
+      "drivable_cells": 46720,
+      "blocked_cells": 3349
+    },
+    {
+      "frame": "frame_0082",
+      "observed_cells": 49857,
+      "drivable_cells": 46642,
+      "blocked_cells": 3215
+    },
+    {
+      "frame": "frame_0083",
+      "observed_cells": 50415,
+      "drivable_cells": 47175,
+      "blocked_cells": 3240
+    },
+    {
+      "frame": "frame_0084",
+      "observed_cells": 50511,
+      "drivable_cells": 47335,
+      "blocked_cells": 3176
+    },
+    {
+      "frame": "frame_0085",
+      "observed_cells": 50281,
+      "drivable_cells": 47299,
+      "blocked_cells": 2982
+    },
+    {
+      "frame": "frame_0086",
+      "observed_cells": 49902,
+      "drivable_cells": 47016,
+      "blocked_cells": 2886
+    },
+    {
+      "frame": "frame_0087",
+      "observed_cells": 50148,
+      "drivable_cells": 47597,
+      "blocked_cells": 2551
+    },
+    {
+      "frame": "frame_0088",
+      "observed_cells": 50766,
+      "drivable_cells": 48768,
+      "blocked_cells": 1998
+    },
+    {
+      "frame": "frame_0089",
+      "observed_cells": 50715,
+      "drivable_cells": 49130,
+      "blocked_cells": 1585
+    },
+    {
+      "frame": "frame_0090",
+      "observed_cells": 50740,
+      "drivable_cells": 49211,
+      "blocked_cells": 1529
+    },
+    {
+      "frame": "frame_0091",
+      "observed_cells": 50733,
+      "drivable_cells": 48878,
+      "blocked_cells": 1855
+    },
+    {
+      "frame": "frame_0092",
+      "observed_cells": 50548,
+      "drivable_cells": 48402,
+      "blocked_cells": 2146
+    },
+    {
+      "frame": "frame_0093",
+      "observed_cells": 50390,
+      "drivable_cells": 47883,
+      "blocked_cells": 2507
+    },
+    {
+      "frame": "frame_0094",
+      "observed_cells": 50486,
+      "drivable_cells": 48000,
+      "blocked_cells": 2486
+    },
+    {
+      "frame": "frame_0095",
+      "observed_cells": 50675,
+      "drivable_cells": 48475,
+      "blocked_cells": 2200
+    },
+    {
+      "frame": "frame_0096",
+      "observed_cells": 50655,
+      "drivable_cells": 48897,
+      "blocked_cells": 1758
+    },
+    {
+      "frame": "frame_0097",
+      "observed_cells": 50727,
+      "drivable_cells": 49234,
+      "blocked_cells": 1493
+    },
+    {
+      "frame": "frame_0098",
+      "observed_cells": 50691,
+      "drivable_cells": 49207,
+      "blocked_cells": 1484
+    },
+    {
+      "frame": "frame_0099",
+      "observed_cells": 50787,
+      "drivable_cells": 49083,
+      "blocked_cells": 1704
+    },
+    {
+      "frame": "frame_0100",
+      "observed_cells": 50771,
+      "drivable_cells": 48700,
+      "blocked_cells": 2071
+    },
+    {
+      "frame": "frame_0101",
+      "observed_cells": 50354,
+      "drivable_cells": 47986,
+      "blocked_cells": 2368
+    },
+    {
+      "frame": "frame_0102",
+      "observed_cells": 50032,
+      "drivable_cells": 47315,
+      "blocked_cells": 2717
+    },
+    {
+      "frame": "frame_0103",
+      "observed_cells": 50103,
+      "drivable_cells": 47153,
+      "blocked_cells": 2950
+    },
+    {
+      "frame": "frame_0104",
+      "observed_cells": 50400,
+      "drivable_cells": 47346,
+      "blocked_cells": 3054
+    },
+    {
+      "frame": "frame_0105",
+      "observed_cells": 50574,
+      "drivable_cells": 47388,
+      "blocked_cells": 3186
+    },
+    {
+      "frame": "frame_0106",
+      "observed_cells": 50301,
+      "drivable_cells": 46920,
+      "blocked_cells": 3381
+    },
+    {
+      "frame": "frame_0107",
+      "observed_cells": 50009,
+      "drivable_cells": 46648,
+      "blocked_cells": 3361
+    },
+    {
+      "frame": "frame_0108",
+      "observed_cells": 50285,
+      "drivable_cells": 46923,
+      "blocked_cells": 3362
+    },
+    {
+      "frame": "frame_0109",
+      "observed_cells": 49820,
+      "drivable_cells": 46696,
+      "blocked_cells": 3124
+    },
+    {
+      "frame": "frame_0110",
+      "observed_cells": 50625,
+      "drivable_cells": 47761,
+      "blocked_cells": 2864
+    },
+    {
+      "frame": "frame_0111",
+      "observed_cells": 51012,
+      "drivable_cells": 48502,
+      "blocked_cells": 2510
+    },
+    {
+      "frame": "frame_0112",
+      "observed_cells": 49905,
+      "drivable_cells": 47390,
+      "blocked_cells": 2515
+    },
+    {
+      "frame": "frame_0113",
+      "observed_cells": 49843,
+      "drivable_cells": 47975,
+      "blocked_cells": 1868
+    },
+    {
+      "frame": "frame_0114",
+      "observed_cells": 48354,
+      "drivable_cells": 46173,
+      "blocked_cells": 2181
+    }
+  ],
+  "seconds": 115.62748396999996,
+  "groups_per_second": 0.9945732281940619,
+  "depth": "radial range metres",
+  "ground_reference": "world z=0, pose roll/pitch removed when recorded; otherwise configured base height",
+  "resolution_m": 0.1,
+  "extent_m": 12,
+  "drivable_method": "observed ground labels AND ground height, non-ground occupancy overrides; unknown excluded",
+  "semantic_source": "Gazebo label ground truth; this validates projection, not a learned classifier"
+}

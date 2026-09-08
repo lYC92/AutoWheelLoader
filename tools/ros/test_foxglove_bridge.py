@@ -41,6 +41,7 @@ PERCEPTION_ONLY_TOPICS = {
 
 ARRAY_SUFFIX = re.compile(r"\[[^\]]*\]$")
 LOCALIZATION_ONLY_TOPICS = {"/loader/localization/odometry", "/loader/localization/points"}
+YARD_ONLY_TOPICS = {'/loader/visualization/terrain', '/loader/planned_path', '/loader/task_state'}
 
 
 class CheckFailed(RuntimeError):
@@ -130,13 +131,13 @@ class BridgeCheck(Node):
         raise CheckFailed(f"timed out waiting for: {description}")
 
 
-def check_bridge_socket() -> None:
-    with socket.create_connection(("127.0.0.1", 8765), timeout=5.0):
+def check_bridge_socket(port=8765) -> None:
+    with socket.create_connection(("127.0.0.1", port), timeout=5.0):
         pass
-    print("PASS  foxglove_bridge accepts TCP connections on 127.0.0.1:8765")
+    print(f"PASS  foxglove_bridge accepts TCP connections on 127.0.0.1:{port}")
 
 
-def check_layout_topics(node: BridgeCheck, perception: bool = False) -> None:
+def check_layout_topics(node: BridgeCheck, perception: bool = False, yard=False, read_only=False) -> None:
     topics, field_paths = collect_layout_references(
         json.loads(LAYOUT_PATH.read_text(encoding="utf-8"))
     )
@@ -146,6 +147,8 @@ def check_layout_topics(node: BridgeCheck, perception: bool = False) -> None:
         "/loader/state to appear in the ROS graph",
     )
     required = topics - LOCALIZATION_ONLY_TOPICS
+    if not yard:required-=YARD_ONLY_TOPICS
+    if read_only:required={t for t in required if not t.startswith('/loader/manual/')}
     if not perception:
         required -= PERCEPTION_ONLY_TOPICS
     node.wait_for(lambda: required <= {t for t, _ in node.get_topic_names_and_types()},
@@ -170,7 +173,7 @@ def check_layout_topics(node: BridgeCheck, perception: bool = False) -> None:
     skipped = []
     for topic in sorted(topics):
         if topic not in graph:
-            if (topic in PERCEPTION_ONLY_TOPICS and not perception) or topic in LOCALIZATION_ONLY_TOPICS:
+            if topic not in required:
                 skipped.append(topic)
             else:
                 missing.append(topic)
@@ -265,23 +268,26 @@ def check_manual_gateway(node: BridgeCheck) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--mode", choices=["physics", "perception"], default="physics")
+    parser.add_argument('--port',type=int,default=8765)
+    parser.add_argument('--read-only',action='store_true',help='Observe automatic operation without publishing commands')
+    parser.add_argument('--yard',action='store_true')
     args = parser.parse_args()
     try:
-        check_bridge_socket()
+        check_bridge_socket(args.port)
         rclpy.init()
         node = BridgeCheck()
         try:
-            check_layout_topics(node, args.mode == "perception")
-            check_manual_gateway(node)
+            check_layout_topics(node, args.mode == "perception",args.yard,args.read_only)
+            if not args.read_only:check_manual_gateway(node)
             from foxglove_wire_check import check_wire
-            check_wire(perception=args.mode == "perception")
+            check_wire(perception=args.mode == "perception",port=args.port,read_only=args.read_only,yard=args.yard)
         finally:
             node.destroy_node()
             rclpy.shutdown()
     except (CheckFailed, AssertionError, OSError, TimeoutError) as error:
         print(f"FAIL  {error}", file=sys.stderr)
         return 1
-    print("PASS  Foxglove bridge, layout and manual gateway verified end to end.")
+    print("PASS  Foxglove monitoring verified." if args.read_only else "PASS  Foxglove bridge, layout and manual gateway verified end to end.")
     return 0
 
 

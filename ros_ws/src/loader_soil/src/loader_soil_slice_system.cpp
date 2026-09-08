@@ -1,5 +1,6 @@
 #include "heightfield.hpp"
 #include "payload_body.hpp"
+#include <std_srvs/srv/trigger.hpp>
 #include <gz/sim/components/SemanticLabel.hh>
 #include <algorithm>
 #include <atomic>
@@ -169,6 +170,10 @@ public:
           "/loader/bucket_interaction", rclcpp::QoS(10).reliable());
       terrainPublisher_ = node_->create_publisher<loader_sim_msgs::msg::TerrainState>(
           "/loader/terrain_state", rclcpp::QoS(10).reliable());
+      shutdownService_=node_->create_service<std_srvs::srv::Trigger>("/loader/prepare_shutdown",
+          [this](const std::shared_ptr<std_srvs::srv::Trigger::Request>,std::shared_ptr<std_srvs::srv::Trigger::Response> response) {
+            shuttingDown_=true;response->success=true;response->message="Payload attachment retiring; stop simulation after two updates";
+          });
       commandSubscription_ = node_->create_subscription<loader_sim_msgs::msg::VehicleCommand>(
           "/loader/command",
           rclcpp::QoS(10).reliable(),
@@ -206,6 +211,12 @@ public:
     const auto velocity = bucketLink_.WorldLinearVelocity(ecm, cuttingEdgeLocalM_);
     if (!pose || !velocity)
       return;
+    if (shuttingDown_) {
+      if (heightfield3D_ && dynamicPayload_)
+        payloadBody_.Update(0,bulkDensityKgM3_,std::chrono::duration<double>(info.simTime).count(),
+                            bucketLink_,*pose,ecm.ParentEntity(model_.Entity()),ecm,*entityCreator_);
+      return;
+    }
 
     const gz::math::Vector3d edgeWorld =
         pose->Pos() + pose->Rot().RotateVector(cuttingEdgeLocalM_);
@@ -393,7 +404,7 @@ public:
       const gz::sim::UpdateInfo &info,
       const gz::sim::EntityComponentManager &) override
   {
-    if (!configured_ || info.paused || !interactionPublisher_ || !terrainPublisher_)
+    if (!configured_ || shuttingDown_ || info.paused || !interactionPublisher_ || !terrainPublisher_)
       return;
     if (lastPublishTime_.count() != 0 &&
         std::chrono::duration<double>(info.simTime - lastPublishTime_).count() < 0.02)
@@ -418,6 +429,12 @@ public:
     interaction.material_outflow_m3ps = materialOutflowM3ps_;
     interaction.bucket_material_volume_m3 = payloadVolumeM3_;
     interaction.bucket_material_mass_kg = payloadVolumeM3_ * bulkDensityKgM3_;
+    const auto distribution=(heightfield3D_ && dynamicPayload_) ? payloadBody_.properties : Payload(payloadVolumeM3_,bulkDensityKgM3_);
+    const auto center=(heightfield3D_ && dynamicPayload_) ? distribution.center : payloadCenterLocalM_;
+    interaction.payload_inertia.m=distribution.mass;
+    interaction.payload_inertia.com.x=center.X();interaction.payload_inertia.com.y=center.Y();interaction.payload_inertia.com.z=center.Z();
+    interaction.payload_inertia.ixx=distribution.diagonal.X();interaction.payload_inertia.iyy=distribution.diagonal.Y();interaction.payload_inertia.izz=distribution.diagonal.Z();
+    interaction.dynamic_payload_body_active=heightfield3D_ && dynamicPayload_ && distribution.mass>0;
     interactionPublisher_->publish(interaction);
 
     // Full XY grids are visualization/material snapshots, not 50 Hz control
@@ -496,6 +513,7 @@ private:
         int cell=grid_->Cell(point.X(),point.Y());
         if(cell<0 || horizontal<0.02) continue;
         double depth=std::max(0.0,grid_->heights[cell]-point.Z());
+        if(depth<=0.) continue;
         maximumPenetrationM_=std::max(maximumPenetrationM_,depth);
         activeCuttingAreaM2_+=depth*width;
         double magnitude=std::min(maximumCuttingForceN_/samples,
@@ -504,11 +522,14 @@ private:
         double uplift=rakeAngleRad_-soilToolFrictionAngleRad_;
         gz::math::Vector3d force(-magnitude*std::cos(uplift)*speed.X()/horizontal,
             -magnitude*std::cos(uplift)*speed.Y()/horizontal,magnitude*std::sin(uplift));
-        auto local=pose.Rot().RotateVectorReverse(point-pose.Pos());
-        bucketLink_.AddWorldForce(ecm,force,local);
         bucketForceWorldN_+=force;
         bucketTorqueWorldNm_+=(point-pose.Pos()).Cross(force);
       }
+      // Sum strip forces about the same link origin before touching the ECM.
+      // This preserves the distributed-force wrench while avoiding hundreds
+      // of component reads/writes per physics step (including empty air).
+      if(bucketForceWorldN_.SquaredLength()>0. || bucketTorqueWorldNm_.SquaredLength()>0.)
+        bucketLink_.AddWorldWrench(ecm,bucketForceWorldN_,bucketTorqueWorldNm_);
     }
     previousLeft_=left; previousRight_=right;
     if(unloading) materialOutflowM3ps_=grid_->Deposit(edge.X(),edge.Y(),maximumUnloadRateM3ps_*dt,
@@ -579,6 +600,8 @@ private:
   gz::sim::Model model_;
   gz::sim::Link bucketLink_;
   PayloadBody payloadBody_;
+  bool shuttingDown_{false};
+  rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr shutdownService_;
   bool dynamicPayload_{false};
   gz::sim::Joint bucketTiltJoint_;
   bool configured_{false};

@@ -71,7 +71,15 @@ xacro "${project_root}/ros_ws/src/loader_description/urdf/loader.urdf.xacro" \
 server_pid=''
 rsp_pid=''
 bridge_pid=''
+prepare_shutdown() {
+  if [[ -n ${server_pid} ]] && kill -0 "${server_pid}" 2>/dev/null; then
+    timeout 3 ros2 service call /loader/prepare_shutdown std_srvs/srv/Trigger '{}' >/dev/null 2>&1 || true
+    sleep 0.1
+  fi
+}
+
 cleanup() {
+  prepare_shutdown
   for process_id in "${bridge_pid}" "${rsp_pid}" "${server_pid}"; do
     if [[ -n ${process_id} ]]; then
       kill "${process_id}" >/dev/null 2>&1 || true
@@ -102,7 +110,7 @@ ros2 run robot_state_publisher robot_state_publisher \
   --ros-args -p use_sim_time:=true -p robot_description:="$(<"${urdf_file}")" \
   >"${rsp_log}" 2>&1 &
 rsp_pid=$!
-gz sim -s -r "${world_file}" \
+gz sim -s -r --seed "${LOADER_RANDOM_SEED:-1001}" "${world_file}" \
   >"${server_log}" 2>&1 &
 server_pid=$!
 

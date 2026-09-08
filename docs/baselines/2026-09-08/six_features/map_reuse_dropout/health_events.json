@@ -1,0 +1,707 @@
+[
+  {
+    "status": "tracking",
+    "sim_time": 5.7,
+    "lidar_age_s": 0.20000000000000018,
+    "accepted": 9,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.0011499154775853897,
+    "vehicle_speed_mps": 0.0,
+    "truth_position": [
+      -0.00022016766032709683,
+      -2.268489639233436e-06,
+      0.1499989603627002
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 24.2,
+    "lidar_age_s": 0.5,
+    "accepted": 100,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.0026570238265234197,
+    "vehicle_speed_mps": -0.6474244987614844,
+    "truth_position": [
+      -3.0618948109521376,
+      2.5379375995025358e-06,
+      0.1499999624326634
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 24.25,
+    "lidar_age_s": 0.5500000000000007,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.0030882703967696733,
+    "vehicle_speed_mps": -0.3290279534486973,
+    "truth_position": [
+      -3.0869720748888403,
+      2.6144123361296305e-06,
+      0.1499999615967279
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 24.3,
+    "lidar_age_s": 0.6000000000000014,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.0035711971087608284,
+    "vehicle_speed_mps": -0.045700003311456516,
+    "truth_position": [
+      -3.1072405686091855,
+      2.67668660041958e-06,
+      0.14999995816040015
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 24.35,
+    "lidar_age_s": 0.6500000000000021,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.0041095934506174304,
+    "vehicle_speed_mps": -0.0008220216549349442,
+    "truth_position": [
+      -3.107409874050433,
+      2.6772083974807114e-06,
+      0.14999995874423186
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 24.4,
+    "lidar_age_s": 0.6999999999999993,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.004707364924358457,
+    "vehicle_speed_mps": -0.00032598910593425524,
+    "truth_position": [
+      -3.1074364116837887,
+      2.6772901683702e-06,
+      0.1499999593381334
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 24.45,
+    "lidar_age_s": 0.75,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.005368557278804318,
+    "vehicle_speed_mps": 0.0003604860905888959,
+    "truth_position": [
+      -3.107444692883164,
+      2.677315673873344e-06,
+      0.14999995975730263
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 24.5,
+    "lidar_age_s": 0.8000000000000007,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.006097370168524128,
+    "vehicle_speed_mps": 0.00040606725835454547,
+    "truth_position": [
+      -3.1074182931822216,
+      2.6772342460959264e-06,
+      0.1499999608039276
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 24.55,
+    "lidar_age_s": 0.8500000000000014,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.0068981652019090905,
+    "vehicle_speed_mps": 2.4510016412293556e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 24.6,
+    "lidar_age_s": 0.9000000000000021,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.007775462726253306,
+    "vehicle_speed_mps": 2.3921294632633927e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 24.65,
+    "lidar_age_s": 0.9499999999999993,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.008733936236130597,
+    "vehicle_speed_mps": 2.3474061236483657e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 24.7,
+    "lidar_age_s": 1.0,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.009778429507149383,
+    "vehicle_speed_mps": 2.3287036361729907e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 24.75,
+    "lidar_age_s": 1.0500000000000007,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.010913945478024465,
+    "vehicle_speed_mps": 2.304959608595558e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 24.8,
+    "lidar_age_s": 1.1000000000000014,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.012145683498543926,
+    "vehicle_speed_mps": -4.072458516246602e-14,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 24.85,
+    "lidar_age_s": 1.1500000000000021,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.013479053111833313,
+    "vehicle_speed_mps": -7.074744436119662e-14,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 24.9,
+    "lidar_age_s": 1.1999999999999993,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.014919626411671362,
+    "vehicle_speed_mps": -4.8152237405729714e-14,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 24.95,
+    "lidar_age_s": 1.25,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.01647312751976421,
+    "vehicle_speed_mps": 9.10746087920411e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 25.0,
+    "lidar_age_s": 1.3000000000000007,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.018145522462247203,
+    "vehicle_speed_mps": 3.384434659609026e-14,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 25.05,
+    "lidar_age_s": 1.3500000000000014,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.019942994124423213,
+    "vehicle_speed_mps": 3.03651960346929e-14,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 25.1,
+    "lidar_age_s": 1.4000000000000021,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.021871888468449677,
+    "vehicle_speed_mps": 9.566891549794843e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 25.15,
+    "lidar_age_s": 1.4499999999999993,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.023938733938135788,
+    "vehicle_speed_mps": -1.84388637171351e-14,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 25.2,
+    "lidar_age_s": 1.5,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.02615031855805875,
+    "vehicle_speed_mps": -2.260691633892975e-14,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 25.25,
+    "lidar_age_s": 1.5500000000000007,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.028513651379285024,
+    "vehicle_speed_mps": -8.09508710064577e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 25.3,
+    "lidar_age_s": 1.6000000000000014,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.03103596694928788,
+    "vehicle_speed_mps": 5.556102453119216e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 25.35,
+    "lidar_age_s": 1.6500000000000021,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.03372469980307391,
+    "vehicle_speed_mps": 2.4732819958739327e-14,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 25.4,
+    "lidar_age_s": 1.6999999999999993,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.036587543613597895,
+    "vehicle_speed_mps": 4.4846938662690405e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 25.45,
+    "lidar_age_s": 1.75,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.03963239639615017,
+    "vehicle_speed_mps": 1.8474805019152996e-16,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 25.5,
+    "lidar_age_s": 1.8000000000000007,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.04286736188372622,
+    "vehicle_speed_mps": -5.207910925425496e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 25.55,
+    "lidar_age_s": 1.8500000000000014,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.046300865123314355,
+    "vehicle_speed_mps": -4.03746047011877e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 25.6,
+    "lidar_age_s": 1.9000000000000021,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.049941608413208466,
+    "vehicle_speed_mps": 4.724410966605586e-16,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 25.65,
+    "lidar_age_s": 1.9499999999999993,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.0537984416164052,
+    "vehicle_speed_mps": 5.901041374295479e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 25.7,
+    "lidar_age_s": 2.0,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.057880465936627,
+    "vehicle_speed_mps": 7.403745585360388e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 25.75,
+    "lidar_age_s": 2.0500000000000007,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.06219719775285063,
+    "vehicle_speed_mps": 5.246454312657356e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 25.8,
+    "lidar_age_s": 2.1000000000000014,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.06675831656315866,
+    "vehicle_speed_mps": 2.9205153920242033e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 25.85,
+    "lidar_age_s": 2.150000000000002,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.07157382179530777,
+    "vehicle_speed_mps": 6.33445119274656e-16,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 25.9,
+    "lidar_age_s": 2.1999999999999993,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.0766538493766695,
+    "vehicle_speed_mps": 6.944314914769656e-16,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 25.95,
+    "lidar_age_s": 2.25,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.08200891721064324,
+    "vehicle_speed_mps": 2.534593628727988e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 26.0,
+    "lidar_age_s": 2.3000000000000007,
+    "accepted": 0,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.08764991949774269,
+    "vehicle_speed_mps": 3.860518675569136e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 26.05,
+    "lidar_age_s": 0.15000000000000213,
+    "accepted": 1,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.0012011994015342735,
+    "vehicle_speed_mps": 4.562268531710378e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 26.1,
+    "lidar_age_s": 0.20000000000000284,
+    "accepted": 1,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.0013935619698846949,
+    "vehicle_speed_mps": 4.160408996478626e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 26.15,
+    "lidar_age_s": 0.25,
+    "accepted": 1,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.0016350198806832348,
+    "vehicle_speed_mps": 3.0389102692596204e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 26.2,
+    "lidar_age_s": 0.3000000000000007,
+    "accepted": 1,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.0019298998880644402,
+    "vehicle_speed_mps": 2.4051398893332188e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 26.25,
+    "lidar_age_s": 0.14999999999999858,
+    "accepted": 2,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.0009369980753423968,
+    "vehicle_speed_mps": 2.4288839169106513e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 26.3,
+    "lidar_age_s": 0.1999999999999993,
+    "accepted": 2,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.0011566480350636323,
+    "vehicle_speed_mps": 2.747151464643771e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 26.35,
+    "lidar_age_s": 0.25,
+    "accepted": 2,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.0014254256215843677,
+    "vehicle_speed_mps": 3.41702577691394e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "unavailable",
+    "sim_time": 26.4,
+    "lidar_age_s": 0.29999999999999716,
+    "accepted": 2,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.0017473802202329944,
+    "vehicle_speed_mps": 3.620313684254972e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  },
+  {
+    "status": "tracking",
+    "sim_time": 26.45,
+    "lidar_age_s": 0.14999999999999858,
+    "accepted": 3,
+    "rejected": 0,
+    "relocalizations": 0,
+    "position_variance": 0.0009413949442224793,
+    "vehicle_speed_mps": 3.3989738107420564e-15,
+    "truth_position": [
+      -3.107409585966189,
+      2.6772073909737307e-06,
+      0.149999961033517
+    ]
+  }
+]

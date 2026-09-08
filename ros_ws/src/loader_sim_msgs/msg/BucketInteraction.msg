@@ -8,3 +8,8 @@ float64 material_inflow_m3ps
 float64 material_outflow_m3ps
 float64 bucket_material_volume_m3
 float64 bucket_material_mass_kg
+
+# Payload distribution in bucket coordinates. Dynamic body properties are
+# discretely updated at 20 Hz; legacy gravity-only mode reports its load point.
+geometry_msgs/Inertia payload_inertia
+bool dynamic_payload_body_active

@@ -1,0 +1,8 @@
+{
+  "samples": 183,
+  "total_wall_s": 183.52708936700003,
+  "total_sim_s": 117.874,
+  "aggregate_rtf": 0.6422703068334875,
+  "peak_gazebo_rss_mib": 869.328125,
+  "note": "includes startup, pauses and offline processing; cycle reports separately measure active task duration"
+}

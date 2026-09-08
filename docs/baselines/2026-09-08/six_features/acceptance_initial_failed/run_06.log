@@ -1,0 +1,81 @@
+Generated XY heightfield: 256 x 240, 1436 active visuals, /home/lyc/loader_sim_runtime/results/runs/perception_ab_20260908_154037_2935/loader_soil_3d.sdf
+Foxglove telemetry: ws://localhost:18765
+Import this layout once: /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New project/foxglove/loader_simulation_layout.json
+Starting the Gazebo server...
+[INFO] [1788853247.707314142] [ros_gz_sim]: Entity creation successful.
+[INFO] [1788853259.435988492] [spawner_loader_command_controller]: waiting for service /controller_manager/list_controllers to become available...
+[INFO] [1788853261.274763547] [spawner_loader_command_controller]: Loaded loader_command_controller
+[INFO] [1788853261.387531484] [spawner_loader_command_controller]: Configured and activated loader_command_controller
+[INFO] [1788853262.486051694] [spawner_joint_state_broadcaster]: waiting for service /controller_manager/list_controllers to become available...
+[INFO] [1788853264.550443455] [spawner_joint_state_broadcaster]: Loaded joint_state_broadcaster
+[INFO] [1788853264.586365127] [spawner_joint_state_broadcaster]: Configured and activated joint_state_broadcaster
+Loader is ready. Starting ab scenario.
+STATE connecting
+STATE prepare_at_A
+STATE dig_at_A
+STATE curl_and_lift
+STATE reverse_clear_A
+PASS turning transfer leg: gear=-1, RMSE=0.041m
+STATE forward_turn_to_B
+Traceback (most recent call last):
+  File "/mnt/c/Users/Liyangchuan/Documents/ChatGPT/New project/tools/ros/run_ab_cycle.py", line 226, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/mnt/c/Users/Liyangchuan/Documents/ChatGPT/New project/tools/ros/run_ab_cycle.py", line 222, in main
+    try:execute_cycle(node,config,args.output,args.pose_source)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/Liyangchuan/Documents/ChatGPT/New project/tools/ros/run_ab_cycle.py", line 153, in execute_cycle
+    travel("forward_turn_to_B",parking,1)
+  File "/mnt/c/Users/Liyangchuan/Documents/ChatGPT/New project/tools/ros/run_ab_cycle.py", line 115, in travel
+    outcome["legs"].append(drive_leg(node,goal,gear,records))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/Liyangchuan/Documents/ChatGPT/New project/tools/ros/run_transfer_scenario.py", line 225, in drive_leg
+    rclpy.spin_once(node,timeout_sec=0.01)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 226, in spin_once
+    executor.spin_once(timeout_sec=timeout_sec)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 907, in _spin_once_impl
+    handler, entity, node = self.wait_for_ready_callbacks(
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 877, in wait_for_ready_callbacks
+    return next(self._cb_iter)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 781, in _wait_for_ready_callbacks
+    wait_set.wait(timeout_nsec)
+KeyboardInterrupt
+{
+  "algorithm": "static map point-to-plane ICP + 15-state LiDAR/IMU fusion",
+  "input": "/loader/localization/points",
+  "sensor_source": "/loader/sensors/lidar/scan/points_effect",
+  "preprocessing": {
+    "use_sim_time": true,
+    "ground_mode": "adaptive",
+    "ground_threshold": 0.18,
+    "self_filter": true,
+    "body_margin": 0.1,
+    "min_z": -2.7,
+    "min_range": 3.0,
+    "max_range": 50.0,
+    "synthetic_deskew": true,
+    "ground_constraint": false,
+    "ground_samples": 6000
+  },
+  "configuration_sha256": "dc2e057061a59b9397f255956dce733a690ac05a1e100455a617a8add4b8b3da",
+  "model_urdf_sha256": "40bf93820d2b857f86d6cd92cba87e44a7ae9fe8f46cf51e9c892f70630c24d8",
+  "alignment": "configured world frame, no truth alignment",
+  "matched_poses": 1059,
+  "truth_samples": 1060,
+  "duration_sim_s": 42.32,
+  "travel_m": 18.97447210503583,
+  "translation_rmse_m": 0.06104466956447805,
+  "translation_max_m": 0.2205418984549618,
+  "rotation_rmse_deg": 0.1362391479404912,
+  "rotation_max_deg": 0.39635644843695017,
+  "sim_latency_p95_s": 0.003999999999997783,
+  "odometry_sim_hz": 99.81511439796625,
+  "evaluation_sampling_max_hz": 25,
+  "nominal_accuracy_pass": true
+}
+PASS  moving localization pipeline and independent truth evaluation
+PASS  nominal accuracy target

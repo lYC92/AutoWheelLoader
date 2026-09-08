@@ -1,0 +1,318 @@
+{
+  "requested": 10,
+  "attempted": 5,
+  "successful": 0,
+  "runs": [
+    {
+      "run": 1,
+      "seed": 1001,
+      "exit_code": 1,
+      "wall_seconds": 214.88707518577576,
+      "runtime_directory": "/home/lyc/loader_sim_runtime/results/runs/perception_ab_20260908_153648_604",
+      "cycle": {
+        "status": "failed",
+        "pose_source": "estimated",
+        "config": {
+          "source_center": [
+            7.0,
+            0.0
+          ],
+          "staging_pose": [
+            -8.0,
+            0.0,
+            0.0
+          ],
+          "unload_pose": [
+            4.0,
+            12.0,
+            1.5707963267948966
+          ],
+          "unload_center": [
+            4.0,
+            17.8
+          ],
+          "unload_radius_m": 2.5,
+          "target_payload_m3": 0.6,
+          "maximum_dig_time_s": 25.0,
+          "maximum_dig_rear_x_m": 4.0,
+          "navigation": {
+            "bounds": [
+              -18.0,
+              19.7,
+              -8.0,
+              26.7
+            ],
+            "margin": 0.35,
+            "obstacles": [
+              [
+                [
+                  -15.4,
+                  -4.4
+                ],
+                [
+                  -14.6,
+                  -4.4
+                ],
+                [
+                  -14.6,
+                  -3.6
+                ],
+                [
+                  -15.4,
+                  -3.6
+                ]
+              ],
+              [
+                [
+                  -15.4,
+                  7.6
+                ],
+                [
+                  -14.6,
+                  7.6
+                ],
+                [
+                  -14.6,
+                  8.4
+                ],
+                [
+                  -15.4,
+                  8.4
+                ]
+              ],
+              [
+                [
+                  -15.4,
+                  20.6
+                ],
+                [
+                  -14.6,
+                  20.6
+                ],
+                [
+                  -14.6,
+                  21.4
+                ],
+                [
+                  -15.4,
+                  21.4
+                ]
+              ],
+              [
+                [
+                  -9.4,
+                  23.6
+                ],
+                [
+                  -8.6,
+                  23.6
+                ],
+                [
+                  -8.6,
+                  24.4
+                ],
+                [
+                  -9.4,
+                  24.4
+                ]
+              ],
+              [
+                [
+                  1.6,
+                  23.6
+                ],
+                [
+                  2.4,
+                  23.6
+                ],
+                [
+                  2.4,
+                  24.4
+                ],
+                [
+                  1.6,
+                  24.4
+                ]
+              ],
+              [
+                [
+                  12.6,
+                  23.6
+                ],
+                [
+                  13.4,
+                  23.6
+                ],
+                [
+                  13.4,
+                  24.4
+                ],
+                [
+                  12.6,
+                  24.4
+                ]
+              ],
+              [
+                [
+                  16.6,
+                  -4.4
+                ],
+                [
+                  17.4,
+                  -4.4
+                ],
+                [
+                  17.4,
+                  -3.6
+                ],
+                [
+                  16.6,
+                  -3.6
+                ]
+              ],
+              [
+                [
+                  16.6,
+                  5.6
+                ],
+                [
+                  17.4,
+                  5.6
+                ],
+                [
+                  17.4,
+                  6.4
+                ],
+                [
+                  16.6,
+                  6.4
+                ]
+              ],
+              [
+                [
+                  16.6,
+                  17.6
+                ],
+                [
+                  17.4,
+                  17.6
+                ],
+                [
+                  17.4,
+                  18.4
+                ],
+                [
+                  16.6,
+                  18.4
+                ]
+              ]
+            ]
+          },
+          "obstacle_height_m": 4.0
+        },
+        "phases": [
+          {
+            "name": "connecting",
+            "sim_time": 0.0
+          },
+          {
+            "name": "prepare_at_A",
+            "sim_time": 10.5
+          },
+          {
+            "name": "dig_at_A",
+            "sim_time": 11.83
+          },
+          {
+            "name": "curl_and_lift",
+            "sim_time": 15.744
+          },
+          {
+            "name": "reverse_clear_A",
+            "sim_time": 16.934
+          }
+        ],
+        "legs": [],
+        "phase": "reverse_clear_A",
+        "initial_volume_m3": 13.423589306233255,
+        "loaded_volume_m3": 0.7421248446010572,
+        "reason": "transfer tracking timed out",
+        "final_pose": {
+          "x": -7.002106558691633,
+          "y": 0.010553356973865363,
+          "yaw": -0.1541000576166744
+        },
+        "final_payload_m3": 0.7421248446010572,
+        "peak_force_n": 17341.425735223263,
+        "peak_payload_physics": {
+          "mass_kg": 1187.3997513616916,
+          "com_m": [
+            0.35,
+            0.0,
+            -0.3655570933693737
+          ],
+          "principal_inertia_kg_m2": [
+            530.5994323916233,
+            149.64201216308058,
+            665.9333605553486
+          ],
+          "dynamic_body_active": true
+        },
+        "last_sim_time": 118.54,
+        "wall_duration_s": 171.08312037499996,
+        "sim_duration_s": 118.54,
+        "observed_rtf": 0.6928795765483479,
+        "trace_columns": [
+          "sim_time",
+          "gear",
+          "rear_x",
+          "rear_y",
+          "yaw",
+          "target_articulation",
+          "path_error",
+          "actual_articulation",
+          "measured_speed",
+          "target_speed"
+        ]
+      }
+    },
+    {
+      "run": 2,
+      "seed": 1001,
+      "exit_code": 3,
+      "wall_seconds": 3.7771389484405518,
+      "runtime_directory": "/home/lyc/loader_sim_runtime/results/runs/perception_ab_20260908_154022_2683"
+    },
+    {
+      "run": 3,
+      "seed": 1001,
+      "exit_code": 3,
+      "wall_seconds": 3.7287371158599854,
+      "runtime_directory": "/home/lyc/loader_sim_runtime/results/runs/perception_ab_20260908_154026_2744"
+    },
+    {
+      "run": 4,
+      "seed": 1001,
+      "exit_code": 3,
+      "wall_seconds": 3.716681957244873,
+      "runtime_directory": "/home/lyc/loader_sim_runtime/results/runs/perception_ab_20260908_154030_2819"
+    },
+    {
+      "run": 5,
+      "seed": 1001,
+      "exit_code": 3,
+      "wall_seconds": 3.706042528152466,
+      "runtime_directory": "/home/lyc/loader_sim_runtime/results/runs/perception_ab_20260908_154034_2872"
+    }
+  ],
+  "gates": {
+    "all_cycles_passed": false,
+    "loaded_volume_cv_le_1_percent": false,
+    "peak_force_cv_le_2_percent": false,
+    "parking_dispersion_le_5_cm": false,
+    "parking_yaw_dispersion_le_half_degree": false,
+    "control_rtf_ge_0_9": false
+  },
+  "status": "aborted",
+  "abort_reason": "ROS child processes leaked across runs; duplicate sensor effects and occupied port. Batch stopped for process-tree cleanup fix."
+}

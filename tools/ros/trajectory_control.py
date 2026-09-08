@@ -58,7 +58,7 @@ class Limits:
         return (low+high)/2
 
 
-def transfer_path(start: Pose, goal: Pose, gear: int, limits=Limits(), spacing=0.1, terminal_straight=4.0):
+def transfer_path(start: Pose, goal: Pose, gear: int, limits=Limits(), spacing=0.1, terminal_straight=4.0,preferred_radius=8.0):
     """Tangent straight/arc/straight connector on open ground.
 
     Reject infeasible corners; callers must provide intermediate poses for
@@ -102,7 +102,7 @@ def transfer_path(start: Pose, goal: Pose, gear: int, limits=Limits(), spacing=0
     determinant=cross(d0,d1)
     a,b=cross(delta,d1)/determinant,cross(d0,delta)/determinant
     tangent=math.tan(abs(theta)/2)
-    radius=min(8.0,(min(a,b)-terminal_straight)/tangent)
+    radius=min(preferred_radius,(min(a,b)-terminal_straight)/tangent)
     if radius < 1/limits.curvature(limits.articulation):
         raise ValueError("corner has insufficient turning radius or terminal straight")
     trim=radius*tangent

@@ -1,0 +1,9 @@
+{
+  "status": "paused_by_user",
+  "reason": "User requested pause to conserve tokens for other projects; 250 Hz trial was interrupted during return, not a complete acceptance result.",
+  "unverified_latest_edits": [
+    "tighter digging joint settling and lower approach speed",
+    "uncompressed camera NPZ and prior-stamp terrain association"
+  ],
+  "shutdown_exception": "rclpy context closed during cycle finally; repair before resuming"
+}

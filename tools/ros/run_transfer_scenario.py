@@ -150,22 +150,25 @@ def connect(node):
         raise RuntimeError("pose/control startup timeout")
 
 
-def prepare_pose(node,lift,tilt):
+def prepare_pose(node,lift,tilt,tolerance=.06,settle_time=.5,timeout=10.):
     node.lift_target,node.tilt_target=lift,tilt
     node.manual_tilt=None
     node.hold_integral={"lift_joint":0.0,"bucket_tilt_joint":0.0}
     ready_since=None
-    deadline=node.now()+10
+    deadline=node.now()+timeout
     wall_deadline=time.monotonic()+120
     while node.now()<deadline and time.monotonic()<wall_deadline:
         node.send()
         rclpy.spin_once(node,timeout_sec=0.02)
+        before_check=node.now()
         node.check()
+        if node.now()-before_check>.2:
+            deadline+=node.now()-before_check;ready_since=None
         error=max(abs(joint_position(node.state,"lift_joint")-lift),abs(joint_position(node.state,"bucket_tilt_joint")-tilt))
-        ready_since=node.now() if error<0.06 and ready_since is None else ready_since
-        if error>=0.06:
+        ready_since=node.now() if error<tolerance and ready_since is None else ready_since
+        if error>=tolerance:
             ready_since=None
-        if ready_since is not None and node.now()-ready_since>0.5:
+        if ready_since is not None and node.now()-ready_since>settle_time:
             break
     else:
         raise RuntimeError(f"travel bucket pose preparation timeout: lift={joint_position(node.state, 'lift_joint'):.4f}, tilt={joint_position(node.state, 'bucket_tilt_joint'):.4f}")
@@ -185,25 +188,37 @@ def publish_path(node,poses):
 
 def compute_path(node,goal,gear):
     start=node.pose();site=copy.deepcopy(node.safety_map)
+    if site:
+        site.tracking_reserve=.45
+        site.parking_endpoints=(start,goal)
     # Search can take longer than a command watchdog interval. Keep the
     # vehicle braked and process feedback while the bounded search runs.
     with ThreadPoolExecutor(max_workers=1) as executor:
-        future=executor.submit(plan_route,start,goal,gear,site) if site else executor.submit(transfer_path,start,goal,gear)
+        future=executor.submit(plan_route,start,goal,gear,site,initial_articulation=joint_position(node.state,'articulation_joint')) if site else executor.submit(transfer_path,start,goal,gear)
         while not future.done():
             node.send(brake=True,steering=joint_position(node.state,'articulation_joint'))
             rclpy.spin_once(node,timeout_sec=.01)
         return future.result()
 
 
-def drive_leg(node,goal,gear,records):
-    path=compute_path(node,goal,gear)
+def drive_leg(node,goal,gear,records,allow_parking_correction=True,allow_reposition=True,reference_path=None):
+    reposition=[]
+    try:path=reference_path if reference_path is not None else compute_path(node,goal,gear)
+    except RuntimeError as error:
+        if not allow_reposition or 'no collision-free route' not in str(error):raise
+        # A single-gear turn may be impossible in a constrained yard. While
+        # parked, gain turning room through one separately validated opposite
+        # leg. Recursion is bounded and every leg keeps the live stop guard.
+        p=node.pose();retreat=Pose(p.x-gear*3*math.cos(p.yaw),p.y-gear*3*math.sin(p.yaw),p.yaw)
+        reposition.append(drive_leg(node,retreat,-gear,records,False,False))
+        path=compute_path(node,goal,gear)
     tracker=Tracker(path,gear)
     tracker.last_articulation=joint_position(node.state,"articulation_joint")
     publish_path(node,tracker.path)
     deadline=node.now()+90
     wall_deadline=time.monotonic()+600
     previous=node.now()
-    errors=[]
+    errors=[];corrections=[]
     progress_pose=node.pose()
     progress_time=node.now()
     while node.now()<deadline and time.monotonic()<wall_deadline:
@@ -230,8 +245,19 @@ def drive_leg(node,goal,gear,records):
                 joint_position(node.state,"articulation_joint"),node.state.longitudinal_speed_mps):
             node.send(emergency=True)
             raise RuntimeError("obstacle or worksite boundary in stopping corridor")
-        command=tracker.update(node.pose(),node.state.longitudinal_speed_mps,dt,
-                               joint_position(node.state,"articulation_joint"))
+        try:
+            command=tracker.update(node.pose(),node.state.longitudinal_speed_mps,dt,
+                                   joint_position(node.state,"articulation_joint"))
+        except RuntimeError as error:
+            if not allow_parking_correction or 'parking heading outside tolerance' not in str(error):raise
+            # A bounded three-point parking correction. First stop, retreat
+            # along the goal tangent, then approach on a full straight segment.
+            # Each leg is independently checked against the same body map.
+            node.send(brake=True)
+            retreat=Pose(goal.x-gear*5*math.cos(goal.yaw),goal.y-gear*5*math.sin(goal.yaw),goal.yaw)
+            corrections.append(drive_leg(node,retreat,-gear,records,False))
+            corrections.append(drive_leg(node,goal,gear,records,False))
+            break
         previous=node.now()
         node.send(gear,command.target_speed,command.articulation,command.brake)
         errors.append(command.cross_track_error)
@@ -250,11 +276,44 @@ def drive_leg(node,goal,gear,records):
     rmse=math.sqrt(sum(e*e for e in errors)/len(errors))
     if rmse>0.3:
         raise RuntimeError(f"cross-track RMSE {rmse} exceeds 0.3 m")
-    result={"gear":gear,"rmse_m":rmse,"goal":vars(goal),"final_pose":vars(node.pose()),
+    result={"gear":gear,"rmse_m":rmse,"parking_corrections":corrections,"route_reposition":reposition,"goal":vars(goal),"final_pose":vars(node.pose()),
             "parking_error_m":math.hypot(node.pose().x-goal.x,node.pose().y-goal.y),
             "parking_yaw_error_deg":math.degrees(abs(math.remainder(node.pose().yaw-goal.yaw,2*math.pi)))}
     print(f"PASS turning transfer leg: gear={gear}, RMSE={rmse:.3f}m",flush=True)
     return result
+
+
+def retrace_transfer(node,outbound,goal,records):
+    """Reverse demonstrated articulated manoeuvres, preserving gear changes.
+
+    A loader shuttles through the same work corridor. Reusing its successful
+    outbound trace avoids choosing a different front-swing path on return.
+    Revalidate measured body poses against today's map and retain live braking.
+    """
+    groups=[]
+    for row in outbound:
+        if not groups or groups[-1][0][1]!=row[1]:groups.append([])
+        groups[-1].append(row)
+    results=[]
+    for index,group in enumerate(reversed(groups)):
+        path=[]
+        for row in reversed(group):
+            pose=Pose(*row[2:5])
+            if node.safety_map and not node.safety_map.clear(pose,row[7]):
+                raise RuntimeError('recorded return corridor is now obstructed')
+            if not path or math.hypot(pose.x-path[-1].x,pose.y-path[-1].y)>.025:path.append(pose)
+        if len(path)<2:continue
+        target=goal if index==len(groups)-1 else path[-1]
+        if target!=path[-1]:
+            if math.hypot(target.x-path[-1].x,target.y-path[-1].y)>.35:
+                raise RuntimeError('recorded return endpoint no longer matches staging pose')
+            if node.safety_map and not node.safety_map.clear(target,0):raise RuntimeError('return staging is obstructed')
+            path.append(target)
+        results.append(drive_leg(node,target,-int(group[0][1]),records,reference_path=path))
+    if not results:raise RuntimeError('missing demonstrated return route')
+    return {'route_mode':'validated_outbound_retrace','segments':results,'gear':-1,'goal':vars(goal),
+            'rmse_m':max(r['rmse_m'] for r in results),'final_pose':vars(node.pose()),
+            'parking_error_m':results[-1]['parking_error_m'],'parking_yaw_error_deg':results[-1]['parking_yaw_error_deg']}
 
 
 def main():

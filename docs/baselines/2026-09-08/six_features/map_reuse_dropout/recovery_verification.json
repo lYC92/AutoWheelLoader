@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "episodes": [
+    {
+      "started_at_s": 24.2,
+      "initial_speed_mps": -0.6474244987614844,
+      "recovered_at_s": 26.45,
+      "maximum_truth_displacement_m": 0.04554988193123959,
+      "stopping_corridor_length_m": 0.9133858312250047,
+      "maximum_speed_after_half_second_mps": 7.074744436119662e-14,
+      "passed": true
+    }
+  ],
+  "pose_source": "independent truth for scoring only"
+}

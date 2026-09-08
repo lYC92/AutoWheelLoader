@@ -1,0 +1,991 @@
+{
+  "schema_version": 1,
+  "status": "complete",
+  "recording": "MCAP CDR plus NPZ convenience arrays",
+  "label_encoding": "Gazebo panoptic: byte 2 class, bytes 1:0 instance (frame-local)",
+  "projection": "perspective input; unified equidistant offline",
+  "input_size": [
+    640,
+    640
+  ],
+  "fish_size": [
+    640,
+    480
+  ],
+  "horizontal_fov_deg": 160,
+  "nominal_hz": 10,
+  "sample_interval_s": 2.0,
+  "depth_convention": "optical Z metres",
+  "optical_axes": "+X right, +Y down, +Z forward",
+  "transform": "T_base_link_camera_optical at image timestamp",
+  "calibration": {
+    "right": {
+      "width": 640,
+      "height": 640,
+      "K": [
+        56.42463382670882,
+        0.0,
+        320.0,
+        0.0,
+        56.42463382670882,
+        320.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "D": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "P": [
+        56.42463382670882,
+        0.0,
+        320.0,
+        0.0,
+        0.0,
+        56.42463382670882,
+        320.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "distortion_model": "plumb_bob",
+      "frame_id": "soil_loader/camera_right_link/right_rgbd"
+    },
+    "front": {
+      "width": 640,
+      "height": 640,
+      "K": [
+        56.42463382670882,
+        0.0,
+        320.0,
+        0.0,
+        56.42463382670882,
+        320.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "D": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "P": [
+        56.42463382670882,
+        0.0,
+        320.0,
+        0.0,
+        0.0,
+        56.42463382670882,
+        320.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "distortion_model": "plumb_bob",
+      "frame_id": "soil_loader/camera_front_link/front_rgbd"
+    },
+    "left": {
+      "width": 640,
+      "height": 640,
+      "K": [
+        56.42463382670882,
+        0.0,
+        320.0,
+        0.0,
+        56.42463382670882,
+        320.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "D": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "P": [
+        56.42463382670882,
+        0.0,
+        320.0,
+        0.0,
+        0.0,
+        56.42463382670882,
+        320.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "distortion_model": "plumb_bob",
+      "frame_id": "soil_loader/camera_left_link/left_rgbd"
+    },
+    "rear": {
+      "width": 640,
+      "height": 640,
+      "K": [
+        56.42463382670882,
+        0.0,
+        320.0,
+        0.0,
+        56.42463382670882,
+        320.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "D": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "P": [
+        56.42463382670882,
+        0.0,
+        320.0,
+        0.0,
+        0.0,
+        56.42463382670882,
+        320.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "distortion_model": "plumb_bob",
+      "frame_id": "soil_loader/camera_rear_link/rear_rgbd"
+    }
+  },
+  "world_pose_source": "ground_truth",
+  "labels": {
+    "0": "unknown",
+    "1": "rigid_ground",
+    "2": "soil",
+    "3": "obstacle",
+    "4": "vehicle"
+  },
+  "dropped_incomplete_groups": 117,
+  "frames": [
+    {
+      "file": "frame_0000.npz",
+      "stamp_ns": 4700000000,
+      "phase": "initial",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0001.npz",
+      "stamp_ns": 6700000000,
+      "phase": "{\"phase\": \"prepare_at_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0002.npz",
+      "stamp_ns": 9100000000,
+      "phase": "{\"phase\": \"dig_at_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0003.npz",
+      "stamp_ns": 11200000000,
+      "phase": "{\"phase\": \"curl_and_lift\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0004.npz",
+      "stamp_ns": 13400000000,
+      "phase": "{\"phase\": \"reverse_clear_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0005.npz",
+      "stamp_ns": 15900000000,
+      "phase": "{\"phase\": \"reverse_clear_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0006.npz",
+      "stamp_ns": 18000000000,
+      "phase": "{\"phase\": \"reverse_clear_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0007.npz",
+      "stamp_ns": 20000000000,
+      "phase": "{\"phase\": \"reverse_clear_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0008.npz",
+      "stamp_ns": 22100000000,
+      "phase": "{\"phase\": \"reverse_clear_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0009.npz",
+      "stamp_ns": 24400000000,
+      "phase": "{\"phase\": \"reverse_clear_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0010.npz",
+      "stamp_ns": 26400000000,
+      "phase": "{\"phase\": \"reverse_clear_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0011.npz",
+      "stamp_ns": 28500000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0012.npz",
+      "stamp_ns": 30800000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0013.npz",
+      "stamp_ns": 33000000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0014.npz",
+      "stamp_ns": 35200000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0015.npz",
+      "stamp_ns": 37300000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0016.npz",
+      "stamp_ns": 39500000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0017.npz",
+      "stamp_ns": 41800000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0018.npz",
+      "stamp_ns": 43800000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0019.npz",
+      "stamp_ns": 45900000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0020.npz",
+      "stamp_ns": 48300000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0021.npz",
+      "stamp_ns": 50800000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0022.npz",
+      "stamp_ns": 53200000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0023.npz",
+      "stamp_ns": 55200000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0024.npz",
+      "stamp_ns": 57400000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0025.npz",
+      "stamp_ns": 59400000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0026.npz",
+      "stamp_ns": 61400000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0027.npz",
+      "stamp_ns": 63700000000,
+      "phase": "{\"phase\": \"unload_at_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0028.npz",
+      "stamp_ns": 66100000000,
+      "phase": "{\"phase\": \"raise_after_unloading\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0029.npz",
+      "stamp_ns": 68200000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0030.npz",
+      "stamp_ns": 70200000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0031.npz",
+      "stamp_ns": 72300000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0032.npz",
+      "stamp_ns": 75400000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0033.npz",
+      "stamp_ns": 77500000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0034.npz",
+      "stamp_ns": 79800000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0035.npz",
+      "stamp_ns": 81800000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0036.npz",
+      "stamp_ns": 83800000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0037.npz",
+      "stamp_ns": 86000000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0038.npz",
+      "stamp_ns": 88700000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0039.npz",
+      "stamp_ns": 90800000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0040.npz",
+      "stamp_ns": 92900000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0041.npz",
+      "stamp_ns": 95900000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0042.npz",
+      "stamp_ns": 98000000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0043.npz",
+      "stamp_ns": 100000000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0044.npz",
+      "stamp_ns": 102800000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0045.npz",
+      "stamp_ns": 106000000000,
+      "phase": "{\"phase\": \"forward_return_to_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0046.npz",
+      "stamp_ns": 108200000000,
+      "phase": "{\"phase\": \"forward_return_to_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0047.npz",
+      "stamp_ns": 110300000000,
+      "phase": "{\"phase\": \"forward_return_to_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0048.npz",
+      "stamp_ns": 114100000000,
+      "phase": "{\"phase\": \"prepare_at_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0049.npz",
+      "stamp_ns": 116100000000,
+      "phase": "{\"phase\": \"dig_at_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0050.npz",
+      "stamp_ns": 118200000000,
+      "phase": "{\"phase\": \"dig_at_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0051.npz",
+      "stamp_ns": 120200000000,
+      "phase": "{\"phase\": \"curl_and_lift\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0052.npz",
+      "stamp_ns": 122200000000,
+      "phase": "{\"phase\": \"reverse_clear_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0053.npz",
+      "stamp_ns": 124600000000,
+      "phase": "{\"phase\": \"reverse_clear_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0054.npz",
+      "stamp_ns": 126900000000,
+      "phase": "{\"phase\": \"reverse_clear_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0055.npz",
+      "stamp_ns": 129400000000,
+      "phase": "{\"phase\": \"reverse_clear_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0056.npz",
+      "stamp_ns": 131600000000,
+      "phase": "{\"phase\": \"reverse_clear_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0057.npz",
+      "stamp_ns": 134300000000,
+      "phase": "{\"phase\": \"reverse_clear_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0058.npz",
+      "stamp_ns": 136500000000,
+      "phase": "{\"phase\": \"reverse_clear_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0059.npz",
+      "stamp_ns": 138700000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0060.npz",
+      "stamp_ns": 141600000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0061.npz",
+      "stamp_ns": 143900000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0062.npz",
+      "stamp_ns": 146300000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0063.npz",
+      "stamp_ns": 148500000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0064.npz",
+      "stamp_ns": 150500000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0065.npz",
+      "stamp_ns": 152500000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0066.npz",
+      "stamp_ns": 154600000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0067.npz",
+      "stamp_ns": 157900000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0068.npz",
+      "stamp_ns": 160900000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0069.npz",
+      "stamp_ns": 163200000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0070.npz",
+      "stamp_ns": 166600000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0071.npz",
+      "stamp_ns": 169000000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0072.npz",
+      "stamp_ns": 171100000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0073.npz",
+      "stamp_ns": 173300000000,
+      "phase": "{\"phase\": \"forward_turn_to_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0074.npz",
+      "stamp_ns": 175700000000,
+      "phase": "{\"phase\": \"raise_after_unloading\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0075.npz",
+      "stamp_ns": 178500000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0076.npz",
+      "stamp_ns": 180700000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0077.npz",
+      "stamp_ns": 183600000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0078.npz",
+      "stamp_ns": 185600000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0079.npz",
+      "stamp_ns": 187700000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0080.npz",
+      "stamp_ns": 189900000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0081.npz",
+      "stamp_ns": 192100000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0082.npz",
+      "stamp_ns": 194100000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0083.npz",
+      "stamp_ns": 197500000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0084.npz",
+      "stamp_ns": 199900000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0085.npz",
+      "stamp_ns": 201900000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0086.npz",
+      "stamp_ns": 204000000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0087.npz",
+      "stamp_ns": 206200000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0088.npz",
+      "stamp_ns": 209300000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0089.npz",
+      "stamp_ns": 212000000000,
+      "phase": "{\"phase\": \"reverse_clear_B\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0090.npz",
+      "stamp_ns": 216400000000,
+      "phase": "{\"phase\": \"forward_return_to_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0091.npz",
+      "stamp_ns": 219500000000,
+      "phase": "{\"phase\": \"forward_return_to_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0092.npz",
+      "stamp_ns": 222000000000,
+      "phase": "{\"phase\": \"forward_return_to_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0093.npz",
+      "stamp_ns": 224400000000,
+      "phase": "{\"phase\": \"complete\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0094.npz",
+      "stamp_ns": 226800000000,
+      "phase": "{\"phase\": \"complete\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0095.npz",
+      "stamp_ns": 228800000000,
+      "phase": "{\"phase\": \"complete\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0096.npz",
+      "stamp_ns": 232700000000,
+      "phase": "{\"phase\": \"complete\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0097.npz",
+      "stamp_ns": 234700000000,
+      "phase": "{\"phase\": \"complete\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0098.npz",
+      "stamp_ns": 237000000000,
+      "phase": "{\"phase\": \"complete\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0099.npz",
+      "stamp_ns": 239500000000,
+      "phase": "{\"phase\": \"complete\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0100.npz",
+      "stamp_ns": 242100000000,
+      "phase": "{\"phase\": \"complete\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0101.npz",
+      "stamp_ns": 244200000000,
+      "phase": "{\"phase\": \"complete\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0102.npz",
+      "stamp_ns": 246700000000,
+      "phase": "{\"phase\": \"complete\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0103.npz",
+      "stamp_ns": 249800000000,
+      "phase": "{\"phase\": \"complete\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0104.npz",
+      "stamp_ns": 251800000000,
+      "phase": "{\"phase\": \"complete\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0105.npz",
+      "stamp_ns": 253900000000,
+      "phase": "{\"phase\": \"complete\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0106.npz",
+      "stamp_ns": 257100000000,
+      "phase": "{\"phase\": \"complete\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0107.npz",
+      "stamp_ns": 259200000000,
+      "phase": "{\"phase\": \"complete\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0108.npz",
+      "stamp_ns": 261700000000,
+      "phase": "{\"phase\": \"complete\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0109.npz",
+      "stamp_ns": 266300000000,
+      "phase": "{\"phase\": \"complete\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0110.npz",
+      "stamp_ns": 269000000000,
+      "phase": "{\"phase\": \"complete\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0111.npz",
+      "stamp_ns": 271000000000,
+      "phase": "{\"phase\": \"prepare_at_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0112.npz",
+      "stamp_ns": 273200000000,
+      "phase": "{\"phase\": \"dig_at_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0113.npz",
+      "stamp_ns": 275300000000,
+      "phase": "{\"phase\": \"dig_at_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0114.npz",
+      "stamp_ns": 277700000000,
+      "phase": "{\"phase\": \"dig_at_A\", \"pose_source\": \"ground_truth\"}",
+      "streams": 12,
+      "max_skew_ns": 0
+    }
+  ]
+}
