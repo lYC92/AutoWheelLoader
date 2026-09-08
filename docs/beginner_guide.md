@@ -525,4 +525,26 @@ Chrono DEM 已完成小规模颗粒运行和链接验证。它是未来离线标
 .\scripts\windows\run_loader_soil_demo.ps1 -Mode perception -ControlMode auto -Scenario soil3d
 ```
 
-这会运行三维料堆上的挖卸演示。目前仍是直线挖卸动作，A 点到 B 点的自动转向运输还在开发。
+上面的 `soil3d` 是直线挖卸对照。完整 A→B 转向循环已有首轮通过记录，可以运行：
+
+```powershell
+.\scripts\windows\run_loader_soil_demo.ps1 -Mode physics -ControlMode auto -Scenario ab
+```
+
+它会在 A 点铲料、倒车退出、前进转弯到 B 点卸料，再返回 A 点。当前用仿真提供的位置进行调试，
+还没有切换为激光/IMU 估计位置；多轮稳定性和完整第四阶段仍是待办。
+
+
+### 新版侧面卸料演示（默认入口）
+
+直接运行下面命令：装载机在黄色圈内铲土，倒车退出，向左转 90°，在蓝色圈内的地面卸料，再返回起点。
+
+```powershell
+.\scripts\windows\run_loader_soil_demo.ps1
+```
+
+画面上可以检查两件事：原土堆留下铲挖缺口，另一侧原本空的地面出现新土堆。
+这是三维高度场作业，当前用仿真真值定位调试；第四阶段的估计定位闭环仍在待办中。
+旧的一维对照演示保留为 `-Scenario soil`，三维直线对照为 `-Scenario soil3d`。
+
+![侧面地面卸料完成后的真实仿真画面](assets/side_yard_complete.png)

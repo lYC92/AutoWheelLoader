@@ -1,0 +1,6 @@
+PASS full bucket keeps terrain and payload unchanged during further forward motion
+PASS turning transfer leg: gear=-1, RMSE=0.029m
+PASS turning transfer leg: gear=1, RMSE=0.057m
+PASS outside-domain unloading preserves the full payload and terrain
+PASS turning transfer leg: gear=-1, RMSE=0.055m
+PASS returning inside allows the retained payload to unload

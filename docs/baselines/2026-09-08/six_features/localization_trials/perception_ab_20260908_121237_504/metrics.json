@@ -1,0 +1,29 @@
+{
+  "algorithm": "KISS-ICP + 15-state LiDAR/IMU fusion",
+  "input": "/loader/localization/points",
+  "sensor_source": "/loader/sensors/lidar/scan/points_effect",
+  "preprocessing": {
+    "use_sim_time": true,
+    "ground_mode": "adaptive",
+    "ground_threshold": 0.18,
+    "self_filter": true,
+    "body_margin": 0.1,
+    "min_z": -2.7,
+    "min_range": 3.0,
+    "max_range": 50.0
+  },
+  "configuration_sha256": "dc2e057061a59b9397f255956dce733a690ac05a1e100455a617a8add4b8b3da",
+  "model_urdf_sha256": "5a9fd5fa60149a7e6e45a5d6aebd1b440991d886449759bbb33c9363d91d2ade",
+  "alignment": "configured world frame, no truth alignment",
+  "matched_poses": 3781,
+  "truth_samples": 3348,
+  "duration_sim_s": 66.66,
+  "travel_m": 32.934205373048016,
+  "translation_rmse_m": 0.3070118792648935,
+  "translation_max_m": 0.860908175198477,
+  "rotation_rmse_deg": 1.615639065755916,
+  "rotation_max_deg": 4.102432430663976,
+  "sim_latency_p95_s": 0.0020000000000024443,
+  "odometry_sim_hz": 56.70567056705671,
+  "nominal_accuracy_pass": false
+}

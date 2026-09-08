@@ -10,8 +10,14 @@
        Collision/inertia remain nominal; rendered geometry affects GPU lidar. -->
   <xacro:arg name="mesh_visuals" default="true"/>
   <xacro:arg name="enable_dynamics" default="false"/>
+  <xacro:include filename="surround_cameras.xacro"/>
+  <xacro:arg name="enable_surround_cameras" default="false"/>
+  <xacro:if value="$(arg enable_surround_cameras)"><xacro:surround_cameras/></xacro:if>
   <xacro:arg name="enable_lidar_imu" default="false"/>
   <xacro:arg name="enable_ros2_control" default="false"/>
+  <xacro:arg name="soil_3d_config" default="$(find loader_description)/config/soil_heightfield.yaml"/>
+  <xacro:arg name="dynamic_payload" default="true"/>
+  <xacro:arg name="soil_bucket_capacity_m3" default="3.0"/>
   <xacro:arg name="enable_soil_3d" default="false"/>
   <xacro:arg name="enable_soil_slice" default="false"/>
   <xacro:arg name="enable_ground_truth" default="false"/>
@@ -355,7 +361,7 @@
     </gazebo>
   </xacro:if>
 
-  <xacro:property name="soil_grid_config" value="${xacro.load_yaml('$(find loader_description)/config/soil_heightfield.yaml')}"/>
+  <xacro:property name="soil_grid_config" value="${xacro.load_yaml('$(arg soil_3d_config)')}"/>
   <xacro:if value="$(arg enable_soil_slice)">
     <gazebo reference="bucket">
       <collision name="bucket_collision">
@@ -382,7 +388,8 @@
         <pile_center_m>${soil_grid_config['pile_center_x_m'] if '$(arg enable_soil_3d)' == 'true' else 7.0}</pile_center_m>
         <pile_height_m>${soil_grid_config['pile_height_m'] if '$(arg enable_soil_3d)' == 'true' else 1.8}</pile_height_m>
         <angle_of_repose_deg>${soil_grid_config['angle_of_repose_deg'] if '$(arg enable_soil_3d)' == 'true' else 34.0}</angle_of_repose_deg>
-        <bucket_capacity_m3>3.0</bucket_capacity_m3>
+        <bucket_capacity_m3>$(arg soil_bucket_capacity_m3)</bucket_capacity_m3>
+        <dynamic_payload>$(arg dynamic_payload)</dynamic_payload>
         <bulk_density_kg_m3>1600.0</bulk_density_kg_m3>
         <visualization_update_hz>10.0</visualization_update_hz>
         <visualization_column_height_m>${soil_grid_config['column_height_m'] if '$(arg enable_soil_3d)' == 'true' else 1.8}</visualization_column_height_m>
@@ -404,4 +411,5 @@
       </plugin>
     </gazebo>
   </xacro:if>
+  <gazebo><plugin filename="gz-sim-label-system" name="gz::sim::systems::Label"><label>4</label></plugin></gazebo>
 </robot>

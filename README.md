@@ -261,3 +261,16 @@ wsl -d Ubuntu-24.04 -- bash /mnt/c/Users/Liyangchuan/Documents/ChatGPT/New\ proj
 [docs/soil_heightfield_3d.md](docs/soil_heightfield_3d.md)。
 
 部署状态见 [docs/deployment_status.md](docs/deployment_status.md)。
+
+
+## 三维 A→B 开发入口
+
+首轮 A 点铲料、转向转运、B 点卸料和返回闭环已通过，目前使用明确标注的仿真真值位置。
+Windows 启动参数：`-Mode physics -ControlMode auto -Scenario ab`，脚本为
+`scripts/windows/run_loader_soil_demo.ps1`。多轮、估计定位及第四阶段仍待验收。
+持续更新的完成项、待办及运行记录见 [开发计划与进度](docs/next_stage_3d_ab.md)。
+
+
+默认演示现为三维侧面卸料：`scripts/windows/run_loader_soil_demo.ps1`。
+A 铲料 → 倒车退出 → 前进左转 90° → B 地面卸料 → 返回。
+实际场景截图与持续更新的验收记录见 [开发计划](docs/next_stage_3d_ab.md)。

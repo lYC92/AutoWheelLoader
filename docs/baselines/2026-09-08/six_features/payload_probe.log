@@ -1,0 +1,1 @@
+PASS payload dynamics: empty_ax=1.5 loaded_ax=1 unloaded_ax=1.5 angular_ay=0.106211 expected_ay=0.106211

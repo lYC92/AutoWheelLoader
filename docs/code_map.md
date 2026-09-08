@@ -231,3 +231,20 @@
 | [LICENSE](../LICENSE) | 本项目许可证文本 |
 
 你可以先选一个熟悉的动作，再沿“启动器 → 命令来源 → 正式控制器 → 物理世界 → 状态 → 面板”查文件。每次只读一条链，比同时打开所有目录更容易理解。
+
+
+## 三维 A→B 新增代码
+
+| 文件 | 小白可以怎样理解 |
+| --- | --- |
+| `ros_ws/src/loader_soil/src/heightfield.hpp` | 土料账本：记住每块地挖掉多少、斗里装了多少、卸到哪里。 |
+| `loader_soil_slice_system.cpp` | 把土料账本接到 Gazebo，给铲斗施力并更新可见土堆。 |
+| `tools/ros/trajectory_control.py` | 生成转弯路线，根据位置误差算前进或倒车时的转向目标。 |
+| `tools/ros/run_transfer_scenario.py` | 把路线控制变成牵引、制动、转向和液压阀命令，处理反馈丢失和停车。 |
+| `tools/soil_heightfield_3d/test_heightfield_robustness.cpp` | 土料压力测试：连续铲挖后检查总量是否对得上、内部小片是否失控增长。 |
+| `tools/ros/test_soil_guards.py` | 开整辆车检查满斗、开出土料区域倾倒、返回后卸料等边界行为。 |
+| `tools/ros/run_ab_cycle.py` | 作业流程总指挥：准备、铲料、举升、转运、卸料、返回；根据实际反馈切换步骤。 |
+| `simulation/config/ab_task.yaml` | A/B 和中间停车位置、装料目标、卸料区域等作业设置。 |
+| `docs/next_stage_3d_ab.md` | 持续更新的完成项、待办项、测试证据和阶段状态。 |
+
+完整循环目前使用明确标注的仿真真值位置，估计定位接入仍未完成。

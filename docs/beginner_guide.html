@@ -459,7 +459,14 @@ Gazebo 独立真实位置 /loader/ground_truth/odometry
 <h2>最新开发进度入口</h2>
 <p>后续开发的完成项、待办和验证数据统一记录在 <a href="next_stage_3d_ab.html">下一阶段开发台账</a>。 三维料堆已接入整车，可在 Windows 运行：</p>
 <div class="code-box"><div class="code-label">PowerShell · 复制完整命令</div><pre><code>.\scripts\windows\run_loader_soil_demo.ps1 -Mode perception -ControlMode auto -Scenario soil3d</code></pre></div>
-<p>这会运行三维料堆上的挖卸演示。目前仍是直线挖卸动作，A 点到 B 点的自动转向运输还在开发。</p>
+<p>上面的 <code>soil3d</code> 是直线挖卸对照。完整 A→B 转向循环已有首轮通过记录，可以运行：</p>
+<div class="code-box"><div class="code-label">PowerShell · 复制完整命令</div><pre><code>.\scripts\windows\run_loader_soil_demo.ps1 -Mode physics -ControlMode auto -Scenario ab</code></pre></div>
+<p>它会在 A 点铲料、倒车退出、前进转弯到 B 点卸料，再返回 A 点。当前用仿真提供的位置进行调试， 还没有切换为激光/IMU 估计位置；多轮稳定性和完整第四阶段仍是待办。</p>
+<h3 id="heading-13-1">新版侧面卸料演示（默认入口）</h3>
+<p>直接运行下面命令：装载机在黄色圈内铲土，倒车退出，向左转 90°，在蓝色圈内的地面卸料，再返回起点。</p>
+<div class="code-box"><div class="code-label">PowerShell · 复制完整命令</div><pre><code>.\scripts\windows\run_loader_soil_demo.ps1</code></pre></div>
+<p>画面上可以检查两件事：原土堆留下铲挖缺口，另一侧原本空的地面出现新土堆。 这是三维高度场作业，当前用仿真真值定位调试；第四阶段的估计定位闭环仍在待办中。 旧的一维对照演示保留为 <code>-Scenario soil</code>，三维直线对照为 <code>-Scenario soil3d</code>。</p>
+<figure class="overview"><img src="assets/side_yard_complete.png" alt="侧面地面卸料完成后的真实仿真画面"></figure>
 </section><footer class="page-footer">本页由 beginner_guide.md 生成。修改 Markdown 后运行 tools/docs/build_beginner_docs.py 更新阅读版。模型与算法仍在开发，具体数值以最新代码和实测报告为准。</footer></main></div>
 <script>
 const links=[...document.querySelectorAll('.toc a')];

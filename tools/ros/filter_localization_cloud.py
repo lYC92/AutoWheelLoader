@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Filter effect returns using scan-time articulated TF and ground fitting."""
 import argparse
+import json
 import array
 from collections import deque
 import time
@@ -10,7 +11,9 @@ from rclpy.node import Node
 from rclpy.time import Time
 from rclpy.duration import Duration
 from rclpy.executors import ExternalShutdownException
-from sensor_msgs.msg import PointCloud2, PointField
+from sensor_msgs.msg import PointCloud2, PointField, Imu
+from std_msgs.msg import String
+from loader_sensor_effects.effects import rodrigues_rotate, scan_column_times
 from scipy.spatial.transform import Rotation
 from tf2_ros import Buffer, TransformListener, TransformException
 from loader_sensor_effects.lidar_effects_node import cloud_dtype
@@ -28,6 +31,9 @@ class BaselineCrop(Node):
         self.min_z = self.declare_parameter("min_z", -2.7).value
         self.min_range = self.declare_parameter("min_range", 3.0).value
         self.max_range = self.declare_parameter("max_range", 50.0).value
+        self.ground_constraint=self.declare_parameter("ground_constraint",False).value
+        self.ground_publisher=self.create_publisher(String,"/loader/localization/ground_constraint",10)
+        self.ground_samples=int(self.declare_parameter("ground_samples",0).value)
         self.mode = self.declare_parameter('ground_mode', 'adaptive').value
         self.threshold = self.declare_parameter('ground_threshold', .18).value
         self.self_filter = self.declare_parameter('self_filter', True).value
@@ -39,10 +45,13 @@ class BaselineCrop(Node):
         if self.self_filter and not urdf:
             raise ValueError('--model-urdf is required when self_filter is enabled')
         self.bounds = visual_bounds(urdf) if self.self_filter else []
-        self.links = sorted({b[0] for b in self.bounds})
+        self.links = sorted({b[0] for b in self.bounds}|({"base_link"} if self.ground_constraint else set()))
         self.buffer = Buffer(cache_time=Duration(seconds=10.), node=self)
         self.listener = TransformListener(self.buffer, self)
         self.pending = deque()
+        self.deskew=self.declare_parameter("synthetic_deskew",False).value
+        self.imu_history=deque(maxlen=400)
+        self.create_subscription(Imu,"/loader/sensors/imu",lambda m:self.imu_history.append(m),20)
         self.last_stamp = None
         self.publisher = self.create_publisher(PointCloud2, "/loader/localization/points", 10)
         self.create_subscription(PointCloud2, "/loader/sensors/lidar/scan/points_effect", self.on_cloud, 10)
@@ -86,6 +95,18 @@ class BaselineCrop(Node):
         points = np.ndarray((message.height, message.width), dtype=cloud_dtype(message),
                             buffer=message.data, strides=(message.row_step, message.point_step))
         xyz = np.stack([points[k].ravel() for k in ("x", "y", "z")], axis=1)
+        if self.deskew:
+            stamp=Time.from_msg(message.header.stamp).nanoseconds/1e9
+            if not self.imu_history: return
+            imu=min(self.imu_history,key=lambda m:abs(Time.from_msg(m.header.stamp).nanoseconds/1e9-stamp))
+            if abs(Time.from_msg(imu.header.stamp).nanoseconds/1e9-stamp)>.03: return
+            # Explicit simulator timing contract: organized columns have
+            # nominal acquisition offsets spanning 0.1 s. This undoes the
+            # sensor-effects rotation model using measured IMU, not truth.
+            omega=np.array([imu.angular_velocity.x,imu.angular_velocity.y,imu.angular_velocity.z])
+            times=scan_column_times(message.width,len(xyz),.1)
+            finite=np.isfinite(xyz).all(axis=1)
+            xyz[finite]=rodrigues_rotate(xyz[finite],times[finite,None]*omega)
         xyz = xyz[range_mask(xyz, self.min_range, self.max_range)]
         if self.bounds:
             xyz = xyz[outside_body(xyz, self.bounds, transforms, self.margin)]
@@ -95,7 +116,20 @@ class BaselineCrop(Node):
             plane = ground_plane(xyz, threshold=self.threshold)
             if plane is not None:
                 normal, offset = plane
-                xyz = xyz[xyz @ normal + offset > self.threshold]
+                if self.ground_constraint:
+                    # transforms maps base coordinates into the lidar frame.
+                    matrix=transforms['base_link']
+                    base_normal=matrix[:3,:3].T@normal
+                    base_offset=float(offset+normal@matrix[:3,3])
+                    constraint=String();constraint.data=json.dumps({'stamp':Time.from_msg(message.header.stamp).nanoseconds/1e9,
+                        'normal':base_normal.tolist(),'offset':base_offset})
+                    self.ground_publisher.publish(constraint)
+                above=xyz @ normal + offset > self.threshold
+                if self.ground_samples>0:
+                    ground=xyz[~above]
+                    ids=np.linspace(0,len(ground)-1,min(len(ground),self.ground_samples),dtype=int)
+                    xyz=np.concatenate([xyz[above],ground[ids]])
+                else: xyz=xyz[above]
             else:
                 self.get_logger().warning('ground plane unsupported: retaining non-body returns', throttle_duration_sec=5.)
         if len(xyz) < 20:

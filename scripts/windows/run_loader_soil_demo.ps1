@@ -6,11 +6,11 @@ param(
     [ValidateSet('auto', 'manual')]
     [string]$ControlMode = 'auto',
 
-    [ValidateSet('none', 'kiss_icp')]
+    [ValidateSet('none', 'kiss_icp', 'lio', 'lio_map')]
     [string]$Localization = 'none',
 
-    [ValidateSet('soil', 'soil3d', 'localization')]
-    [string]$Scenario = 'soil'
+    [ValidateSet('soil', 'soil3d', 'ab', 'localization')]
+    [string]$Scenario = 'ab'
 )
 
 $ErrorActionPreference = 'Stop'

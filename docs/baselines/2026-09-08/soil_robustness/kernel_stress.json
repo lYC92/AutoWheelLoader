@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "retrace_passes": 1000,
+  "retrace_fragments": 524,
+  "persistent_cycles": 1000,
+  "productive_cycles": 995,
+  "peak_fragments": 6496,
+  "final_fragments": 6496,
+  "balance_m3": 7.10543e-15,
+  "wall_seconds": 10.0636
+}

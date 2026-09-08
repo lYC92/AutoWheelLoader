@@ -33,7 +33,7 @@ def pose_matrix(position, orientation):
     return pose
 
 
-def compare(odometry, ground_truth):
+def compare(odometry, ground_truth, initial_align=True):
     truth = sorted({t: pose for t, pose in ground_truth}.items())
     if len(truth) < 2:
         raise RuntimeError("missing Gazebo model truth")
@@ -52,7 +52,7 @@ def compare(odometry, ground_truth):
         truth_pose[:3, :3] = rotations(stamp).as_matrix()
         truth_pose[:3, 3] = [np.interp(stamp, times, poses[:, j, 3]) for j in range(3)]
         if alignment is None:
-            alignment = truth_pose @ np.linalg.inv(estimate)
+            alignment = truth_pose @ np.linalg.inv(estimate) if initial_align else np.eye(4)
         world_estimate = alignment @ estimate
         position_error = np.linalg.norm(world_estimate[:3, 3] - truth_pose[:3, 3])
         angle_error = Rotation.from_matrix(truth_pose[:3, :3].T @ world_estimate[:3, :3]).magnitude()
@@ -62,14 +62,15 @@ def compare(odometry, ground_truth):
 
 
 class Recorder(Node):
-    def __init__(self):
+    def __init__(self,frame="odom"):
         super().__init__("loader_localization_evaluator", parameter_overrides=[Parameter("use_sim_time", value=True)])
+        self.frame=frame
         self.odometry, self.truth = [], []
         self.create_subscription(Odometry, "/loader/localization/odometry", self.on_odometry, qos_profile_sensor_data)
         self.create_subscription(Odometry, "/loader/ground_truth/odometry", self.on_truth, qos_profile_sensor_data)
 
     def on_odometry(self, message):
-        if message.header.frame_id != "odom" or message.child_frame_id != "base_link":
+        if message.header.frame_id != self.frame or message.child_frame_id != "base_link":
             raise RuntimeError("unexpected estimator frame contract")
         stamp = seconds(message.header.stamp)
         latency = self.get_clock().now().nanoseconds/1e9-stamp
@@ -88,6 +89,7 @@ def main():
     parser.add_argument("--duration", type=float, default=120.)
     parser.add_argument("--configuration", required=True)
     parser.add_argument("--model-urdf", required=True)
+    parser.add_argument("--frame", choices=["odom","world"],default="odom")
     args = parser.parse_args()
     output = Path(args.output)
     output.mkdir(parents=True, exist_ok=True)
@@ -102,7 +104,7 @@ def main():
             previous.rename(archive / name)
     (output/'status.json').write_text(json.dumps({'status': 'recording', 'started_unix_s': time.time()}))
     rclpy.init()
-    node = Recorder()
+    node = Recorder(args.frame)
     running = True
     def stop(*_):
         nonlocal running
@@ -124,7 +126,7 @@ def main():
         raise RuntimeError(message)
     if len(node.truth) < 2:
         fail('missing Gazebo model truth')
-    rows = compare(node.odometry, node.truth)
+    rows = compare(node.odometry, node.truth,initial_align=args.frame=="odom")
     if len(rows) < 50 or rows[-1, 0]-rows[0, 0] < 5:
         fail(f"insufficient matched trajectory: {len(rows)} poses")
     if not np.isfinite(rows).all():
@@ -133,13 +135,13 @@ def main():
     if travel < 0.5:
         fail(f"stationary test cannot validate odometry: {travel:.3f} m")
     metrics = {
-        "algorithm": "KISS-ICP 1ffa7d7512f10bfc8b1185095011fa31184019e3",
+        "algorithm": "KISS-ICP + 15-state LiDAR/IMU fusion" if args.frame=="world" else "KISS-ICP 1ffa7d7512f10bfc8b1185095011fa31184019e3",
         "input": "/loader/localization/points",
         "sensor_source": "/loader/sensors/lidar/scan/points_effect",
         "preprocessing": preprocessing,
         "configuration_sha256": hashlib.sha256(Path(args.configuration).read_bytes()).hexdigest(),
         "model_urdf_sha256": hashlib.sha256(Path(args.model_urdf).read_bytes()).hexdigest(),
-        "alignment": "initial pose only; interpolated Gazebo truth; no trajectory fitting",
+        "alignment": "configured world frame, no truth alignment" if args.frame=="world" else "initial pose only; interpolated Gazebo truth; no trajectory fitting",
         "matched_poses": len(rows), "truth_samples": len(node.truth),
         "duration_sim_s": float(rows[-1, 0]-rows[0, 0]), "travel_m": travel,
         "translation_rmse_m": float(np.sqrt(np.mean(rows[:, 7]**2))),
@@ -158,6 +160,8 @@ def main():
     (output/"metrics.json").write_text(json.dumps(metrics, indent=2)+"\n")
     (output/'status.json').write_text(json.dumps({'status': 'complete', 'nominal_accuracy_pass': metrics['nominal_accuracy_pass']}))
     print(json.dumps(metrics, indent=2))
+    if args.frame=="world" and not metrics["nominal_accuracy_pass"]:
+        fail("fused world pose RMSE exceeds 0.15 m")
     print("PASS  moving localization pipeline and independent truth evaluation")
     print("PASS  nominal accuracy target" if metrics["nominal_accuracy_pass"] else
           "OPEN  nominal accuracy target not met; baseline recorded, calibration remains")

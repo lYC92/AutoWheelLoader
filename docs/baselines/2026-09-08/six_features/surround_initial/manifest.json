@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "status": "complete",
+  "projection": "perspective input; unified equidistant offline",
+  "input_size": [
+    640,
+    640
+  ],
+  "fish_size": [
+    640,
+    480
+  ],
+  "horizontal_fov_deg": 160,
+  "nominal_hz": 10,
+  "sample_interval_s": 1.0,
+  "depth_convention": "optical Z metres",
+  "optical_axes": "+X right, +Y down, +Z forward",
+  "transform": "T_base_link_camera_optical at image timestamp",
+  "labels": {
+    "0": "unknown",
+    "1": "rigid_ground",
+    "2": "soil",
+    "3": "obstacle",
+    "4": "vehicle"
+  },
+  "dropped_incomplete_groups": 0,
+  "frames": [
+    {
+      "file": "frame_0000.npz",
+      "stamp_ns": 3600000000,
+      "phase": "initial",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0001.npz",
+      "stamp_ns": 5200000000,
+      "phase": "initial",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0002.npz",
+      "stamp_ns": 6200000000,
+      "phase": "initial",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0003.npz",
+      "stamp_ns": 7300000000,
+      "phase": "initial",
+      "streams": 12,
+      "max_skew_ns": 0
+    },
+    {
+      "file": "frame_0004.npz",
+      "stamp_ns": 8300000000,
+      "phase": "initial",
+      "streams": 12,
+      "max_skew_ns": 0
+    }
+  ]
+}

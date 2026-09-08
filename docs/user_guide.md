@@ -84,7 +84,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\windows\run_loader_soil_demo.
 | `/loader/command` | 控制命令：挡位、轮端扭矩、制动、铰接、举升/翻斗阀、急停 |
 | `/loader/state` | 车速、轮速、关节状态、液压压力、斗内载荷质量和质心 |
 | `/loader/bucket_interaction` | 侵入深度、切削力/力矩、入斗/排料流量、斗内体积 |
-| `/loader/terrain_state` | 土体高度剖面、挖除/卸料体积、体积守恒误差 |
+| `/loader/terrain_state` | 版本化土体剖面/XY 网格、挖除/卸料体积、体积守恒误差 |
 | `/joint_states` | 全部关节位置、速度、力/力矩 |
 | `/loader/sensors/lidar/scan/points`、`/loader_soil/observer/scan/points`、`/loader/sensors/imu` | 传感器数据（仅 perception 模式） |
 | `/loader/manual/status` | 手动网关状态摘要（JSON） |

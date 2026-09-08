@@ -1,0 +1,16 @@
+STATE connecting
+STATE prepare_at_A
+STATE dig_at_A
+STATE curl_and_lift
+STATE reverse_clear_A
+PASS turning transfer leg: gear=-1, RMSE=0.029m
+STATE forward_turn_to_B
+PASS turning transfer leg: gear=1, RMSE=0.061m
+STATE unload_at_B
+STATE raise_after_unloading
+STATE reverse_clear_B
+PASS turning transfer leg: gear=-1, RMSE=0.048m
+STATE forward_return_to_A
+PASS turning transfer leg: gear=1, RMSE=0.049m
+STATE complete
+PASS A/B cycle: loaded=0.707106m3 unloaded=0.707106m3 inside_B=100.0%

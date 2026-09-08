@@ -1,0 +1,56 @@
+Start testing: Sep 08 11:10 CST
+----------------------------------------------------------
+1/2 Testing: oriented_heightfield
+1/2 Test: oriented_heightfield
+Command: "/home/lyc/loader_sim_runtime/build/loader_soil/test_heightfield"
+Directory: /home/lyc/loader_sim_runtime/build/loader_soil
+"oriented_heightfield" start time: Sep 08 11:10 CST
+Output:
+----------------------------------------------------------
+PASS C++ oriented sweep, retrace, XY deposit, boundary and conservation
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"oriented_heightfield" end time: Sep 08 11:10 CST
+"oriented_heightfield" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/2 Testing: heightfield_robustness
+2/2 Test: heightfield_robustness
+Command: "/home/lyc/loader_sim_runtime/build/loader_soil/test_heightfield_robustness"
+Directory: /home/lyc/loader_sim_runtime/build/loader_soil
+"heightfield_robustness" start time: Sep 08 11:10 CST
+Output:
+----------------------------------------------------------
+capacity/boundary passed
+retrace 0 fragments=524
+retrace 100 fragments=524
+retrace 200 fragments=524
+retrace 300 fragments=524
+retrace 400 fragments=524
+retrace 500 fragments=524
+retrace 600 fragments=524
+retrace 700 fragments=524
+retrace 800 fragments=524
+retrace 900 fragments=524
+persistent 0 fragments=78
+persistent 100 fragments=1061
+persistent 200 fragments=1775
+persistent 300 fragments=2300
+persistent 400 fragments=2874
+persistent 500 fragments=3479
+persistent 600 fragments=4181
+persistent 700 fragments=4716
+persistent 800 fragments=5387
+persistent 900 fragments=5877
+{"status":"passed","retrace_passes":1000,"retrace_fragments":524,"persistent_cycles":1000,"productive_cycles":995,"peak_fragments":6496,"final_fragments":6496,"balance_m3":7.10543e-15,"wall_seconds":10.0636}
+<end of output>
+Test time =  10.07 sec
+----------------------------------------------------------
+Test Passed.
+"heightfield_robustness" end time: Sep 08 11:10 CST
+"heightfield_robustness" time elapsed: 00:00:10
+----------------------------------------------------------
+
+End testing: Sep 08 11:10 CST

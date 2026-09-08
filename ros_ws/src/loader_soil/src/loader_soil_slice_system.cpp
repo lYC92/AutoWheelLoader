@@ -1,4 +1,6 @@
 #include "heightfield.hpp"
+#include "payload_body.hpp"
+#include <gz/sim/components/SemanticLabel.hh>
 #include <algorithm>
 #include <atomic>
 #include <chrono>
@@ -20,6 +22,7 @@
 #include <gz/sim/System.hh>
 #include <gz/sim/SdfEntityCreator.hh>
 #include <sdf/Box.hh>
+#include <sdf/Sphere.hh>
 #include <sdf/Geometry.hh>
 #include <sdf/Material.hh>
 #include <sdf/Visual.hh>
@@ -113,6 +116,7 @@ public:
       heightsM_[index] = std::max(0.0, pileHeightM_ - slope * std::abs(x - pileCenterM_));
     }
     ReadParameter(sdf, "heightfield_3d", heightfield3D_);
+    ReadParameter(sdf, "dynamic_payload", dynamicPayload_);
     if (heightfield3D_) {
       double ymin=-6, ymax=6, pileY=0;
       ReadParameter(sdf, "domain_min_y_m", ymin);
@@ -130,6 +134,7 @@ public:
       }
       gridLink_=gz::sim::Model(terrainModel).LinkByName(ecm,"link");
       if(gridLink_==gz::sim::kNullEntity) return;
+      payloadVisuals_.resize(64,gz::sim::kNullEntity);
     }
     initialVolumeM3_ = TerrainVolume();
 
@@ -137,6 +142,7 @@ public:
     std::size_t visualColumnCount = 0;
     for (std::size_t index = 0; index < heightsM_.size(); ++index)
     {
+      if (grid_ && heightsM_[index] <= 1e-9) continue;
       std::ostringstream name;
       name << "soil_column_" << std::setfill('0') << std::setw(3) << index;
       const auto columnEntity = grid_ ? ecm.EntityByComponents(
@@ -217,7 +223,10 @@ public:
         tiltAngle <= unloadTiltThresholdRad_;
 
     if (heightfield3D_) {
+      const auto wallStart=std::chrono::steady_clock::now();
       UpdateHeightfield(*pose, edgeWorld, unloading, dt, ecm);
+      const double wallMs=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-wallStart).count();
+      if(wallMs>20) gzwarn << "Heightfield step " << wallMs << " ms, fragments=" << grid_->FragmentCount() << "\n";
     }
     if (!heightfield3D_ && havePreviousEdge_ && !unloading && velocity->X() > 0.02)
     {
@@ -291,7 +300,12 @@ public:
       materialOutflowM3ps_ = unloadedVolume / dt;
     }
 
-    if (payloadVolumeM3_ > 0.0)
+    if (heightfield3D_ && dynamicPayload_) {
+      payloadBody_.Update(payloadVolumeM3_,bulkDensityKgM3_,
+          std::chrono::duration<double>(info.simTime).count(),bucketLink_,*pose,
+          ecm.ParentEntity(model_.Entity()),ecm,*entityCreator_);
+    }
+    if ((!heightfield3D_ || !dynamicPayload_) && payloadVolumeM3_ > 0.0)
     {
       const double payloadMass = payloadVolumeM3_ * bulkDensityKgM3_;
       bucketLink_.AddWorldForce(
@@ -306,6 +320,33 @@ public:
              1.0 / visualizationUpdateHz_))
     {
       lastVisualizationTime_ = info.simTime;
+      // 0.8 m3 fills the visible bed; larger loads saturate its display.
+      const int visibleGrains=static_cast<int>(std::ceil(64*std::clamp(payloadVolumeM3_/0.8,0.0,1.0)));
+      for (std::size_t i=0;i<payloadVisuals_.size();++i) {
+        auto &grainEntity=payloadVisuals_[i];
+        if (static_cast<int>(i)>=visibleGrains) {
+          if (grainEntity!=gz::sim::kNullEntity) {
+            ecm.RequestRemoveEntity(grainEntity);
+            grainEntity=gz::sim::kNullEntity;
+          }
+          continue;
+        }
+        if (grainEntity!=gz::sim::kNullEntity) continue;
+        // Visual grains only: analytical payload already owns all soil mass.
+        // Create/remove instead of hiding far away, preserving camera bounds.
+        sdf::Visual grain; grain.SetName("bucket_soil_"+std::to_string(i));
+        sdf::Sphere sphere; sphere.SetRadius(0.17);
+        sdf::Geometry geometry; geometry.SetType(sdf::GeometryType::SPHERE);
+        geometry.SetSphereShape(sphere); grain.SetGeom(geometry);
+        sdf::Material material;
+        material.SetAmbient(gz::math::Color(0.58,0.38,0.18,1));
+        material.SetDiffuse(gz::math::Color(0.72,0.50,0.25,1));
+        grain.SetMaterial(material);
+        grain.SetRawPose(gz::math::Pose3d(0.05+0.28*(i%4),-1.05+0.30*((i/4)%8),-0.34+0.24*(i/32),0,0,0));
+        grainEntity=entityCreator_->CreateEntities(&grain);
+        ecm.CreateComponent(grainEntity,gz::sim::components::SemanticLabel(2));
+        entityCreator_->SetParent(grainEntity,bucketLink_.Entity());
+      }
       for (std::size_t index = 0; index < visualColumnEntities_.size(); ++index)
       {
         if (visualColumnEntities_[index] == gz::sim::kNullEntity) {
@@ -327,6 +368,7 @@ public:
           visual.SetRawPose(gz::math::Pose3d(grid_->X(index),grid_->Y(index),
               heightsM_[index]-visualizationColumnHeightM_/2,0,0,0));
           visualColumnEntities_[index]=entityCreator_->CreateEntities(&visual);
+          ecm.CreateComponent(visualColumnEntities_[index],gz::sim::components::SemanticLabel(2));
           entityCreator_->SetParent(visualColumnEntities_[index],gridLink_);
         }
         if (grid_ && !grid_->dirty[index]) continue;
@@ -378,6 +420,13 @@ public:
     interaction.bucket_material_mass_kg = payloadVolumeM3_ * bulkDensityKgM3_;
     interactionPublisher_->publish(interaction);
 
+    // Full XY grids are visualization/material snapshots, not 50 Hz control
+    // feedback. Keep the small interaction stream fast without DDS backpressure
+    // from the large reliable terrain buffer on an expanded A/B domain.
+    if (grid_ && lastTerrainPublishTime_.count()!=0 &&
+        std::chrono::duration<double>(info.simTime-lastTerrainPublishTime_).count()<0.1)
+      return;
+    lastTerrainPublishTime_=info.simTime;
     loader_sim_msgs::msg::TerrainState terrain;
     terrain.header.stamp = stamp;
     terrain.header.frame_id = "world";
@@ -430,8 +479,8 @@ private:
         auto l1=previousLeft_+(left-previousLeft_)*t1;
         auto r0=previousRight_+(right-previousRight_)*t0;
         auto r1=previousRight_+(right-previousRight_)*t1;
-        removed+=grid_->Sweep({l0.X(),l0.Y()},{r0.X(),r0.Y()},
-            {r1.X(),r1.Y()},{l1.X(),l1.Y()},(l0.Z()+l1.Z()+r0.Z()+r1.Z())/4);
+        removed+=grid_->Sweep3D({l0.X(),l0.Y(),l0.Z()},{r0.X(),r0.Y(),r0.Z()},
+            {r1.X(),r1.Y(),r1.Z()},{l1.X(),l1.Y(),l1.Z()});
       }
       materialInflowM3ps_=removed/dt;
       const int samples=static_cast<int>(std::ceil(sliceWidthM_/0.01));
@@ -529,6 +578,8 @@ private:
 
   gz::sim::Model model_;
   gz::sim::Link bucketLink_;
+  PayloadBody payloadBody_;
+  bool dynamicPayload_{false};
   gz::sim::Joint bucketTiltJoint_;
   bool configured_{false};
   bool heightfield3D_{false};
@@ -551,6 +602,7 @@ private:
 
   std::vector<double> heightsM_;
   std::vector<gz::sim::Entity> visualColumnEntities_;
+  std::vector<gz::sim::Entity> payloadVisuals_;
   double domainMinM_{0.0};
   double domainMaxM_{14.0};
   double cellSizeM_{0.05};
@@ -583,6 +635,7 @@ private:
   gz::math::Vector3d bucketForceWorldN_;
   gz::math::Vector3d bucketTorqueWorldNm_;
   std::chrono::steady_clock::duration lastPublishTime_{};
+  std::chrono::steady_clock::duration lastTerrainPublishTime_{};
   std::chrono::steady_clock::duration lastVisualizationTime_{};
   std::uint64_t updateSequence_{0};
 };

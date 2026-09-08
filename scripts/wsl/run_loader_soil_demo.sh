@@ -2,23 +2,27 @@
 set -Eeuo pipefail
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-project_root="$(cd "${script_dir}/../.." && pwd)"
+project_root="${LOADER_PROJECT_ROOT:-$(cd "${script_dir}/../.." && pwd)}"
 runtime_root="${HOME}/loader_sim_runtime"
 mode="${1:-physics}"
 control_mode="${2:-auto}"
 localization="${3:-none}"
-scenario="${4:-soil}"
-if [[ ${scenario} != soil && ${scenario} != soil3d && ${scenario} != localization ]]; then
-  printf 'ERROR: scenario must be soil, soil3d or localization.\n' >&2
+scenario="${4:-ab}"
+if [[ ${scenario} != soil && ${scenario} != soil3d && ${scenario} != ab && ${scenario} != localization ]]; then
+  printf 'ERROR: scenario must be soil, soil3d, ab or localization.\n' >&2
   exit 2
 fi
 if [[ ${scenario} == localization && ( ${localization} != kiss_icp || ${control_mode} != auto ) ]]; then
   printf 'ERROR: localization scenario requires auto / kiss_icp.\n' >&2
   exit 2
 fi
+if [[ ${scenario} == ab && ${localization} == kiss_icp ]]; then
+  printf 'ERROR: ab estimated control requires lio fusion and health supervision.\n' >&2
+  exit 2
+fi
 headless="${LOADER_HEADLESS:-0}"
-if [[ ${localization} != none && ${localization} != kiss_icp ]]; then
-  printf 'ERROR: localization must be none or kiss_icp.\n' >&2
+if [[ ${localization} != none && ${localization} != kiss_icp && ${localization} != lio && ${localization} != lio_map ]]; then
+  printf 'ERROR: localization must be none, kiss_icp, lio or lio_map.\n' >&2
   exit 2
 fi
 if [[ ${localization} != none && ${mode} != perception ]]; then
@@ -47,6 +51,7 @@ if [[ ${mode} == perception ]]; then
 fi
 
 gui_config="${project_root}/simulation/config/gui/loader_demo.config"
+[[ ${scenario} == ab ]] && gui_config="${project_root}/simulation/config/gui/loader_ab.config"
 run_dir="${runtime_root}/results/runs/${mode}_${scenario}_$(date +%Y%m%d_%H%M%S)_${$}"
 urdf_file="${run_dir}/loader.urdf"
 server_log="${runtime_root}/log/loader_soil_demo${suffix}_gazebo.log"
@@ -65,7 +70,7 @@ source /etc/profile.d/loader-sim-wslg.sh
 set +u
 source /opt/ros/jazzy/setup.bash
 source "${runtime_root}/install/setup.bash"
-if [[ ${localization} == kiss_icp ]]; then
+if [[ ${localization} != none ]]; then
   if [[ ! -f ${runtime_root}/localization/install/setup.bash ]]; then
     printf 'ERROR: run scripts/wsl/bootstrap_localization.sh first.\n' >&2
     exit 2
@@ -83,22 +88,32 @@ if [[ ${scenario} == localization ]]; then
   python3 "${project_root}/tools/ros/generate_localization_world.py" "${world_file}"
 fi
 enable_soil_3d=false
-if [[ ${scenario} == soil3d ]]; then
+if [[ ${scenario} == soil3d || ${scenario} == ab ]]; then
   enable_soil_3d=true
   world_file="${run_dir}/loader_soil_3d.sdf"
-  generator_args=()
-  [[ ${mode} == perception ]] && generator_args+=(--observer-lidar)
+  grid_config="${project_root}/ros_ws/src/loader_description/config/soil_heightfield.yaml"
+  [[ ${scenario} == ab ]] && grid_config="${project_root}/ros_ws/src/loader_description/config/soil_heightfield_ab.yaml"
+  generator_args=(--config "${grid_config}" --task-config "${LOADER_AB_CONFIG:-${project_root}/simulation/config/ab_task.yaml}")
+  [[ ${LOADER_CAPTURE_YARD:-false} == true ]] && generator_args+=(--overview-camera)
+  [[ ${LOADER_BEV_CAPTURE:-false} == true ]] && generator_args+=(--sensor-systems)
+  if [[ ${mode} == perception ]]; then
+    generator_args+=(--sensor-systems)
+    [[ ${scenario} != ab ]] && generator_args+=(--observer-lidar)
+  fi
   python3 "${project_root}/tools/soil_heightfield_3d/generate_gazebo_world.py" "${world_file}" "${generator_args[@]}"
 fi
 
+grid_config="${grid_config:-${project_root}/ros_ws/src/loader_description/config/soil_heightfield.yaml}"
 enable_lidar_imu=false
 if [[ ${mode} == perception ]]; then
   enable_lidar_imu=true
 fi
+enable_ground_truth="${enable_lidar_imu}"
+[[ ${scenario} == ab ]] && enable_ground_truth=true
 xacro "${project_root}/ros_ws/src/loader_description/urdf/loader.urdf.xacro" \
-  enable_ros2_control:=true enable_soil_slice:=true enable_soil_3d:="${enable_soil_3d}" \
-  enable_lidar_imu:="${enable_lidar_imu}" \
-  enable_ground_truth:="${enable_lidar_imu}" >"${urdf_file}"
+  dynamic_payload:="${LOADER_DYNAMIC_PAYLOAD:-true}" enable_ros2_control:=true enable_soil_slice:=true enable_soil_3d:="${enable_soil_3d}" \
+  enable_surround_cameras:="${LOADER_BEV_CAPTURE:-false}" enable_lidar_imu:="${enable_lidar_imu}" \
+  enable_ground_truth:="${enable_ground_truth}" soil_3d_config:="${grid_config}" >"${urdf_file}"
 
 if gz service -l 2>/dev/null | grep -q '^/world/loader_soil_slice/'; then
   printf '%s\n' 'ERROR: a loader_soil_slice Gazebo server is already running.' >&2
@@ -120,6 +135,7 @@ sensor_tf_pid=''
 effects_pid=''
 imu_tf_pid=''
 localization_pid=''
+fusion_pid=''
 localization_crop_pid=''
 evaluation_pid=''
 
@@ -143,6 +159,7 @@ stop_process() {
 
 cleanup() {
   stop_process "${evaluation_pid}"
+  stop_process "${fusion_pid}"
   stop_process "${localization_pid}"
   stop_process "${localization_crop_pid}"
   stop_process "${effects_pid}"
@@ -158,6 +175,18 @@ cleanup() {
 trap cleanup EXIT INT TERM
 
 bridge_arguments=('/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock')
+if [[ ${LOADER_BEV_CAPTURE:-false} == true ]]; then
+  for camera in front left rear right; do
+    bridge_arguments+=("/loader/cameras/${camera}/raw/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo")
+    for stream in raw/image raw/depth_image semantic/labels_map; do
+      bridge_arguments+=("/loader/cameras/${camera}/${stream}@sensor_msgs/msg/Image[gz.msgs.Image")
+    done
+  done
+fi
+[[ ${LOADER_CAPTURE_YARD:-false} == true ]] && bridge_arguments+=('/loader/yard_camera@sensor_msgs/msg/Image[gz.msgs.Image')
+if [[ ${scenario} == ab && ${mode} == physics ]]; then
+  bridge_arguments+=('/loader/ground_truth/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry')
+fi
 test_arguments=(--use-sim-time-for-phases)
 [[ ${scenario} == soil3d ]] && test_arguments+=(--heightfield-3d)
 if [[ ${mode} == perception ]]; then
@@ -195,16 +224,37 @@ if [[ ${mode} == perception ]]; then
     --params-file "${project_root}/ros_ws/src/loader_sensor_effects/config/nominal.yaml" \
     >"${effects_log}" 2>&1 &
   effects_pid=$!
-  if [[ ${localization} == kiss_icp ]]; then
+  if [[ ${localization} != none ]]; then
+    deskew=false
+    ground_constraint=false
+    ground_samples=0
+    odometry_topic=/loader/localization/odometry
+    if [[ ${localization} == lio || ${localization} == lio_map ]]; then
+      deskew=true
+      ground_constraint=true
+      if [[ ${localization} == lio_map ]]; then
+        ground_samples=6000
+        ground_constraint=false
+      fi
+      odometry_topic=/loader/localization/lidar_odometry
+      python3 "${project_root}/tools/ros/fuse_localization.py" --ros-args -p surveyed_ground:="${ground_constraint}" >"${run_dir}/fusion.log" 2>&1 &
+      fusion_pid=$!
+    fi
     python3 "${project_root}/tools/ros/filter_localization_cloud.py" --model-urdf "${urdf_file}" --ros-args \
-      --params-file "${project_root}/simulation/config/localization/kiss_icp.yaml" \
+      --params-file "${project_root}/simulation/config/localization/kiss_icp.yaml" -p synthetic_deskew:="${deskew}" -p ground_constraint:="${ground_constraint}" -p ground_samples:="${ground_samples}" \
       >"${runtime_root}/log/loader_localization_crop.log" 2>&1 &
     localization_crop_pid=$!
+    if [[ ${localization} == lio_map ]]; then
+      python3 "${project_root}/tools/ros/map_odometry.py" --map "${LOADER_REFERENCE_MAP:-${run_dir}/reference_map.npz}" \
+        --ros-args -p drop_start_s:="${LOADER_LIDAR_DROP_START:--1.0}" -p drop_duration_s:="${LOADER_LIDAR_DROP_DURATION:-0.0}" \
+        >"${run_dir}/map_localization.log" 2>&1 &
+    else
     ros2 run kiss_icp kiss_icp_node --ros-args \
       --params-file "${project_root}/simulation/config/localization/kiss_icp.yaml" \
       -r pointcloud_topic:=/loader/localization/points \
-      -r kiss/odometry:=/loader/localization/odometry \
+      -r kiss/odometry:="${odometry_topic}" \
       >"${runtime_root}/log/loader_localization.log" 2>&1 &
+    fi
     localization_pid=$!
   fi
 fi
@@ -336,12 +386,14 @@ fi
 printf '%s\n' 'If needed, select soil_loader in Entity tree and press F to focus it.'
 fi
 
-if [[ ${scenario} == localization ]]; then
+if [[ ${scenario} == localization || ${localization} == lio || ${localization} == lio_map ]]; then
+  evaluation_frame=odom
+  [[ ${localization} == lio || ${localization} == lio_map ]] && evaluation_frame=world
   python3 "${project_root}/tools/ros/evaluate_localization.py" \
-    --output "${runtime_root}/results/localization" \
+    --output "${run_dir}/localization" --duration 1800 --frame "${evaluation_frame}" \
     --configuration "${project_root}/simulation/config/localization/kiss_icp.yaml" \
     --model-urdf "${urdf_file}" \
-    >"${runtime_root}/log/localization_evaluation.log" 2>&1 &
+    >"${run_dir}/localization_evaluation.log" 2>&1 &
   evaluation_pid=$!
   sleep 3
 fi
@@ -350,8 +402,28 @@ scenario_status=0
 if [[ ${control_mode} == auto ]]; then
   printf 'Loader is ready. Starting %s scenario.\n' "${scenario}"
   set +e
-  if [[ ${scenario} == localization ]]; then
+  if [[ ${LOADER_CAPTURE_ONLY:-false} == true ]]; then
+    python3 "${project_root}/tools/ros/capture_surround.py" --output "${run_dir}/surround" --frames 5
+    capture_status=$?
+    if [[ ${capture_status} -eq 0 ]]; then
+      python3 "${project_root}/tools/ros/build_bev.py" "${run_dir}/surround"
+    else
+      exit "${capture_status}"
+    fi
+  elif [[ ${scenario} == localization ]]; then
     python3 "${project_root}/tools/ros/run_localization_scenario.py" 2>&1 | tee "${scenario_log}"
+  elif [[ ${scenario} == ab ]]; then
+    pose_source=ground_truth
+    [[ ${localization} == lio || ${localization} == lio_map ]] && pose_source=estimated
+    if [[ ${LOADER_CONTINUOUS_CYCLES:-1} -gt 1 ]]; then
+      python3 "${project_root}/tools/ros/run_continuous_cycles.py" --cycles "${LOADER_CONTINUOUS_CYCLES}" \
+        --pose-source "${pose_source}" --config "${LOADER_AB_CONFIG:-${project_root}/simulation/config/ab_task.yaml}" \
+        --output "${run_dir}/continuous" 2>&1 | tee "${scenario_log}"
+    else
+    python3 "${project_root}/tools/ros/run_ab_cycle.py" --pose-source "${pose_source}" \
+      --config "${LOADER_AB_CONFIG:-${project_root}/simulation/config/ab_task.yaml}" \
+      --output "${run_dir}/ab_cycle.json" 2>&1 | tee "${scenario_log}"
+    fi
   else
     python3 "${project_root}/tools/ros/test_loader_soil_coupling.py" \
       "${test_arguments[@]}" 2>&1 | tee "${scenario_log}"
@@ -371,7 +443,7 @@ if [[ -n ${evaluation_pid} ]]; then
   evaluation_status=$?
   set -e
   evaluation_pid=''
-  cat "${runtime_root}/log/localization_evaluation.log"
+  cat "${run_dir}/localization_evaluation.log"
   if [[ ${evaluation_status} -ne 0 ]]; then
     scenario_status=${evaluation_status}
   fi

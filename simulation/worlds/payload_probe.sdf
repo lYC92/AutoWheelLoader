@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<sdf version="1.10"><world name="payload_probe">
+<physics name="physics" type="dart"><max_step_size>0.002</max_step_size><real_time_factor>0</real_time_factor></physics>
+<gravity>0 0 0</gravity><plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+<model name="probe"><link name="bucket"><inertial><mass>1000</mass><inertia><ixx>1000</ixx><iyy>1000</iyy><izz>1000</izz></inertia></inertial></link>
+<plugin filename="loader_payload_probe" name="loader_soil::PayloadProbe"/>
+</model></world></sdf>

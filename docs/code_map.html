@@ -17,7 +17,7 @@ code{font-family:Consolas,'Microsoft YaHei',monospace;font-size:.91em;background
 @media print{@page{size:A4;margin:16mm}body{background:#fff;font-size:10pt;line-height:1.65}.topbar,aside,.page-footer{display:none}.layout{display:block;padding:0;max-width:none}main{border:0;box-shadow:none;padding:0}.eyebrow{font-size:9pt}h1{font-size:23pt}h2{font-size:16pt}h3{font-size:12pt}h1,h2,h3{break-after:avoid}section{padding-top:18px;margin-top:22px}table{font-size:9pt;min-width:0!important}th,td{padding:7px 9px}thead{display:table-header-group}tr,figure,.code-box{break-inside:avoid}.table-scroll{overflow:visible;border-radius:0}figure svg{min-width:0!important}a{color:inherit;text-decoration:none}.code-box{background:#f1f5f7;border:1px solid #ccc}.code-label{background:#e8eef1;color:#333}pre code{color:#222}pre{padding:10px;line-height:1.5}pre code{font-size:9pt}p{orphans:3;widows:3}}
 </style></head>
 <body><header class="topbar"><div class="brand">装载机仿真软件 · 学习与查阅</div><nav class="topnav" aria-label="文档切换"><a href="beginner_guide.html">零基础说明书</a><a href="code_map.html" aria-current="page">代码地图</a><a href="next_stage_3d_ab.html">开发计划与进度</a><button type="button" onclick="window.print()">打印 / 保存 PDF</button></nav></header>
-<div class="layout"><aside aria-label="章节目录"><h2>本页目录</h2><ol class="toc"><li><a href="#section-1">1. 先认识目录和后缀</a></li><li><a href="#section-2">2. 日常启动入口</a></li><li><a href="#section-3">3. ROS 核心包</a></li><li><a href="#section-4">4. ROS 辅助程序与定位</a></li><li><a href="#section-5">5. 独立原型和生成工具</a></li><li><a href="#section-6">6. 世界文件与配置</a></li><li><a href="#section-7">7. Linux 安装和构建脚本</a></li><li><a href="#section-8">8. Linux 验收与性能脚本</a></li><li><a href="#section-9">9. 文档、记录和生成文件</a></li></ol><p class="aside-note">初次阅读先看整体和启动方法。<br>用 Ctrl+F 搜索文件名或关键词。<br><br>离线阅读 · 无需启动仿真<br>文档快照：2026-09-07</p></aside>
+<div class="layout"><aside aria-label="章节目录"><h2>本页目录</h2><ol class="toc"><li><a href="#section-1">1. 先认识目录和后缀</a></li><li><a href="#section-2">2. 日常启动入口</a></li><li><a href="#section-3">3. ROS 核心包</a></li><li><a href="#section-4">4. ROS 辅助程序与定位</a></li><li><a href="#section-5">5. 独立原型和生成工具</a></li><li><a href="#section-6">6. 世界文件与配置</a></li><li><a href="#section-7">7. Linux 安装和构建脚本</a></li><li><a href="#section-8">8. Linux 验收与性能脚本</a></li><li><a href="#section-9">9. 文档、记录和生成文件</a></li><li><a href="#section-10">三维 A→B 新增代码</a></li></ol><p class="aside-note">初次阅读先看整体和启动方法。<br>用 Ctrl+F 搜索文件名或关键词。<br><br>离线阅读 · 无需启动仿真<br>文档快照：2026-09-07</p></aside>
 <main><div class="eyebrow">从使用方法，到代码职责</div><h1 id="heading-0-1">代码地图：看到一个文件名，先查它的用途</h1>
 <p>版本：2026-09-06。配套主文档是 <a href="beginner_guide.html">零基础说明书</a>。这里用于查文件，不要求按顺序读完。</p>
 <p><strong>路径均从项目根目录开始理解，点击文件名可打开源码。</strong> “正式”表示当前演示使用；“原型”表示独立验证或对照；“计划配置”表示文件描述了目标，但不等于功能全部实现。模型正在由另一位开发者更新，具体数值以最新模型代码为准。</p>
@@ -268,6 +268,24 @@ code{font-family:Consolas,'Microsoft YaHei',monospace;font-size:.91em;background
 <tr><td><a href="../LICENSE">LICENSE</a></td><td>本项目许可证文本</td></tr>
 </tbody></table></div>
 <p>你可以先选一个熟悉的动作，再沿“启动器 → 命令来源 → 正式控制器 → 物理世界 → 状态 → 面板”查文件。每次只读一条链，比同时打开所有目录更容易理解。</p>
+</section>
+<section id="section-10">
+<h2>三维 A→B 新增代码</h2>
+<div class="table-scroll"><table><thead><tr>
+<th scope="col">文件</th>
+<th scope="col">小白可以怎样理解</th>
+</tr></thead><tbody>
+<tr><td><code>ros_ws/src/loader_soil/src/heightfield.hpp</code></td><td>土料账本：记住每块地挖掉多少、斗里装了多少、卸到哪里。</td></tr>
+<tr><td><code>loader_soil_slice_system.cpp</code></td><td>把土料账本接到 Gazebo，给铲斗施力并更新可见土堆。</td></tr>
+<tr><td><code>tools/ros/trajectory_control.py</code></td><td>生成转弯路线，根据位置误差算前进或倒车时的转向目标。</td></tr>
+<tr><td><code>tools/ros/run_transfer_scenario.py</code></td><td>把路线控制变成牵引、制动、转向和液压阀命令，处理反馈丢失和停车。</td></tr>
+<tr><td><code>tools/soil_heightfield_3d/test_heightfield_robustness.cpp</code></td><td>土料压力测试：连续铲挖后检查总量是否对得上、内部小片是否失控增长。</td></tr>
+<tr><td><code>tools/ros/test_soil_guards.py</code></td><td>开整辆车检查满斗、开出土料区域倾倒、返回后卸料等边界行为。</td></tr>
+<tr><td><code>tools/ros/run_ab_cycle.py</code></td><td>作业流程总指挥：准备、铲料、举升、转运、卸料、返回；根据实际反馈切换步骤。</td></tr>
+<tr><td><code>simulation/config/ab_task.yaml</code></td><td>A/B 和中间停车位置、装料目标、卸料区域等作业设置。</td></tr>
+<tr><td><code>docs/next_stage_3d_ab.md</code></td><td>持续更新的完成项、待办项、测试证据和阶段状态。</td></tr>
+</tbody></table></div>
+<p>完整循环目前使用明确标注的仿真真值位置，估计定位接入仍未完成。</p>
 </section><footer class="page-footer">本页由 code_map.md 生成。修改 Markdown 后运行 tools/docs/build_beginner_docs.py 更新阅读版。模型与算法仍在开发，具体数值以最新代码和实测报告为准。</footer></main></div>
 <script>
 const links=[...document.querySelectorAll('.toc a')];

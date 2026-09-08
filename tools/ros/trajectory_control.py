@@ -77,10 +77,26 @@ def transfer_path(start: Pose, goal: Pose, gear: int, limits=Limits(), spacing=0
         distance=math.hypot(b.x-a.x,b.y-a.y)
         count=max(1,math.ceil(distance/spacing))
         return [Pose(a.x+(b.x-a.x)*i/count,a.y+(b.y-a.y)*i/count,a.yaw) for i in range(count+1)]
-    if abs(theta)<1e-6:
-        if abs(cross(d0,delta))>1e-4 or delta[0]*d0[0]+delta[1]*d0[1]<0.5:
-            raise ValueError("parallel offset requires intermediate waypoints")
-        return line(start,goal)
+    if abs(theta)<math.radians(15):
+        distance=math.hypot(*delta)
+        if distance<0.5 or delta[0]*d0[0]+delta[1]*d0[1]<=0:
+            raise ValueError("target is not ahead in the selected gear")
+        # Small heading/lateral residuals after parking need a smooth local
+        # connector; an exact parallel-line intersection is ill-conditioned.
+        p=[(start.x,start.y),(start.x+distance*d0[0]/3,start.y+distance*d0[1]/3),
+           (goal.x-distance*d1[0]/3,goal.y-distance*d1[1]/3),(goal.x,goal.y)]
+        count=math.ceil(sum(math.dist(a,b) for a,b in zip(p,p[1:]))/spacing)
+        result=[]
+        for i in range(count+1):
+            t,u=i/count,1-i/count
+            xy=[u**3*p[0][k]+3*u*u*t*p[1][k]+3*u*t*t*p[2][k]+t**3*p[3][k] for k in (0,1)]
+            d=[3*u*u*(p[1][k]-p[0][k])+6*u*t*(p[2][k]-p[1][k])+3*t*t*(p[3][k]-p[2][k]) for k in (0,1)]
+            dd=[6*u*(p[2][k]-2*p[1][k]+p[0][k])+6*t*(p[3][k]-2*p[2][k]+p[1][k]) for k in (0,1)]
+            norm=math.hypot(*d)
+            if norm<1e-6 or abs(cross(d,dd))/norm**3>limits.curvature(limits.articulation):
+                raise ValueError("near-parallel connector exceeds turning constraint")
+            result.append(Pose(*xy,wrap(math.atan2(d[1],d[0])+(math.pi if gear<0 else 0))))
+        return result
     if abs(theta)>math.radians(150):
         raise ValueError("U-turn requires intermediate waypoints")
     determinant=cross(d0,d1)
@@ -134,7 +150,11 @@ class Tracker:
         if index == len(self.path)-1 and self.gear*longitudinal < -limit.parking_distance:
             raise RuntimeError("passed parking target; stop and replan")
         tracking_pose=pose
-        tracking_path=self.path
+        # Extend the terminal tangent in the selected gear. A target collapsing
+        # onto the rear axle magnifies centimetre-scale localization noise into
+        # maximum steering just before reverse parking.
+        tracking_path=self.path+[Pose(goal.x+self.gear*i*.1*math.cos(goal.yaw),
+                                     goal.y+self.gear*i*.1*math.sin(goal.yaw),goal.yaw) for i in range(1,41)]
         tracking_index=index
         if self.gear>0:
             # Forward steering acts directly on the front heading. Tracking
